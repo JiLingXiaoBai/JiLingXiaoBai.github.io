@@ -1,5 +1,4 @@
 ---
-title: 关于1234
+title: 关于
 layout: about
 ---
-12345
