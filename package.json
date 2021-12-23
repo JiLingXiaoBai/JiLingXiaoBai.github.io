@@ -6,7 +6,8 @@
     "build": "hexo clean && hexo generate && node talk-auto-init.js",
     "clean": "hexo clean",
     "deploy": "hexo deploy",
-    "server": "hexo server"
+    "server": "hexo server",
+    "comment": "node talk-auto-init.js"
   },
   "hexo": {
     "version": "6.0.0"
