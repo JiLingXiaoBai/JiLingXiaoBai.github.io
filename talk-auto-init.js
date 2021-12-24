@@ -11,7 +11,7 @@ const moment = require('moment');
 const config = {
     username: 'JiLingXiaoBai', // GitHub repository 所有者，可以是个人或者组织。对应Gitalk配置中的owner
     repo: 'JiLingXiaoBai.github.io', // 储存评论issue的github仓库名，仅需要仓库名字即可。对应 Gitalk配置中的repo
-    token: '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', // 前面申请的 personal access token
+    token: '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', // 前面申请的 personal access token
     sitemap: path.join(__dirname, './public/sitemap.xml'), // 自己站点的 sitemap 文件地址
     cache: true, // 是否启用缓存，启用缓存会将已经初始化的数据写入配置的 gitalkCacheFile 文件，下一次直接通过缓存文件判断
     gitalkCacheFile: path.join(__dirname, './gitalk-init-cache.json'), // 用于保存 gitalk 已经初始化的 id 列表
@@ -72,12 +72,13 @@ const getGitalkId = ({
         return 'index.html';
     }
     // 如果不是文章链接，则不需要初始化
-    if (!/\/(\d{4})-(\d{2})-(\d{2})\//.test(link.pathname)) {
+    if (!/\/posts\//.test(link.pathname)) {
         return false;
     }
     if (!date) {
         return false;
     }
+    console.log(`pathname  ${link.pathname}`)
     return 'posts_' + md5(link.pathname);
 };
 
@@ -145,6 +146,7 @@ const idIsInit = async (id) => {
     }
     // 如果通过缓存查询到的数据是未初始化，则再通过请求判断是否已经初始化，防止多次初始化
     if (getIsInitByCache(id) === false) {
+        console.log(`未初始化 ${id }`);
         return await getIsInitByRequest(id);
     }
     return [false, true];
