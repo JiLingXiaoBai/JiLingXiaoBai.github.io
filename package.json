@@ -3,11 +3,10 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "build": "hexo clean && hexo generate && node talk-auto-init.js",
+    "build": "hexo clean && hexo generate",
     "clean": "hexo clean",
     "deploy": "hexo deploy",
-    "server": "hexo server",
-    "comment": "node talk-auto-init.js"
+    "server": "hexo server"
   },
   "hexo": {
     "version": "6.0.0"
@@ -33,11 +32,6 @@
     "hexo-renderer-stylus": "^2.0.1",
     "hexo-server": "^2.0.0",
     "hexo-theme-fluid": "^1.8.13",
-    "hexo-theme-landscape": "^0.0.3",
-    "md5": "^2.3.0",
-    "moment": "^2.29.1",
-    "request": "^2.88.2",
-    "xml-parser": "^1.2.1",
-    "yamljs": "^0.3.0"
+    "hexo-theme-landscape": "^0.0.3"
   }
 }
