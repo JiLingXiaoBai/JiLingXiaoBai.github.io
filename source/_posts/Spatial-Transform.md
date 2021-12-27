@@ -3,8 +3,76 @@ title: Spatial Transform
 date: 2021-12-26 19:08:56
 tags: Math
 categories: Unity Shader
+math: true
 ---
 
-## 坐标空间的变换
-在渲染流水线中，我们往往需要把一个点或者方向矢量从一个坐标空间转换到另一个坐标空间，这个过程的是怎么实现的？我们要想定义一个坐标空间，必须指明其原点位置和三个坐标轴的方向。而这些数值实际上是相对于另一个坐标空间的。也就是说坐标空间会形成一个层次结构——每个坐标空间都是另一个坐标空间的子空间，反过来说，每个空间都有一个父坐标空间。对坐标空间的变换实际上就是在父空间和子空间之间对点和矢量进行变换。
+## 坐标空间的变换 ##
+在渲染流水线中，我们往往需要把一个点或者方向矢量从一个坐标空间转换到另一个坐标空间，这个过程的是怎么实现的？
+我们要想定义一个坐标空间，必须指明其原点位置和三个坐标轴的方向。而这些数值实际上是相对于另一个坐标空间的。也就是说坐标空间会形成一个层次结构——每个坐标空间都是另一个坐标空间的子空间，反过来说，每个空间都有一个父坐标空间。对坐标空间的变换实际上就是在父空间和子空间之间对点和矢量进行变换。
+假设现在有父坐标空间**P**以及一个子坐标空间**C**，我们现在已知父坐标空间中子坐标空间的原点位置以及三个单位坐标轴。我们会有两种需求，一种需求是把子坐标空间下表示的点或矢量**A**<sub><i>c</i></sub>转换到父坐标空间下的表示**A**<sub><i>p</i></sub>，另一种需求是反过来，即把父坐标空间下表示的点或矢量**B**<sub><i>p</i></sub>转换到子坐标空间下的表示**B**<sub><i>c</i></sub>。我们可以用下面的公式来表示这两种需求：
+
+<center><b>A</b><sub><i>p</i></sub> = <b>M</b><sub><i>c->p</i></sub><b>A</b><sub><i>c</i></sub></center>
+<center><b>B</b><sub><i>c</i></sub> = <b>M</b><sub><i>p->c</i></sub><b>B</b><sub><i>p</i></sub></center>
+
+其中，<b>M</b><sub><i>c->p</i></sub>表示的是从子坐标空间变换到父坐标空间的变换矩阵，<b>M</b><sub><i>p->c</i></sub>表示的是从父坐标空间变换到子坐标空间的变换矩阵，他俩互为逆矩阵。
+
+下面我们就来讲解如何求出从子坐标空间到父坐标空间的变换矩阵<b>M</b><sub><i>c->p</i></sub>。
+
+现在，我们已知子坐标空间**C**的3个坐标轴在父坐标空间**P**下的表示为：<b>x</b><sub><i>c</i></sub>、<b>y</b><sub><i>c</i></sub>、<b>z</b><sub><i>c</i></sub>，以及其原点位置<b>O</b><sub><i>c</i></sub>。当给定一个子坐标空间中的一个点<b>A</b><sub><i>c</i></sub> = (a,b,c)，我们可以用下面四个步骤来确定其在父坐标空间下的位置<b>A</b><sub><i>p</i></sub>：
+
+**1. 从坐标空间的原点开始**
+我们已经知道了子坐标空间的原点位置<b>O</b><sub><i>c</i></sub>。
+
+**2. 向 x 轴方向移动 a 个单位**
+我们已经知道了x轴的矢量表示，因此可以得到
+<center><b>O</b><sub><i>c</i></sub> + a<b>x</b><sub><i>c</i></sub></center>
+
+**3. 向 y 轴方向移动 b 个单位**
+同样的道理，这一步就是：
+<center><b>O</b><sub><i>c</i></sub> + a<b>x</b><sub><i>c</i></sub> + b<b>y</b><sub><i>c</i></sub></center>
+
+**4. 向 z 轴方向移动 c 个单位**
+最后就可以得到
+<center><b>O</b><sub><i>c</i></sub> + a<b>x</b><sub><i>c</i></sub> + b<b>y</b><sub><i>c</i></sub> + c<b>z</b><sub><i>c</i></sub></center>
+
+那么，
+
+$$
+\begin{aligned}
+A_p 
+&= O_c + ax_c + by_c + cz_c\\
+&= (x_{O_c}, y_{O_c}, z_{O_c}) + a(x_{x_c}, y_{x_c}, z_{x_c}) + b(x_{y_c}, y_{y_c}, z_{y_c}) + c(x_{z_c}, y_{z_c}, z_{z_c})\\
+&= (x_{O_c}, y_{O_c}, z_{O_c}) + 
+\begin{bmatrix}
+x_{x_c}&x_{y_c}&x_{z_c}\\ 
+y_{x_c}&y_{y_c}&y_{z_c}\\ 
+z_{x_c}&z_{y_c}&z_{z_c}\\
+\end{bmatrix}
+\begin{bmatrix}a\\b\\c\\\end{bmatrix}\\
+&= (x_{O_c}, y_{O_c}, z_{O_c}) + 
+\begin{bmatrix}
+|&|&|\\ 
+x_c&y_c&z_c\\ 
+|&|&|\\
+\end{bmatrix}
+\begin{bmatrix}a\\b\\c\\\end{bmatrix}\\
+&= O_c + \begin{bmatrix}x_c&y_c&z_c\\\end{bmatrix}\begin{bmatrix}a\\b\\c\\\end{bmatrix}
+\end{aligned}
+$$
+
+由于3$\times$3的矩阵无法表示平移变换，我们把上面的式子扩展到齐次坐标空间中，得
+$$
+\begin{aligned}
+A_p
+&= (x_{O_c}, y_{O_c}, z_{O_c}, 1) + 
+\begin{bmatrix}
+|&|&|&0\\ 
+x_c&y_c&z_c&0\\ 
+|&|&|&0\\
+0&0&0&1\\
+\end{bmatrix}
+\begin{bmatrix}a\\b\\c\\1\\\end{bmatrix}\\
+\end{aligned}
+$$
+
 
