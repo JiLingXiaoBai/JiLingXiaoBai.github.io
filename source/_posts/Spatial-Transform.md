@@ -11,8 +11,10 @@ math: true
 我们要想定义一个坐标空间，必须指明其原点位置和三个坐标轴的方向。而这些数值实际上是相对于另一个坐标空间的。也就是说坐标空间会形成一个层次结构——每个坐标空间都是另一个坐标空间的子空间，反过来说，每个空间都有一个父坐标空间。对坐标空间的变换实际上就是在父空间和子空间之间对点和矢量进行变换。
 假设现在有父坐标空间**P**以及一个子坐标空间**C**，我们现在已知父坐标空间中子坐标空间的原点位置以及三个单位坐标轴。我们会有两种需求，一种需求是把子坐标空间下表示的点或矢量**A**<sub><i>c</i></sub>转换到父坐标空间下的表示**A**<sub><i>p</i></sub>，另一种需求是反过来，即把父坐标空间下表示的点或矢量**B**<sub><i>p</i></sub>转换到子坐标空间下的表示**B**<sub><i>c</i></sub>。我们可以用下面的公式来表示这两种需求：
 
-<center><b>A</b><sub><i>p</i></sub> = <b>M</b><sub><i>c->p</i></sub><b>A</b><sub><i>c</i></sub></center>
-<center><b>B</b><sub><i>c</i></sub> = <b>M</b><sub><i>p->c</i></sub><b>B</b><sub><i>p</i></sub></center>
+$$
+A_p = M_{c \rightarrow p}A_c\\
+B_c = M_{p \rightarrow c}B_p
+$$
 
 其中，<b>M</b><sub><i>c->p</i></sub>表示的是从子坐标空间变换到父坐标空间的变换矩阵，<b>M</b><sub><i>p->c</i></sub>表示的是从父坐标空间变换到子坐标空间的变换矩阵，他俩互为逆矩阵。
 
@@ -21,19 +23,25 @@ math: true
 现在，我们已知子坐标空间**C**的3个坐标轴在父坐标空间**P**下的表示为：<b>x</b><sub><i>c</i></sub>、<b>y</b><sub><i>c</i></sub>、<b>z</b><sub><i>c</i></sub>，以及其原点位置<b>O</b><sub><i>c</i></sub>。当给定一个子坐标空间中的一个点<b>A</b><sub><i>c</i></sub> = (a,b,c)，我们可以用下面四个步骤来确定其在父坐标空间下的位置<b>A</b><sub><i>p</i></sub>：
 
 **1. 从坐标空间的原点开始**
-我们已经知道了子坐标空间的原点位置<b>O</b><sub><i>c</i></sub>。
+我们已经知道了子坐标空间的原点位置$O_c$。
 
 **2. 向 x 轴方向移动 a 个单位**
 我们已经知道了x轴的矢量表示，因此可以得到
-<center><b>O</b><sub><i>c</i></sub> + a<b>x</b><sub><i>c</i></sub></center>
+$$
+O_c + ax_c
+$$
 
 **3. 向 y 轴方向移动 b 个单位**
 同样的道理，这一步就是：
-<center><b>O</b><sub><i>c</i></sub> + a<b>x</b><sub><i>c</i></sub> + b<b>y</b><sub><i>c</i></sub></center>
+$$
+O_c + ax_c + by_c
+$$
 
 **4. 向 z 轴方向移动 c 个单位**
 最后就可以得到
-<center><b>O</b><sub><i>c</i></sub> + a<b>x</b><sub><i>c</i></sub> + b<b>y</b><sub><i>c</i></sub> + c<b>z</b><sub><i>c</i></sub></center>
+$$
+O_c + ax_c + by_c + cz_c
+$$
 
 那么，
 
@@ -72,7 +80,41 @@ x_c&y_c&z_c&0\\
 0&0&0&1\\
 \end{bmatrix}
 \begin{bmatrix}a\\b\\c\\1\\\end{bmatrix}\\
+&=\begin{bmatrix}
+1&0&0&x_{O_c}\\ 
+0&1&0&y_{O_c}\\ 
+0&0&1&z_{O_c}\\
+0&0&0&1\\
+\end{bmatrix}
+\begin{bmatrix}
+|&|&|&0\\ 
+x_c&y_c&z_c&0\\ 
+|&|&|&0\\
+0&0&0&1\\
+\end{bmatrix}
+\begin{bmatrix}a\\b\\c\\1\\\end{bmatrix}\\
+&= \begin{bmatrix}
+|&|&|&x_{O_c}\\ 
+x_c&y_c&z_c&y_{O_c}\\ 
+|&|&|&z_{O_c}\\
+0&0&0&1\\
+\end{bmatrix}
+\begin{bmatrix}a\\b\\c\\1\\\end{bmatrix}\\
 \end{aligned}
 $$
+
+所以，显而易见
+$$
+M_{c \rightarrow p} = 
+\begin{bmatrix}
+|&|&|&x_{O_c}\\ 
+x_c&y_c&z_c&y_{O_c}\\ 
+|&|&|&z_{O_c}\\
+0&0&0&1\\
+\end{bmatrix}
+$$
+
+可以看出来，变换矩阵<b>M</b><sub><i>c->p</i></sub>实际上可以通过坐标空间**C**在坐标空间**P**中的原点和坐标轴的矢量表示来构建出来：把3个坐标轴依次放入矩阵的前三列，把原点矢量放到最后一列，再用0和1填充最后一行即可。
+
 
 
