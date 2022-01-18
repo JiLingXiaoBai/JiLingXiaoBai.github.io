@@ -122,9 +122,9 @@ L = -Width / 2、 R = Width / 2、 B = -Height / 2、 T = Height / 2
 
 代入后可以得到：
 
-x' = (2 / Width) $\times$ x = 1 / (Aspect $\times$ Size)
+x' = (2 / Width) $\times$ x = x / (Aspect $\times$ Size)
 
-y' = (2 / Height) $\times$ y = 1 / Size
+y' = (2 / Height) $\times$ y = y / Size
 
 由x'、y‘、z’即可得到正交矩阵的P矩阵：
 
