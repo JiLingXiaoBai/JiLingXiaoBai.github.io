@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://example.com/posts/Clip-Space/</loc>
+    <loc>http://example.com/posts/%E5%9F%BA%E7%A1%80%E7%BA%B9%E7%90%86(%E4%B8%80)/</loc>
     
     <lastmod>2022-01-23</lastmod>
     
@@ -11,7 +11,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/posts/%E5%9F%BA%E7%A1%80%E7%BA%B9%E7%90%86(%E4%B8%80)/</loc>
+    <loc>http://example.com/posts/Clip-Space/</loc>
     
     <lastmod>2022-01-23</lastmod>
     
@@ -56,14 +56,14 @@
 
   
   <url>
-    <loc>http://example.com/tags/Math/</loc>
+    <loc>http://example.com/tags/Texture/</loc>
     <lastmod>2022-01-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>http://example.com/tags/Texture/</loc>
+    <loc>http://example.com/tags/Math/</loc>
     <lastmod>2022-01-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
