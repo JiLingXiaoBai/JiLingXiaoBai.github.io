@@ -204,15 +204,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2021-12-20/hello-world/" target="_self">
-          Hello World
+        <a href="/posts/%E5%9F%BA%E7%A1%80%E7%BA%B9%E7%90%86(%E4%B8%80)/" target="_self">
+          基础纹理(一)
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2021-12-20/hello-world/" target="_self">
+        <a href="/posts/%E5%9F%BA%E7%A1%80%E7%BA%B9%E7%90%86(%E4%B8%80)/" target="_self">
           
-          Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick
+          基础纹理 纹理最初的目的就是使用一张图片来控制模型的外观。使用纹理映射(texture mapping)技术，我们可以把一张图“黏”在模型表面，逐纹素(texel)地控制模型的颜色。 在美术人员建模的时候，通常会在建模软件中利用纹理展开技术把纹理映射坐标(texture-mapping corrdinates)存储在每个顶点上。纹理映射坐标定义了该顶点在纹理中对应的2D坐标。通常，这些坐标使用
         </a>
       </p>
 
@@ -220,12 +220,167 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2021-12-20 02:05" pubdate>
-              2021-12-20
+            <time datetime="2022-01-22 22:20" pubdate>
+              2022-01-22
             </time>
           </div>
         
         
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Unity-Shader/">Unity Shader</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Texture/">Texture</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/posts/%E6%A0%87%E5%87%86%E5%85%89%E7%85%A7%E6%A8%A1%E5%9E%8B/" target="_self">
+          标准光照模型
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/posts/%E6%A0%87%E5%87%86%E5%85%89%E7%85%A7%E6%A8%A1%E5%9E%8B/" target="_self">
+          
+          标准光照模型 虽然光照模型有很多种类，但在早期游戏引擎中往往只使用一个光照模型，这个模型被称为标准光照模型。标准光照模型在BRDF理论被提出之前就已经被广泛使用了。标准光照模型只关心直接光照(direct light)，也就是那些直接从光源发射出来照射到物体表面后，经过物体表面的一次反射直接进入摄像机的光线 它的基本方法是，把进入到摄像机内的光线分为4个部分，每个部分使用一种方法来计算它的贡献
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-01-19 10:25" pubdate>
+              2022-01-19
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Unity-Shader/">Unity Shader</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Math/">Math</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/posts/Clip-Space/" target="_self">
+          Clip Space
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/posts/Clip-Space/" target="_self">
+          
+          裁剪空间 顶点从观察空间转换到裁剪空间(clip space，也被称为齐次裁剪空间)所用的矩阵叫做裁剪矩阵(clip matrix)，也被称为投影矩阵(projection matrix)。 裁剪空间的目标是能够方便地对渲染图元进行裁剪：完全位于这块空间内部的图元将会被保留，完全位于这块空间外部的图元将会被剔除，而与这块空间边界相交的图元就会被裁剪。那么，这块空间是如何决定的呢？答案是由视锥体
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-01-17 10:27" pubdate>
+              2022-01-17
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Unity-Shader/">Unity Shader</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Math/">Math</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/posts/Spatial-Transform/" target="_self">
+          Spatial Transform
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/posts/Spatial-Transform/" target="_self">
+          
+          坐标空间的变换 在渲染流水线中，我们往往需要把一个点或者方向矢量从一个坐标空间转换到另一个坐标空间，这个过程的是怎么实现的？ 我们要想定义一个坐标空间，必须指明其原点位置和三个坐标轴的方向。而这些数值实际上是相对于另一个坐标空间的。也就是说坐标空间会形成一个层次结构——每个坐标空间都是另一个坐标空间的子空间，反过来说，每个空间都有一个父坐标空间。对坐标空间的变换实际上就是在父空间和子空间之间对点
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-12-26 19:08" pubdate>
+              2021-12-26
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Unity-Shader/">Unity Shader</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Math/">Math</a>
+            
+          </div>
         
       </div>
     </article>
