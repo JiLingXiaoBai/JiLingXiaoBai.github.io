@@ -33,7 +33,7 @@
 <meta property="og:image" content="http://example.com/posts_image/Transparent/Transparent_8.png">
 <meta property="og:image" content="http://example.com/posts_image/Transparent/Transparent_9.png">
 <meta property="article:published_time" content="2022-01-25T14:26:13.000Z">
-<meta property="article:modified_time" content="2022-01-27T14:59:06.936Z">
+<meta property="article:modified_time" content="2022-02-17T11:59:07.899Z">
 <meta property="article:author" content="祭零小白">
 <meta property="article:tag" content="Alpha">
 <meta name="twitter:card" content="summary_large_image">
@@ -77,7 +77,7 @@
 
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
-    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.13","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
@@ -220,7 +220,7 @@
   
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      9.7k 字
+      9.8k 字
     </span>
   
 
@@ -262,7 +262,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：2022年1月27日 晚上
+                  本文最后更新于：2022年2月17日 晚上
                 
               </p>
             
@@ -357,7 +357,7 @@
 </tbody>
 </table>
 <p>因此，如果我们想要通过透明度测试实现透明效果，代码中应该包含类似下面的代码：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs shaderlab">SubShader &#123;<br>    Tags &#123; &quot;Queue&quot; = &quot;AlphaTest&quot; &#125;<br>    Pass &#123;<br>        ...<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><pre><code class="hljs shaderlab">SubShader &#123;<br>    Tags &#123; &quot;Queue&quot; = &quot;AlphaTest&quot; &#125;<br>    Pass &#123;<br>        ...<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 <p>如果我们想要通过透明度混合来实现透明效果，代码中应该包含类似下面的代码：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs shaderlab">SubShader &#123;<br>    Tags &#123; &quot;Queue&quot; = &quot;Transparent&quot; &#125;<br>    Pass &#123;<br>        ZWrite Off<br>        ...<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 <p>其中，<strong>ZWrite Off</strong>用于关闭深度写入，在这里我们选择把它写在 Pass 中。我们也可以把它写在 SubShader 中，这意味着该 SubShader 下所有 Pass 都会关闭深度写入。</p>
@@ -430,6 +430,8 @@ DstColor_{new} = SrcAlpha \times SrcColor + (1 - SrcAlpha) \times DstColor_{old}
 <img src="/posts_image/Transparent/Transparent_9.png" srcset="/img/loading.gif" lazyload title="透明度混合效果图2" alt="透明度混合效果图2" /><figcaption aria-hidden="true">透明度混合效果图2</figcaption>
 </figure>
 <p>这都是由于我们关闭了深度写入造成的，因为这样我们无法对模型进行像素级别的深度排序。前面我们提到了一种解决方法是分割网格，从而得到一个“质量优等”的网格。但是很多情况下这往往是不切实际的。这时，我们可以想办法重新利用深度写入，让模型可以像半透明物体一样进行淡入淡出。这就是开启深度写入的半透明效果。</p>
+<h2 id="参考">参考</h2>
+<p>《Unity Shader入门精要》</p>
 
             </div>
             <hr>
