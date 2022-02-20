@@ -204,6 +204,147 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/posts/%E6%8F%92%E5%80%BC%E5%87%BD%E6%95%B0/" target="_self">
+          插值函数
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/posts/%E6%8F%92%E5%80%BC%E5%87%BD%E6%95%B0/" target="_self">
+          
+          线性插值函数 \[ lerp(y_1, y_2, weight) &#x3D; y_1 + (y_2 - y_1) \times weight \] 其中 \(weight\) 是一个在 [0, 1] 区间的实数，倒不是因为取更大的值后这个函数就无定义了，而是因为取了更大的值，这个函数就失去了我们构造它的理由，另外，CG 会限制 \(weight\) 的值在 [0, 1] 的范围内，超过这个范围会被
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-02-20 16:15" pubdate>
+              2022-02-20
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Unity-Shader/">Unity Shader</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Math/">Math</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/posts/%E6%9B%B4%E5%A4%8D%E6%9D%82%E7%9A%84%E5%85%89%E7%85%A7(%E4%B8%89)/" target="_self">
+          更复杂的光照(三)
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/posts/%E6%9B%B4%E5%A4%8D%E6%9D%82%E7%9A%84%E5%85%89%E7%85%A7(%E4%B8%89)/" target="_self">
+          
+          Unity 的阴影 阴影是如何实现的 我们先可以考虑真实生活中阴影是如何产生的。当一个光源发射的一条光线遇到一个不透明物体时，这条光线就不可以再继续照亮其他物体(这里不考虑光线反射)。因此这个物体就会向它旁边的物体投射阴影，那些阴影区域的产生是因为光线无法到达这些区域。 在实时渲染中，我们最常使用的是一种名为 Shadow Map 的技术。这种技术理解起来非常简单，它会首先把摄像机的位置放在
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-02-19 20:53" pubdate>
+              2022-02-19
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Unity-Shader/">Unity Shader</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Light/">Light</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/posts/%E6%9B%B4%E5%A4%8D%E6%9D%82%E7%9A%84%E5%85%89%E7%85%A7(%E4%BA%8C)/" target="_self">
+          更复杂的光照(二)
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/posts/%E6%9B%B4%E5%A4%8D%E6%9D%82%E7%9A%84%E5%85%89%E7%85%A7(%E4%BA%8C)/" target="_self">
+          
+          Unity 的光源类型 Unity 一共支持 4 种光源类型：平行光(directional light)、点光源(point light)、聚光灯(spot light)和面光源(area light)。面光源仅在烘焙时才可发挥作用，因此不在本节讨论范围内。 光源类型有什么影响 Shader 中使用的光源属性最常用的有光源的位置、方向(更具体的说就是到某点的方向)、颜色、强度以及衰减(更具
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-02-18 11:53" pubdate>
+              2022-02-18
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Unity-Shader/">Unity Shader</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Light/">Light</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/posts/%E6%9B%B4%E5%A4%8D%E6%9D%82%E7%9A%84%E5%85%89%E7%85%A7(%E4%B8%80)/" target="_self">
           更复杂的光照(一)
         </a>
@@ -529,54 +670,13 @@
     </article>
   </div>
 
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/posts/Spatial-Transform/" target="_self">
-          Spatial Transform
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/posts/Spatial-Transform/" target="_self">
-          
-          坐标空间的变换 在渲染流水线中，我们往往需要把一个点或者方向矢量从一个坐标空间转换到另一个坐标空间，这个过程的是怎么实现的？ 我们要想定义一个坐标空间，必须指明其原点位置和三个坐标轴的方向。而这些数值实际上是相对于另一个坐标空间的。也就是说坐标空间会形成一个层次结构——每个坐标空间都是另一个坐标空间的子空间，反过来说，每个空间都有一个父坐标空间。对坐标空间的变换实际上就是在父空间和子空间之间对点
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2021-12-26 19:08" pubdate>
-              2021-12-26
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/Unity-Shader/">Unity Shader</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Math/">Math</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
 
 
+  <nav aria-label="navigation">
+    <span class="pagination" id="pagination">
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/#board">2</a><a class="extend next" rel="next" href="/page/2/#board"><i class="iconfont icon-arrowright"></i></a>
+    </span>
+  </nav>
 
 
 

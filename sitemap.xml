@@ -2,6 +2,33 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://example.com/posts/%E6%8F%92%E5%80%BC%E5%87%BD%E6%95%B0/</loc>
+    
+    <lastmod>2022-02-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://example.com/posts/%E6%9B%B4%E5%A4%8D%E6%9D%82%E7%9A%84%E5%85%89%E7%85%A7(%E4%B8%89)/</loc>
+    
+    <lastmod>2022-02-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://example.com/posts/%E6%9B%B4%E5%A4%8D%E6%9D%82%E7%9A%84%E5%85%89%E7%85%A7(%E4%BA%8C)/</loc>
+    
+    <lastmod>2022-02-18</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>http://example.com/posts/%E6%9B%B4%E5%A4%8D%E6%9D%82%E7%9A%84%E5%85%89%E7%85%A7(%E4%B8%80)/</loc>
     
     <lastmod>2022-02-17</lastmod>
@@ -85,7 +112,7 @@
 
   <url>
     <loc>http://example.com/</loc>
-    <lastmod>2022-02-17</lastmod>
+    <lastmod>2022-02-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -93,28 +120,28 @@
   
   <url>
     <loc>http://example.com/tags/Math/</loc>
-    <lastmod>2022-02-17</lastmod>
+    <lastmod>2022-02-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://example.com/tags/Texture/</loc>
-    <lastmod>2022-02-17</lastmod>
+    <lastmod>2022-02-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://example.com/tags/Light/</loc>
-    <lastmod>2022-02-17</lastmod>
+    <lastmod>2022-02-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://example.com/tags/Alpha/</loc>
-    <lastmod>2022-02-17</lastmod>
+    <lastmod>2022-02-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
@@ -123,7 +150,7 @@
   
   <url>
     <loc>http://example.com/categories/Unity-Shader/</loc>
-    <lastmod>2022-02-17</lastmod>
+    <lastmod>2022-02-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
