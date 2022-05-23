@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "blueimp-md5": "^2.19.0",
-    "cheerio": "^1.0.0-rc.10",
+    "cheerio": "^1.0.0-rc.11",
     "g": "^2.0.1",
     "hexo": "^6.0.0",
     "hexo-admin": "^2.3.0",
