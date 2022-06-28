@@ -35,7 +35,7 @@
 <meta property="og:image" content="http://example.com/posts_image/Clip_Space/Clip_Space_2_4.jpeg">
 <meta property="og:image" content="http://example.com/posts_image/Clip_Space/Clip_Space_3_1.png">
 <meta property="article:published_time" content="2022-01-17T02:27:10.000Z">
-<meta property="article:modified_time" content="2022-01-23T10:55:42.237Z">
+<meta property="article:modified_time" content="2022-06-28T14:39:55.019Z">
 <meta property="article:author" content="祭零小白">
 <meta property="article:tag" content="Math">
 <meta name="twitter:card" content="summary_large_image">
@@ -222,7 +222,7 @@
   
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      9.8k 字
+      9.1k 字
     </span>
   
 
@@ -231,7 +231,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      82 分钟
+      76 分钟
     </span>
   
 
@@ -264,7 +264,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：2022年1月23日 晚上
+                  本文最后更新于：2022年6月28日 晚上
                 
               </p>
             
@@ -414,25 +414,10 @@ M_{frustum} =
 <p>则：</p>
 <p><span class="math inline">\(dx = \cfrac{nx}{z}\)</span></p>
 <p><span class="math inline">\(dy = \cfrac{ny}{z}\)</span></p>
-<p>因此可以得出：对于锥体里的任何一个点 (x, y, z) ，其中的 x，y 分量都可以通过上述的公式映射到近裁剪平面上，而 z 轴分量则是原封不动地代表了顶点距离摄像机的位置，原本透视摄像机的视锥体是近裁剪平面小，远裁剪平面大的，现在通过上述公式就可以把所有顶点都映射到同一个近裁剪平面的取值范围了，即：left ≤ x ≤ right 、 bottom ≤ y ≤ top ，那么我们完全可以把之前正交摄像机得出的公式套用进去：</p>
-<p><span class="math inline">\(dx = \cfrac{Near \cdot x}{z}\)</span></p>
-<p><span class="math inline">\(dy = \cfrac{Near \cdot y}{z}\)</span></p>
-<p><span class="math inline">\(x&#39; = \cfrac{2}{Width} \cdot dx = \cfrac{2Near \cdot x}{Width \cdot z}\)</span></p>
-<p><span class="math inline">\(y&#39; = \cfrac{2}{Height} \cdot dy = \cfrac{2Near \cdot y}{Height \cdot z}\)</span></p>
-<p><span class="math inline">\(z&#39; = \cfrac{2z - Near - Far}{Far - Near} = \cfrac{2}{Far - Near} \cdot z - \cfrac{Far + Near}{Far - Near}\)</span></p>
-<p>此时我们发现，我们无法把上面的式子变成x' = ax + by + cz + d的形式，无法把公式写入矩阵中，我们先把等式两端乘上z分量，那么可以得到：</p>
-<p><span class="math inline">\(x&#39;z = \cfrac{2Near \cdot x}{Width}\)</span></p>
-<p><span class="math inline">\(y&#39;z = \cfrac{2Near \cdot y}{Height}\)</span></p>
-<p>如果我们也能写出一个 z'z = ax + by + cz + d 的式子，那么我们就能把（x, y, z, w） 映射到 （x'z, y'z, z'z, w'z）点了，而且这个转换对后续的投影操作是没有任何影响的，最后的结果会是正确的（待会解释），我们先来求一下 z'z 的公式：</p>
-<p>由于z分量的公式并不依赖于x、y分量，所以z‘z的公式应该是：z'z = qz + p，我们需要求出q和p，我们要把z分量从[Near, Far]映射到[-1, 1]：</p>
-<p>当z = Near时，z' = -1，得到：<span class="math inline">\(-Near = q \cdot Near + p\)</span></p>
-<p>当z = Far时，z’ = 1，得到：<span class="math inline">\(Far = q \cdot Far + p\)</span></p>
-<p>结合上述两个公式可以求出：</p>
-<p><span class="math inline">\(q = \cfrac{Far + Near}{Far - Near}\)</span></p>
-<p><span class="math inline">\(p = \cfrac{-2Near \cdot Far}{Far - Near}\)</span></p>
-<p>那么可以得到 <span class="math inline">\(z&#39;z = \cfrac{Far + Near}{Far - Near} \cdot z - \cfrac{2Near \cdot Far}{Far - Near}\)</span></p>
-<p>还有一个w分量，之前的w分量的公式都是w = 1，现在则为：w'z = z</p>
-<p>那么x'z、y'z、z'z、w'z都知道了，把他们写入矩阵</p>
+<p>因此可以得出：对于锥体里的任何一个点 (x, y, z) ，其中的 x，y 分量都可以通过上述的公式映射到近裁剪平面上，原本透视摄像机的视锥体是近裁剪平面小，远裁剪平面大的，现在通过上述公式就可以把所有顶点都映射到同一个近裁剪平面的取值范围了，即：left ≤ x ≤ right 、 bottom ≤ y ≤ top ，那么我们可以先把远平面压缩，把视锥体压缩成一个长方体，然后再通过利用正交投影矩阵得到透视投影矩阵。</p>
+<p>在把视锥体压缩成长方体的过程中，我们规定三个原则</p>
+<p>1.近平面的所有点坐标不变 2.远平面的所有点坐标 z 值不变，都是 f 3.远平面的中心点的坐标值不变，为 (0, 0, f)</p>
+<p>对于 (x, y, z, 1)，它在视锥体被压缩以后坐标应该为 (nx/z, ny/z, unknown, 1)。我们需要找到一个矩阵 $ M_{persp ortho} $，让 (x, y, z, 1) 在用矩阵变换后成为 (nx/z, ny/z, unknown, 1)。</p>
 <p><span class="math display">\[
 \begin{bmatrix}
 \cfrac{2Near}{Width}&amp;0&amp;0&amp;0\\ 
