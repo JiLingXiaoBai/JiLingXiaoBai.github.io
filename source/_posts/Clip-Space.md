@@ -217,60 +217,157 @@ $dx = \cfrac{nx}{z}$
 
 $dy = \cfrac{ny}{z}$
 
-因此可以得出：对于锥体里的任何一个点 (x, y, z) ，其中的 x，y 分量都可以通过上述的公式映射到近裁剪平面上，而 z 轴分量则是原封不动地代表了顶点距离摄像机的位置，原本透视摄像机的视锥体是近裁剪平面小，远裁剪平面大的，现在通过上述公式就可以把所有顶点都映射到同一个近裁剪平面的取值范围了，即：left ≤ x ≤ right 、 bottom ≤ y ≤ top ，那么我们完全可以把之前正交摄像机得出的公式套用进去：
+因此可以得出：对于锥体里的任何一个点 (x, y, z) ，其中的 x，y 分量都可以通过上述的公式映射到近裁剪平面上，原本透视摄像机的视锥体是近裁剪平面小，远裁剪平面大的，现在通过上述公式就可以把所有顶点都映射到同一个近裁剪平面的取值范围了，即：left ≤ x ≤ right 、 bottom ≤ y ≤ top ，那么我们可以先把远平面压缩，把视锥体压缩成一个长方体，然后再通过利用正交投影矩阵得到透视投影矩阵。
 
-$dx = \cfrac{Near \cdot x}{z}$
+在把视锥体压缩成长方体的过程中，我们规定三个原则
 
-$dy = \cfrac{Near \cdot y}{z}$
+1.近平面的所有点坐标不变
 
-$x' = \cfrac{2}{Width} \cdot dx = \cfrac{2Near \cdot x}{Width \cdot z}$
+2.远平面的所有点坐标 z 值不变，都是 f
 
-$y' = \cfrac{2}{Height} \cdot dy = \cfrac{2Near \cdot y}{Height \cdot z}$
+3.远平面的中心点的坐标值不变，为 (0, 0, f)
 
-$z' = \cfrac{2z - Near - Far}{Far - Near} = \cfrac{2}{Far - Near} \cdot z - \cfrac{Far + Near}{Far - Near}$
-
-此时我们发现，我们无法把上面的式子变成x' = ax + by + cz + d的形式，无法把公式写入矩阵中，我们先把等式两端乘上z分量，那么可以得到：
-
-$x'z = \cfrac{2Near \cdot x}{Width}$
-
-$y'z = \cfrac{2Near \cdot y}{Height}$
-
-如果我们也能写出一个 z'z = ax + by + cz + d 的式子，那么我们就能把（x, y, z, w） 映射到 （x'z, y'z, z'z, w'z）点了，而且这个转换对后续的投影操作是没有任何影响的，最后的结果会是正确的（待会解释），我们先来求一下 z'z 的公式：
-
-由于z分量的公式并不依赖于x、y分量，所以z‘z的公式应该是：z'z = qz + p，我们需要求出q和p，我们要把z分量从[Near, Far]映射到[-1, 1]：
-
-当z = Near时，z' = -1，得到：$-Near = q \cdot Near + p$
-
-当z = Far时，z’ = 1，得到：$Far = q \cdot Far + p$
-
-结合上述两个公式可以求出：
-
-$q = \cfrac{Far + Near}{Far - Near}$
-
-$p = \cfrac{-2Near \cdot Far}{Far - Near}$
-
-那么可以得到
-$z'z = \cfrac{Far + Near}{Far - Near} \cdot z - \cfrac{2Near \cdot Far}{Far - Near}$
-
-还有一个w分量，之前的w分量的公式都是w = 1，现在则为：w'z = z
-
-那么x'z、y'z、z'z、w'z都知道了，把他们写入矩阵
+对于 (x, y, z, 1)，它在视锥体被压缩以后坐标应该为 (nx/z, ny/z, unknown, 1)。我们需要找到一个矩阵 $ M_{persp -> ortho} $，让 (x, y, z, 1) 在用矩阵变换后成为 (nx/z, ny/z, unknown, 1)。
 
 $$
+M_{persp -> ortho}
 \begin{bmatrix}
-\cfrac{2Near}{Width}&0&0&0\\ 
-0&\cfrac{2Near}{Height}&0&0\\ 
-0&0&\cfrac{Far + Near}{Far - Near}&\cfrac{-2Near \cdot Far}{Far - Near}\\
+x\\ 
+y\\ 
+z\\
+1\\
+\end{bmatrix}
+=
+\begin{bmatrix}
+nx\\ 
+ny\\ 
+unknown\\
+z\\
+\end{bmatrix}
+$$
+
+$$
+m_{11}x + m_{12}y + m_{13}z + m_{14} = nx
+$$
+
+求出 $ m_{11} = n, m_{12} = m_{13} = m_{14} = 0 $
+
+$$
+m_{21}x + m_{22}y + m_{23}z + m_{24} = ny
+$$
+
+求出 $ m_{22} = n, m_{21} = m_{23} = m_{24} = 0 $
+
+$$
+m_{41}x + m_{42}y + m_{43}z + m_{44} = z
+$$
+
+求出 $ m_{43} = 1, m_{41} = m_{42} = m_{44} = 0 $
+
+$$
+M_{persp -> ortho} =
+\begin{bmatrix}
+n&0&0&0\\ 
+0&n&0&0\\ 
+?&?&?&?\\
 0&0&1&0\\
 \end{bmatrix}
 $$
 
-不要忘了翻转z轴：
+我们求出了矩阵其中三行，只剩下第三行未知。然而因为我们规定近平面所有点坐标不变，也就是说 (x, y, z, 1) 经过 $ M_{persp -> ortho} $变换后还是等于 (x, y, z, 1)。
+
 $$
+\begin{bmatrix}
+n&0&0&0\\ 
+0&n&0&0\\ 
+?&?&?&?\\
+0&0&1&0\\
+\end{bmatrix}
+\begin{bmatrix}
+x\\ 
+y\\ 
+n\\
+1\\
+\end{bmatrix}
+=
+\begin{bmatrix}
+x\\ 
+y\\ 
+n\\
+1\\
+\end{bmatrix}
+==
+\begin{bmatrix}
+nx\\ 
+ny\\ 
+n^2\\
+n\\
+\end{bmatrix}
+$$
+
+对于第一二四行，等式成立，第三行为
+
+$$
+m_{31}x + m_{32}y + m_{33}n + m_{34} = n^2
+$$
+
+明显 $ m_{31} = 0, m_{32} = 0, m_{33}n + m_{34} = n^2 $
+
+又因为远平面中心点的坐标值不变，为 (0, 0, f)
+
+$$
+\begin{bmatrix}
+n&0&0&0\\ 
+0&n&0&0\\ 
+0&0&?&?\\
+0&0&1&0\\
+\end{bmatrix}
+\begin{bmatrix}
+0\\ 
+0\\ 
+f\\
+1\\
+\end{bmatrix}
+=
+\begin{bmatrix}
+0\\ 
+0\\ 
+f\\
+1\\
+\end{bmatrix}
+==
+\begin{bmatrix}
+0\\ 
+0\\ 
+f^2\\
+f\\
+\end{bmatrix}
+$$
+
+$ m_{33}f + m_{34} = f^2 $
+
+联立 $ m_{33}n + m_{34} = n^2 $ 和 $ m_{33}f + m_{34} = f^2 $，得 $ m_{33} = n + f, m_{34} = -nf $
+
+终于我们求得 
+
+$$
+M_{persp -> ortho} =
+\begin{bmatrix}
+Near&0&0&0\\ 
+0&Near&0&0\\ 
+0&0&Near+Far&-Near \cdot Far\\
+0&0&1&0\\
+\end{bmatrix}
+$$
+
+通过此矩阵，我们可以把原来的透视投影的视锥体压缩为正交投影的长方体。
+
+$$
+M_{persp} = M_{ortho}M_{persp -> ortho} =
 \begin{bmatrix}
 \cfrac{2Near}{Width}&0&0&0\\ 
 0&\cfrac{2Near}{Height}&0&0\\ 
-0&0&-\cfrac{Far + Near}{Far - Near}&\cfrac{-2Near \cdot Far}{Far - Near}\\
+0&0&-\cfrac{Far+Near}{Far-Near}&\cfrac{-2Near \cdot Far}{Far-Near}\\
 0&0&-1&0\\
 \end{bmatrix}
 $$
@@ -279,7 +376,7 @@ $$
 
 ![透视摄像机](/posts_image/Clip_Space/Clip_Space_2_4.jpeg "透视摄像机")
 
-上图中，角a是FOV的一半，即 $\cfrac{FOV}{2}$,则：
+上图中，角a是FOV的一半，即 $\cfrac{FOV}{2}$ ，则：
 
 $\cot{a} = \cot{\cfrac{FOV}{2}} = \cfrac{Near}{Height / 2} = \cfrac{2 \cdot Near}{Height}$
 
@@ -293,6 +390,14 @@ $$
 0&0&-1&0\\
 \end{bmatrix}
 $$
+
+平截头体压缩为长方体后，内部的点的z值是更偏向于远平面的。对于点 (x, y, z, 1)，我们通过 $ M_{persp -> ortho} $ 计算第三行，可以得到 $ z' = (n + f) \cdot z - nf $ ，计算第四行，可以得到 $ w' = z $ ，所以 $ f(z) = z'/w' = n + f - nf/z $ ，使用 z = n 和 z = f 的情况进行验算都符合近平面和远平面上的点 z 值不发生变化。
+
+我们设 n、f 都是绝对值，视锥体内部的点满足 0 < n < z < f，问题变成了，当 0 < n < z < f 时，n + f - nf/z 与 z 的大小关系。
+
+![函数图像](/posts_image/Clip_Space/Clip_Space_2_5.png "函数图像")
+
+可以看出 z 从 n 到 f 的变化过程中，f(z) 的变化率时逐渐变小的，在 n 到 f 这段区域中，f(z) 永远大于 g(z)，即，当 0 < n < z < f 时，n + f -nf/z > z。也就是说，视锥体内的点被挤压得更偏向远平面。
 
 ## 屏幕映射阶段 ##
 
