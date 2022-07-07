@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://example.com/posts/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%9F%BA%E7%A1%80-%E4%BB%8B%E7%BB%8D/</loc>
+    
+    <lastmod>2022-07-07</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>http://example.com/posts/Clip-Space/</loc>
     
     <lastmod>2022-06-28</lastmod>
@@ -175,7 +184,7 @@
 
   <url>
     <loc>http://example.com/</loc>
-    <lastmod>2022-06-28</lastmod>
+    <lastmod>2022-07-07</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -183,49 +192,56 @@
   
   <url>
     <loc>http://example.com/tags/Math/</loc>
-    <lastmod>2022-06-28</lastmod>
+    <lastmod>2022-07-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://example.com/tags/Texture/</loc>
-    <lastmod>2022-06-28</lastmod>
+    <lastmod>2022-07-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://example.com/tags/Animation/</loc>
-    <lastmod>2022-06-28</lastmod>
+    <lastmod>2022-07-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://example.com/tags/Post-Processing/</loc>
-    <lastmod>2022-06-28</lastmod>
+    <lastmod>2022-07-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://example.com/tags/Light/</loc>
-    <lastmod>2022-06-28</lastmod>
+    <lastmod>2022-07-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://example.com/tags/Fundamental-of-Computer-Graphics/</loc>
+    <lastmod>2022-07-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://example.com/tags/Alpha/</loc>
-    <lastmod>2022-06-28</lastmod>
+    <lastmod>2022-07-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://example.com/tags/Rendering/</loc>
-    <lastmod>2022-06-28</lastmod>
+    <lastmod>2022-07-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
@@ -234,7 +250,14 @@
   
   <url>
     <loc>http://example.com/categories/Unity-Shader/</loc>
-    <lastmod>2022-06-28</lastmod>
+    <lastmod>2022-07-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://example.com/categories/Computer-Graphics/</loc>
+    <lastmod>2022-07-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
