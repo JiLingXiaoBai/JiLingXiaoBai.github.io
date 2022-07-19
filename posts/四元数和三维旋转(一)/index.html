@@ -26,8 +26,11 @@
 <meta property="og:image" content="http://example.com/posts_image/Quaternion/Quaternion_1.png">
 <meta property="og:image" content="http://example.com/posts_image/Quaternion/Quaternion_2.png">
 <meta property="og:image" content="http://example.com/posts_image/Quaternion/Quaternion_2.png">
+<meta property="og:image" content="http://example.com/posts_image/Quaternion/Quaternion_4.png">
+<meta property="og:image" content="http://example.com/posts_image/Quaternion/Quaternion_5.png">
+<meta property="og:image" content="http://example.com/posts_image/Quaternion/Quaternion_6.png">
 <meta property="article:published_time" content="2022-07-16T12:57:52.000Z">
-<meta property="article:modified_time" content="2022-07-17T15:37:19.948Z">
+<meta property="article:modified_time" content="2022-07-19T12:56:32.949Z">
 <meta property="article:author" content="祭零小白">
 <meta property="article:tag" content="Math">
 <meta name="twitter:card" content="summary_large_image">
@@ -214,7 +217,7 @@
   
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      9.5k 字
+      13k 字
     </span>
   
 
@@ -223,7 +226,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      80 分钟
+      113 分钟
     </span>
   
 
@@ -256,7 +259,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：2022年7月17日 晚上
+                  本文最后更新于：2022年7月19日 晚上
                 
               </p>
             
@@ -526,19 +529,19 @@ z = \begin{bmatrix}
 \]</span></p>
 <p>如果我们想让 2D 空间中任意一个向量 <span class="math inline">\(\vec{v}\)</span> 旋转 <span class="math inline">\(\theta\)</span> 度，那么我们就可以使用这个矩阵对 <span class="math inline">\(\vec{v}\)</span> 进行变换：</p>
 <div class="note note-primary">
-            <p>Theorem 1：2D 旋转公式（矩阵型） <span class="math display">\[\vec{v&#39;} = \begin{bmatrix}    \cos(\theta)&amp;-\sin(\theta)\\    \sin(\theta)&amp;\cos(\theta)\\\end{bmatrix}\vec{v}\]</span></p>
+            <p><strong>Theorem 1：2D 旋转公式（矩阵型）</strong> <span class="math display">\[\vec{v&#39;} = \begin{bmatrix}    \cos(\theta)&amp;-\sin(\theta)\\    \sin(\theta)&amp;\cos(\theta)\\\end{bmatrix}\vec{v}\]</span></p>
           </div>
 <p>其实 <span class="math inline">\(\begin{bmatrix}\cos(\theta)&amp;-\sin(\theta)\\ \sin(\theta)&amp;\cos(\theta)\\ \end{bmatrix}\)</span> 这个旋转矩阵如果写成复数形式的话就是 <span class="math inline">\(\cos(\theta) + i\sin(\theta)\)</span></p>
 <p>如果我们将向量 <span class="math inline">\(\vec{v} = \begin{bmatrix} x\\ y\\ \end{bmatrix}\)</span> 看作是一个复数 <span class="math inline">\(v = x + yi\)</span>，其中实部为 <span class="math inline">\(x\)</span>，虚部为 <span class="math inline">\(y\)</span>。那么我们可以构造一个复数 <span class="math inline">\(z = \cos(\theta) + i\sin(\theta)\)</span>，并将它与 <span class="math inline">\(v\)</span> 相乘来进行旋转，旋转 <span class="math inline">\(\theta\)</span> 度之后的向量 <span class="math inline">\(v&#39;\)</span> 可以用等价的复数乘法来表示：</p>
 <div class="note note-primary">
-            <p>Theorem 2：2D 旋转公式（复数积型） <span class="math display">\[\begin{aligned}v&#39; &amp;= zv\\&amp;= (\cos(\theta) + i\sin(\theta)) v\end{aligned}\]</span></p>
+            <p><strong>Theorem 2：2D 旋转公式（复数积型）</strong> <span class="math display">\[\begin{aligned}v&#39; &amp;= zv\\&amp;= (\cos(\theta) + i\sin(\theta)) v\end{aligned}\]</span></p>
           </div>
 <h3 id="复数的极坐标型">复数的极坐标型</h3>
 <p><span class="math inline">\(\cos(\theta) + i\sin(\theta)\)</span> 还可以进行下一步的变形，根据欧拉公式（Euler’s Formula）， <span class="math display">\[
 \cos(\theta) + i\sin(\theta) = e^{i\theta}
 \]</span></p>
 <div class="note note-success">
-            <p>欧拉公式的证明：</p><p>令 <span class="math inline">\(f(\theta) = \frac{\cos(\theta) + i\sin(\theta)}{e^{i\theta}} = e^{-i\theta}(\cos(\theta) + i\sin(\theta))\)</span>，对实数 <span class="math inline">\(\theta\)</span>，对 <span class="math inline">\(f(\theta)\)</span> 求导，得到 <span class="math inline">\(f&#39;(\theta) = e^{-i\theta}(i\cos(\theta) - \sin(\theta)) - ie^{-i\theta}(\cos(\theta) + i\sin(\theta)) = 0\)</span>，因此 <span class="math inline">\(f(\theta)\)</span> 是常数。又因为 <span class="math inline">\(f(0) = 1\)</span>，所以 <span class="math inline">\(f(\theta) \equiv 1\)</span>。欧拉公式得证。</p>
+            <p><strong>欧拉公式的证明：</strong></p><p>令 <span class="math inline">\(f(\theta) = \frac{\cos(\theta) + i\sin(\theta)}{e^{i\theta}} = e^{-i\theta}(\cos(\theta) + i\sin(\theta))\)</span>，对实数 <span class="math inline">\(\theta\)</span>，对 <span class="math inline">\(f(\theta)\)</span> 求导，得到 <span class="math inline">\(f&#39;(\theta) = e^{-i\theta}(i\cos(\theta) - \sin(\theta)) - ie^{-i\theta}(\cos(\theta) + i\sin(\theta)) = 0\)</span>，因此 <span class="math inline">\(f(\theta)\)</span> 是常数。又因为 <span class="math inline">\(f(0) = 1\)</span>，所以 <span class="math inline">\(f(\theta) \equiv 1\)</span>。欧拉公式得证。</p>
           </div>
 <p>有了这个等式，我们就能将复数表示为 <span class="math display">\[
 \begin{aligned}
@@ -558,7 +561,7 @@ z = re^{i\theta}
 v&#39; = re^{i\theta}v
 \]</span> 如果仅需要旋转 <span class="math inline">\(\theta\)</span> 度的话，可以令缩放因子 <span class="math inline">\(r = 1\)</span>，那么变换后的结果就是</p>
 <div class="note note-primary">
-            <p>Theorem 3：2D 旋转公式（指数型） <span class="math display">\[v&#39; = e^{i\theta}v\]</span></p>
+            <p><strong>Theorem 3：2D 旋转公式（指数型）</strong> <span class="math display">\[v&#39; = e^{i\theta}v\]</span></p>
           </div>
 <h3 id="复数的几种表示形式总结">复数的几种表示形式总结</h3>
 <ul>
@@ -600,6 +603,85 @@ z_{net} &amp;= (\cos(\theta) + i\sin(\theta))(\cos(\phi) + i\sin(\phi))\\
 \end{aligned}
 \]</span></p>
 <p>所以，当我们对两个 2D 旋转进行复合时，所得到的变换 <span class="math inline">\(z_{net}\)</span> 仍是一个旋转，而且与施加的次序无关。这个等效变换的旋转角是 $z_{1} 与 $z_{2} 旋转角之和。</p>
+<h2 id="轴角式旋转">轴角式旋转</h2>
+<p>假设我们有一个经过原点的（如果旋转轴不经过原点我们可以先将旋转轴平移到原点，进行旋转，再平移回原处）旋转轴 <span class="math inline">\(\vec{u} = (x,y,z)^T\)</span>，我们希望将一个向量 <span class="math inline">\(\vec{v}\)</span>，沿着这个旋转轴旋转 <span class="math inline">\(\theta\)</span> 度，变换到 <span class="math inline">\(\vec{v&#39;}\)</span></p>
+<p><img src="/posts_image/Quaternion/Quaternion_4.png" srcset="/img/loading.gif" lazyload /></p>
+<p>我们使用右手坐标系统，并且将使用右手定则来定义旋转的正方向。你可以将右手拇指指向旋转轴 <span class="math inline">\(\vec{u}\)</span> 的正方向，这时其他四个手指弯曲的方向即为旋转的正方向。在上图中即为逆时针方向。</p>
+<p>为了消除旋转轴 <span class="math inline">\(\vec{u}\)</span> 模长这个多余的自由度，我们可以规定 <span class="math inline">\(\vec{u}\)</span> 的模长为 1，即 <span class="math inline">\(\vec{u}\)</span> 是一个单位向量。规定 <span class="math inline">\(\vec{u}\)</span> 为单位向量后能为我们带来很多便利，这也是数学和物理中对方向定义的惯例。如果 <span class="math inline">\(\vec{u}\)</span> 不是一个单位向量，我们可以通过下面的公式将它转化为一个单位向量 <span class="math display">\[
+\hat{u} = \frac{\vec{u}}{\lVert \vec{u} \rVert}
+\]</span></p>
+<h3 id="旋转的分解">旋转的分解</h3>
+<p>我们可以将 <span class="math inline">\(\vec{v}\)</span> 分解为<strong>平行</strong>于旋转轴 <span class="math inline">\(\vec{u}\)</span> 以及<strong>正交</strong>于 <span class="math inline">\(\vec{u}\)</span> 的两个分量，<span class="math inline">\(\vec{v_{\parallel}}\)</span> 和 <span class="math inline">\(\vec{v_{\perp}}\)</span>，即 <span class="math display">\[
+\vec{v} = \vec{v_{\parallel}} + \vec{v_{\perp}}
+\]</span> 我们可以分别旋转这两个分量，再将它们旋转的结果相加获得旋转后的向量 <span class="math display">\[
+\vec{v&#39;} = \vec{v_{\parallel}&#39;} + \vec{v_{\perp}&#39;}
+\]</span> 下面是分解的示意图：</p>
+<p><img src="/posts_image/Quaternion/Quaternion_5.png" srcset="/img/loading.gif" lazyload /></p>
+<p>可以看到，<span class="math inline">\(\vec{v_{\parallel}}\)</span> 其实就是 <span class="math inline">\(\vec{v}\)</span> 在 <span class="math inline">\(\vec{u}\)</span> 上的正交投影，根据正交投影公式，我们可以得出：</p>
+<p><span class="math display">\[
+\begin{aligned}
+\vec{v_{\parallel}} &amp;= proj_{u}(\vec{v})\\
+&amp;= \frac{\vec{u}\cdot\vec{v}}{\vec{u}\cdot\vec{u}}\vec{u}\\
+&amp;= \frac{\vec{u}\cdot\vec{v}}{\lVert \vec{u} \rVert ^2}\vec{u}\\
+&amp;= (\vec{u}\cdot\vec{v})\vec{u}
+\end{aligned}
+\]</span></p>
+<p>因为 <span class="math inline">\(\vec{v} = \vec{v_{\parallel}} + \vec{v_{\perp}}\)</span>，我们可以得到 <span class="math display">\[
+\begin{aligned}
+\vec{v_{\perp}} &amp;= \vec{v} - \vec{v_{\parallel}}\\
+&amp;= \vec{v} - (\vec{u}\cdot\vec{v})\vec{u}
+\end{aligned}
+\]</span></p>
+<h3 id="vecv_parallel-的旋转"><span class="math inline">\(\vec{v_{\parallel}}\)</span> 的旋转</h3>
+<p>从之前的图示中可以看到，<span class="math inline">\(\vec{v_{\parallel}}\)</span> 其实没有被旋转，仍然与旋转轴 <span class="math inline">\(\vec{u}\)</span> 重合，所以 <div class="note note-primary">
+            <p><strong>Theorem 4：3D 旋转公式（向量型，平行情况）</strong><br />当 <span class="math inline">\(\vec{v_{\parallel}}\)</span> 平行于旋转轴 <span class="math inline">\(\vec{u}\)</span> 时，旋转 <span class="math inline">\(\theta\)</span> 角度之后的 <span class="math inline">\(\vec{v_{\parallel}&#39;}\)</span> 为： <span class="math display">\[\vec{v_{\parallel}&#39;} = \vec{v_{\parallel}}\]</span></p>
+          </div></p>
+<h3 id="vecv_perp-的旋转"><span class="math inline">\(\vec{v_{\perp}}\)</span> 的旋转</h3>
+<p>接下来，我们需要处理正交于 <span class="math inline">\(\vec{u}\)</span> 的 <span class="math inline">\(\vec{v_{\perp}}\)</span>。因为这两个向量是正交的，这个旋转可以看作是平面内的一个旋转。因为旋转不改变 <span class="math inline">\(\vec{v_{\perp}}\)</span> 的长度，所以路径是一个园。下面是这个旋转的示意图，右侧的为俯视图：</p>
+<p><img src="/posts_image/Quaternion/Quaternion_6.png" srcset="/img/loading.gif" lazyload /></p>
+<p>现在，3D 的旋转就被我们转化为了 2D 平面上的旋转，由于在这个平面上我们只有一个向量 <span class="math inline">\(\vec{v_{\perp}}\)</span>，用它来表示一个旋转是不够的，我们还需构造一个同时正交于 <span class="math inline">\(\vec{u}\)</span> 和 <span class="math inline">\(\vec{v_{\perp}}\)</span> 的向量 <span class="math inline">\(\vec{w}\)</span>，这个可以通过叉乘来获得 <span class="math display">\[
+\vec{w} = \vec{u}\times\vec{v_{\perp}}
+\]</span></p>
+<p>注意叉乘的顺序，因为我们使用的是右手坐标系统，按右手定则这个新的向量 <span class="math inline">\(\vec{w}\)</span> 指向 <span class="math inline">\(\vec{v_{\perp}}\)</span> 逆时针旋转 <span class="math inline">\(\pi / 2\)</span> 后的方向，并且和 <span class="math inline">\(\vec{v_{\perp}}\)</span> 一样也处于正交于 <span class="math inline">\(\vec{u}\)</span> 的平面内，因为 <span class="math inline">\(\lVert\vec{u}\rVert = 1\)</span>，我们可以发现： <span class="math display">\[
+\begin{aligned}
+\lVert\vec{w}\rVert &amp;= \lVert\vec{u}\times\vec{v_{\perp}}\rVert\\
+&amp;= \lVert\vec{u}\rVert\cdot\lVert\vec{v_{\perp}}\rVert\cdot\sin(\pi/2)\\
+&amp;= \lVert\vec{v_{\perp}}\rVert
+\end{aligned}
+\]</span> <span class="math inline">\(\vec{w}\)</span> 和 <span class="math inline">\(\vec{v_{\perp}}\)</span> 的模长相同，且 <span class="math inline">\(\vec{w}\)</span> 也位于圆上，我们可以将 <span class="math inline">\(\vec{w}\)</span> 和 <span class="math inline">\(\vec{v_{\perp}}\)</span> 作为平面内的两个坐标轴，我们现在可以把 <span class="math inline">\(\vec{v_{\perp}&#39;}\)</span> 投影到 <span class="math inline">\(\vec{w}\)</span> 和 <span class="math inline">\(\vec{v_{\perp}}\)</span> 上，将其分解为 <span class="math inline">\(\vec{v_{v}&#39;}\)</span> 和 <span class="math inline">\(\vec{v_{w}&#39;}\)</span>，利用三角形的知识我们可以得到：</p>
+<p><span class="math display">\[
+\begin{aligned}
+\vec{v_{\perp}&#39;} &amp;= \vec{v_{v}&#39;} + \vec{v_{w}&#39;}\\
+&amp;= \cos(\theta)\vec{v_{\perp}} + \sin(\theta)\vec{w}\\
+&amp;= \cos(\theta)\vec{v_{\perp}} + \sin(\theta)(\vec{u}\times\vec{v_{\perp}})
+\end{aligned}
+\]</span></p>
+<div class="note note-primary">
+            <p><strong>Theorem 5：3D 旋转公式（向量型，正交情况）</strong><br />当 <span class="math inline">\(\vec{v_{\perp}}\)</span> 正交于旋转轴 <span class="math inline">\(\vec{u}\)</span> 时，旋转 <span class="math inline">\(\theta\)</span> 角度之后的 <span class="math inline">\(\vec{v_{\perp}&#39;}\)</span> 为： <span class="math display">\[\vec{v_{\perp}&#39;} = \cos(\theta)\vec{v_{\perp}} + \sin(\theta)(\vec{u}\times\vec{v_{\perp}})\]</span></p>
+          </div>
+<h3 id="vecv-的旋转"><span class="math inline">\(\vec{v}\)</span> 的旋转</h3>
+<p>将上面两个结果组合可以获得： <span class="math display">\[
+\begin{aligned}
+\vec{v&#39;} &amp;= \vec{v_{\parallel}&#39;} + \vec{v_{\perp}&#39;}\\
+&amp;= \vec{v_{\parallel}} + \cos(\theta)\vec{v_{\perp}} + \sin(\theta)(\vec{u}\times\vec{v_{\perp}})
+\end{aligned}
+\]</span></p>
+<p>因为叉乘遵守分配律， <span class="math display">\[
+\begin{aligned}
+\vec{u}\times\vec{v_{\perp}} &amp;= \vec{u}\times(\vec{v} - \vec{v_{\parallel}})\\
+&amp;= \vec{u}\times\vec{v} - \vec{u}\times\vec{v_{\parallel}}\\
+&amp;= \vec{u}\times\vec{v}\quad (\vec{u} 平行于 \vec{v_{\parallel}}，所以 \vec{u}\times\vec{v_{\parallel}} = \vec{0}) 
+\end{aligned}
+\]</span></p>
+<p>最后，将 <span class="math inline">\(\vec{v_{\parallel}} = (\vec{u}\cdot\vec{v})\vec{u}\)</span> 和 <span class="math inline">\(\vec{v_{\perp}} = \vec{v} - (\vec{u}\cdot\vec{v})\vec{u}\)</span> 代入 <span class="math display">\[
+\begin{aligned}
+\vec{v&#39;} &amp;= (\vec{u}\cdot\vec{v})\vec{u} + \cos(\theta)(\vec{v} - (\vec{u}\cdot\vec{v})\vec{u}) + \sin(\theta)(\vec{u}\times\vec{v})\\
+&amp;= \cos(\theta)\vec{v} + (1 - \cos(\theta))(\vec{u}\cdot\vec{v})\vec{u} + \sin(\theta)(\vec{u}\times\vec{v})
+\end{aligned}
+\]</span> 这样我们就得到了一般形式的旋转公式：</p>
+<div class="note note-primary">
+            <p><strong>Theorem 6：3D 旋转公式（向量型，一般情况）</strong><br />3D 空间中任意一个 <span class="math inline">\(\vec{v}\)</span> 沿着单位向量 <span class="math inline">\(\vec{u}\)</span> 旋转 <span class="math inline">\(\theta\)</span> 角度之后的 <span class="math inline">\(\vec{v_{\perp}&#39;}\)</span> 为： <span class="math display">\[\vec{v&#39;} = \cos(\theta)\vec{v} + (1 - \cos(\theta))(\vec{u}\cdot\vec{v})\vec{u} + \sin(\theta)(\vec{u}\times\vec{v})\]</span></p>
+          </div>
 
             </div>
             <hr>
@@ -633,6 +715,12 @@ z_{net} &amp;= (\cos(\theta) + i\sin(\theta))(\cos(\phi) + i\sin(\phi))\\
                 <div class="post-prevnext">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/posts/%E5%9B%9B%E5%85%83%E6%95%B0%E5%92%8C%E4%B8%89%E7%BB%B4%E6%97%8B%E8%BD%AC(%E4%BA%8C)/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">四元数和三维旋转(二)</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">

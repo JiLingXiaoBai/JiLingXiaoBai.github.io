@@ -1,0 +1,1042 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/tabIcon.png">
+  <link rel="icon" href="/img/tabIcon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="祭零小白">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="四元数 所有的四元数 \(q \in \mathbb{H}\) 都可以写成下面这种形式： \[ q &#x3D; a + bi + cj + dk,(a,b,c,d \in \mathbb{R}) \] 其中 \[ i^2 &#x3D; j^2 &#x3D; k^2 &#x3D; ijk &#x3D; -1 \] 如果把上式称为四元数的代数形式，那么和复数类似，它也有对应的向量形式一： \[ q &#x3D; \begin{bmatrix}">
+<meta property="og:type" content="article">
+<meta property="og:title" content="四元数和三维旋转(二)">
+<meta property="og:url" content="http://example.com/posts/%E5%9B%9B%E5%85%83%E6%95%B0%E5%92%8C%E4%B8%89%E7%BB%B4%E6%97%8B%E8%BD%AC(%E4%BA%8C)/index.html">
+<meta property="og:site_name" content="小白的笔记本">
+<meta property="og:description" content="四元数 所有的四元数 \(q \in \mathbb{H}\) 都可以写成下面这种形式： \[ q &#x3D; a + bi + cj + dk,(a,b,c,d \in \mathbb{R}) \] 其中 \[ i^2 &#x3D; j^2 &#x3D; k^2 &#x3D; ijk &#x3D; -1 \] 如果把上式称为四元数的代数形式，那么和复数类似，它也有对应的向量形式一： \[ q &#x3D; \begin{bmatrix}">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/posts_image/Quaternion/Quaternion_7.png">
+<meta property="og:image" content="http://example.com/posts_image/Quaternion/Quaternion_8.png">
+<meta property="article:published_time" content="2022-07-18T02:09:23.000Z">
+<meta property="article:modified_time" content="2022-07-19T15:31:20.312Z">
+<meta property="article:author" content="祭零小白">
+<meta property="article:tag" content="Math">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/posts_image/Quaternion/Quaternion_7.png">
+  
+  
+  <title>四元数和三维旋转(二) - 小白的笔记本</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.0.0"><link rel="alternate" href="/atom.xml" title="小白的笔记本" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>祭零小白</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/page_background.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="四元数和三维旋转(二)">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2022-07-18 10:09" pubdate>
+        2022年7月18日 上午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      20k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      167 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">四元数和三维旋转(二)</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2022年7月19日 晚上
+                
+              </p>
+            
+            <div class="markdown-body">
+              <h2 id="四元数">四元数</h2>
+<p>所有的四元数 <span class="math inline">\(q \in \mathbb{H}\)</span> 都可以写成下面这种形式： <span class="math display">\[
+q = a + bi + cj + dk,(a,b,c,d \in \mathbb{R})
+\]</span></p>
+<p>其中 <span class="math display">\[
+i^2 = j^2 = k^2 = ijk = -1
+\]</span></p>
+<p>如果把上式称为四元数的<strong>代数形式</strong>，那么和复数类似，它也有对应的<strong>向量形式一</strong>： <span class="math display">\[
+q = \begin{bmatrix}
+a\\ b\\ c\\ d\\
+\end{bmatrix}
+\]</span></p>
+<p>如果将四元数 <span class="math inline">\(q\)</span> 的实部和虚部分开，并用一个三维的向量来表示虚部，将它表示为标量和向量的有序对形式，那么四元数还可以表示为下述的<strong>向量形式二</strong>： <span class="math display">\[
+q = [s, \pmb{v}], (\pmb{v} = \begin{bmatrix} x\\ y\\ z\\ \end{bmatrix},\quad s,x,y,z \in \mathbb{R})
+\]</span></p>
+<h3 id="四元数的性质">四元数的性质</h3>
+<h4 id="四元数的模长">四元数的模长</h4>
+<p>仿照复数模长的定义，我们可以暂时将四元数 <span class="math inline">\(q = a + bi + cj + dk\)</span> 的模长定义为 <span class="math display">\[
+\lVert q \rVert = \sqrt{a^2 + b^2 + c^2 + d^2}
+\]</span> 如果用标量向量有序对的形式进行表示的话，<span class="math inline">\(q = [s, \pmb{v}]\)</span> 的模长为： <span class="math display">\[
+\lVert q \rVert = \sqrt{s^2 + \lVert\pmb{v}\rVert^2} = \sqrt{s^2 + \pmb{v}\cdot\pmb{v}}
+\]</span></p>
+<h4 id="四元数的加减法">四元数的加减法</h4>
+<p>与复数类似，四元数的加法只需要将分量相加就可以了，如果我们有两个四元数 <span class="math inline">\(q_{1} = a + bi + cj + dk\)</span>，<span class="math inline">\(q_{2} = e + fi + gj + hk\)</span>，那么它们的和为 <span class="math display">\[
+\begin{aligned}
+q_{1} + q_{2} &amp;= a + bi + cj + dk + e + fi + gj + hk\\
+&amp;= (a + e) + (b + f)i + (c + g)j + (d + h)k
+\end{aligned}
+\]</span></p>
+<p>减法同理，将加号改为减号就可以了 <span class="math display">\[
+q_{1} - q_{2} = (a - e) + (b - f)i + (c - g)j + (d - h)k
+\]</span></p>
+<p>如果四元数是以标量向量有序对形式定义的，比如说 <span class="math inline">\(q_{1} = [s, \pmb{v}]\)</span>，<span class="math inline">\(q_{2} = [t, \pmb{u}]\)</span>，那么 <span class="math display">\[
+q_{1} \pm q_{2} = [s \pm t, \pmb{v}\pm\pmb{u}]
+\]</span></p>
+<h4 id="四元数的标量乘法">四元数的标量乘法</h4>
+<p>如果我们有一个四元数 <span class="math inline">\(q = a + bi + cj + dk\)</span> 和一个标量 <span class="math inline">\(s\)</span>，那么它们的乘积为： <span class="math display">\[
+\begin{aligned}
+sq &amp;= s(a + bi + cj + dk)\\
+&amp;= sa + sbi + scj + sdk
+\end{aligned}
+\]</span></p>
+<p>四元数与标量的乘法遵守交换律，也就是说 <span class="math inline">\(sq = qs\)</span></p>
+<h4 id="四元数乘法">四元数乘法</h4>
+<p>四元数之间的乘法不遵守交换律，也就是说一般情况下 <span class="math inline">\(q_{1}q_{2} \neq q_{2}q_{1}\)</span>。这也就有了左乘和右乘的区别，如果是 <span class="math inline">\(q_{1}q_{2}\)</span>，我们就说"<span class="math inline">\(q_{2}\)</span> 左乘以 <span class="math inline">\(q_{1}\)</span>"，如果是 <span class="math inline">\(q_{2}q_{1}\)</span>，那我们就说"<span class="math inline">\(q_{2}\)</span> 右乘以 <span class="math inline">\(q_{1}\)</span>"。除了交换律之外，结合律和分配律在四元数内都是成立的。</p>
+<p>如果有两个四元数 <span class="math inline">\(q_{1} = a + bi + cj + dk\)</span> 和 <span class="math inline">\(q_{2} = e + fi + gj + hk\)</span>，那么 <span class="math display">\[
+\begin{aligned}
+q_{1}q_{2} &amp;= (a + bi + cj + dk)(e + fi + gj + hk)\\
+&amp;= ae + afi + agj + ahk +\\
+&amp;\quad bei + bfi^2 + bgij + bhik +\\
+&amp;\quad cej + cfji + cgj^2 + chjk +\\
+&amp;\quad dek + dfki + dgkj + dhk^2
+\end{aligned}
+\]</span></p>
+<p>由 <span class="math inline">\(i^2 = j^2 = k^2 = ijk = -1\)</span> 我们可以推导出 <span class="math inline">\(jk = i\)</span>，<span class="math inline">\(ij = k\)</span>，<span class="math inline">\(ki = j\)</span>，<span class="math inline">\(kj = -i\)</span>，<span class="math inline">\(ji = -k\)</span>，<span class="math inline">\(ik = -j\)</span>，于是我们可以得到：</p>
+<p><img src="/posts_image/Quaternion/Quaternion_7.png" srcset="/img/loading.gif" lazyload /></p>
+<p>容易观察到交换律并不成立。利用上面的表格，我们可以对四元数之间的乘法进行归纳化简： <span class="math display">\[
+\begin{aligned}
+q_{1}q_{2}
+&amp;= ae + afi + agj + ahk +\\
+&amp;\quad bei + bfi^2 + bgij + bhik +\\
+&amp;\quad cej + cfji + cgj^2 + chjk +\\
+&amp;\quad dek + dfki + dgkj + dhk^2\\
+&amp;= (a\textcolor{red}{e} - b\textcolor{blue}{f} - c\textcolor{green}{g} - d\textcolor{orange}{h})+\\
+&amp;\quad (b\textcolor{red}{e} + a\textcolor{blue}{f} - d\textcolor{green}{g} + c\textcolor{orange}{h})i+\\
+&amp;\quad (c\textcolor{red}{e} + d\textcolor{blue}{f} + a\textcolor{green}{g} - b\textcolor{orange}{h})j+\\
+&amp;\quad (d\textcolor{red}{e} - c\textcolor{blue}{f} + b\textcolor{green}{g} + a\textcolor{orange}{h})k\\
+\end{aligned}
+\]</span></p>
+<h4 id="矩阵形式">矩阵形式</h4>
+<p>可以看到，四元数的相乘其实也是一个线性组合，我们同样可以将它写成矩阵的形式： <span class="math display">\[
+q_{1}q_{2} = 
+\begin{bmatrix}
+a&amp;-b&amp;-c&amp;-d\\
+b&amp;a&amp;-d&amp;c\\
+c&amp;d&amp;a&amp;-b\\
+d&amp;-c&amp;b&amp;a\\
+\end{bmatrix}
+\begin{bmatrix}
+\textcolor{red}{e}\\
+\textcolor{blue}{f}\\
+\textcolor{green}{g}\\
+\textcolor{orange}{h}\\
+\end{bmatrix}
+\]</span></p>
+<p>注意，这个矩阵所作出的变换等价于<strong>左乘 <span class="math inline">\(q_{1}\)</span></strong>。因为四元数不符合乘法交换律，所以<strong>右乘 <span class="math inline">\(q_{1}\)</span></strong>的变换是一个不同的矩阵，它可以使用完全相同的方法推导而得，下面这个矩阵所作出的变换等价于<strong>右乘 <span class="math inline">\(q_{1}\)</span></strong></p>
+<p><span class="math display">\[
+q_{2}q_{1} = 
+\begin{bmatrix}
+a&amp;-b&amp;-c&amp;-d\\
+b&amp;a&amp;d&amp;-c\\
+c&amp;-d&amp;a&amp;b\\
+d&amp;c&amp;-b&amp;a\\
+\end{bmatrix}
+\begin{bmatrix}
+\textcolor{red}{e}\\
+\textcolor{blue}{f}\\
+\textcolor{green}{g}\\
+\textcolor{orange}{h}\\
+\end{bmatrix}
+\]</span></p>
+<h4 id="graßmann积">Graßmann积</h4>
+<p>重新整理之前的乘法结果：</p>
+<p><span class="math display">\[
+\begin{aligned}
+q_{1}q_{2} &amp;= (ae -(bf + cg + dh))+\\
+&amp;\quad(b\textcolor{red}{e} + \textcolor{blue}{a}f + ch - dg)i+\\
+&amp;\quad(c\textcolor{red}{e} + \textcolor{blue}{a}g + df - bh)j+\\
+&amp;\quad(d\textcolor{red}{e} + \textcolor{blue}{a}h + bg - cf)k\\
+\end{aligned}
+\]</span></p>
+<p>如果令 <span class="math inline">\(\pmb{v} = \begin{bmatrix}b\\ c\\ d\\ \end{bmatrix}\)</span>，<span class="math inline">\(\pmb{u} = \begin{bmatrix}f\\ g\\ h\\ \end{bmatrix}\)</span>，那么</p>
+<p><span class="math display">\[
+\pmb{v}\cdot\pmb{u} = bf + cg + dh
+\]</span> <span class="math display">\[
+\begin{aligned}
+\pmb{v}\times\pmb{u} &amp;= 
+\begin{vmatrix}
+\pmb{i}&amp;\pmb{j}&amp;\pmb{k}\\
+b&amp;c&amp;d\\
+f&amp;g&amp;h\\
+\end{vmatrix}\\
+&amp;= (ch - dg)\pmb{i} - (bh - df)\pmb{j} + (bg - cf)\pmb{k}
+\end{aligned}
+\]</span></p>
+<p>注意 <span class="math inline">\(\pmb{v}\times\pmb{u}\)</span> 的结果是一个向量，这里的 <span class="math inline">\(\pmb{i}、\pmb{j}、\pmb{k}\)</span> 是向量的基，如果使用标量向量有序对形式来表示，<span class="math inline">\(q_{1}q_{2}\)</span> 的结果可以用向量点乘和叉乘的形式表示出来</p>
+<p><span class="math display">\[
+q_{1}q_{2} = [ae - \pmb{v}\cdot\pmb{u}, a\pmb{u} + e\pmb{v} + \pmb{v}\times\pmb{u}]
+\]</span></p>
+<p>这个结果也被叫做 <strong>Graßmann积</strong>，一般来说：</p>
+<div class="note note-primary">
+            <p><strong>Theorem 7：Graßmann积</strong><br />对任意四元数 <span class="math inline">\(q_{1} = [s, \pmb{v}]\)</span>，<span class="math inline">\(q_{2} = [t, \pmb{u}]\)</span>，<span class="math inline">\(q_{1}q_{2}\)</span> 的结果是 <span class="math display">\[q_{1}q_{2} = [st - \pmb{v}\cdot\pmb{u}, s\pmb{u} + t\pmb{v} + \pmb{v}\times\pmb{u}]\]</span></p>
+          </div>
+<h4 id="纯四元数">纯四元数</h4>
+<p>实部为零，仅有虚部的四元数为<strong>纯四元数</strong>，即： <span class="math display">\[
+q = [0, \pmb{v}]
+\]</span></p>
+<p>对于两个纯四元数 <span class="math inline">\(q_{1} = [0, \pmb{v}]\)</span>，<span class="math inline">\(q_{2} = [0, \pmb{u}]\)</span>，那么它们的乘积为： <span class="math display">\[
+q_{1}q_{2} = [-\pmb{v}\cdot\pmb{u}, \pmb{v}\times\pmb{u}]
+\]</span></p>
+<h4 id="共轭">共轭</h4>
+<p>四元数 <span class="math inline">\(q = a + bi + cj + dk\)</span> 的<strong>共轭</strong>为 <span class="math inline">\(q^* = a - bi - cj - dk\)</span>。如果用标量向量有序对的形式来定义的话，<span class="math inline">\(q = [s, \pmb{v}]\)</span> 的共轭为 <span class="math inline">\(q^* = [s, -\pmb{v}]\)</span>。共轭四元数的一个非常有用的性质就是 <span class="math display">\[
+\begin{aligned}
+qq^* &amp;= [s, \pmb{v}]\cdot[s, -\pmb{v}]\\
+&amp;= [s^2 - \pmb{v}\cdot(-\pmb{v}), s(-\pmb{v}) + s\pmb{v} + \pmb{v}\times(-\pmb{v})]\\
+&amp;= [s^2 + \pmb{v}\cdot\pmb{v}, 0]\\
+&amp;= s^2 + x^2 + y^2 + z^2\\
+&amp;= \lVert q \rVert^2
+\end{aligned}
+\]</span> 结果是一个标量，正是四元数模长的平方。 <span class="math display">\[
+q^*q = (q^*)(q^*)^* = \lVert q^* \rVert^2 = \lVert q \rVert^2
+\]</span> 我们得到，<span class="math inline">\(q^*q = qq^*\)</span>，这个特殊的乘法遵守交换律。</p>
+<h4 id="逆">逆</h4>
+<p>因为四元数乘法不遵守交换律，我们不会将两个四元数相除写为 <span class="math inline">\(\frac{p}{q}\)</span> 的形式，取而代之的是将乘法的逆运算定义为 <span class="math inline">\(pq^{-1}\)</span> 或者 <span class="math inline">\(q^{-1}p\)</span>，注意它们的结果一般是不同的。</p>
+<p>其中，<span class="math inline">\(q^{-1}\)</span> 是 <span class="math inline">\(q\)</span> 的<strong>逆</strong>，我们规定 <span class="math display">\[
+qq^{-1} = q^{-1}q = 1\quad(q \neq 0)
+\]</span></p>
+<p>右乘 <span class="math inline">\(q\)</span> 的逆运算为右乘 <span class="math inline">\(q^{-1}\)</span>，左乘 <span class="math inline">\(q\)</span> 的逆运算为左乘 <span class="math inline">\(q^{-1}\)</span>。</p>
+<p>利用共轭，我们可以进行如下推导： <span class="math display">\[
+\begin{aligned}
+qq^{-1} &amp;= 1\\
+q^*qq^{-1} &amp;= q^*\\
+\lVert q \rVert^2q^{-1} &amp;= q^*\\
+q^{-1} &amp;= \frac{q^*}{\lVert q \rVert^2}\\
+\end{aligned}
+\]</span></p>
+<p>四元数的逆就是它的共轭除以它模长的平方。如果 <span class="math inline">\(\lVert q \rVert = 1\)</span>，那么它的逆就是它的共轭，此时称 <span class="math inline">\(q\)</span> 为一个<strong>单位四元数</strong>。</p>
+<h3 id="四元数与3d旋转">四元数与3D旋转</h3>
+<p>如果我们需要将一个向量 <span class="math inline">\(\pmb{v}\)</span> 沿着一个用单位向量所定义的旋转轴 <span class="math inline">\(\pmb{u}\)</span> 旋转 <span class="math inline">\(\theta\)</span> 度，那么我们可以将这个向量 <span class="math inline">\(\pmb{v}\)</span> 拆分为正交于旋转轴的 <span class="math inline">\(\pmb{v_{\perp}}\)</span> 以及平行于旋转轴的 <span class="math inline">\(\pmb{v_{\parallel}}\)</span>。我们可以对这两个分向量分别进行旋转，获得 <span class="math inline">\(\pmb{v_{\perp}&#39;}\)</span> 和 <span class="math inline">\(\pmb{v_{\parallel}&#39;}\)</span>。将它们相加就是 <span class="math inline">\(\pmb{v}\)</span> 旋转之后的结果 <span class="math inline">\(\pmb{v&#39;} = \pmb{v_{\perp}&#39;} + \pmb{v_{\parallel}&#39;\)</span>。</p>
+<p>我们可以将这些向量定义为纯四元数：</p>
+<p><span class="math display">\[
+\begin{aligned}
+v &amp;= [0, \pmb{v}]\\
+v_{\perp} &amp;= [0, \pmb{v_{\perp}}]\\
+v_{\parallel} &amp;= [0, \pmb{v_{\parallel}}]\\
+v&#39; &amp;= [0, \pmb{v&#39;}]\\
+v_{\perp}&#39; &amp;= [0, \pmb{v_{\perp}&#39;}]\\
+v_{\parallel}&#39; &amp;= [0, \pmb{v_{\parallel}&#39;}]\\
+u &amp;= [0, \pmb{u}]
+\end{aligned}
+\]</span></p>
+<p>那么我们就能得到</p>
+<p><span class="math display">\[
+v = v_{\parallel} + v_{\perp} \qquad v&#39; = v_{\parallel}&#39; + v_{\perp}&#39;
+\]</span></p>
+<p>和之前一样，我们这里也分开讨论 <span class="math inline">\(v_{\perp}\)</span> 和 <span class="math inline">\(v_{\parallel}\)</span> 的情况。</p>
+<h4 id="v_perp-的旋转"><span class="math inline">\(v_{\perp}\)</span> 的旋转</h4>
+<p>我们在上一篇推导过，如果一个向量 <span class="math inline">\(\pmb{v_{\perp}}\)</span> 正交于旋转轴 <span class="math inline">\(\pmb{u}\)</span>，那么</p>
+<p><span class="math display">\[
+\pmb{v_{\perp}&#39;} = \cos(\theta)\pmb{v_{\perp}} + \sin(\theta)(\pmb{u}\times\pmb{v_{\perp}})
+\]</span></p>
+<p>而且，对于两个纯四元数 <span class="math inline">\(q_{1} = [0, \pmb{v}]\)</span>，<span class="math inline">\(q_{2} = [0, \pmb{u}]\)</span>，那么它们的乘积为 <span class="math inline">\(q_{1}q_{2} = [-\pmb{v}\cdot\pmb{u}, \pmb{v}\times\pmb{u}]\)</span>，类似地， <span class="math display">\[
+uv_{\perp} = [-\pmb{u}\cdot\pmb{v_{\perp}}, \pmb{u}\times\pmb{v_{\perp}}]
+\]</span> 因为 <span class="math inline">\(\pmb{v_{\perp}}\)</span> 正交于 <span class="math inline">\(\pmb{u}\)</span>，所以 <span class="math inline">\(\pmb{u}\cdot\pmb{v_{\perp}} = 0\)</span>，也就是说， <span class="math display">\[
+\begin{aligned}
+uv_{\perp} &amp;= [0, \pmb{u}\times\pmb{v_{\perp}}]\\
+&amp;= \pmb{u}\times\pmb{v_{\perp}}
+\end{aligned}
+\]</span> 将这个等式以及之前定义的纯四元数代入，而且四元数乘法遵守分配律，我们可以获得： <span class="math display">\[
+\begin{aligned}
+v_{\perp}&#39; &amp;= \cos(\theta)v_{\perp} + \sin(\theta)(uv_{\perp})\\
+&amp;= (\cos(\theta) + \sin(\theta)u)v_{\perp}
+\end{aligned}
+\]</span></p>
+<p>可以注意到，如果我们将 <span class="math inline">\((\cos(\theta) + \sin(\theta)u)\)</span> 看作是一个四元数，我们就能将旋转写成四元数的乘积了。到此为止，我们已经将旋转与四元数的积联系起来了。如果令 <span class="math inline">\(q = \cos(\theta) + \sin(\theta)u\)</span>，我们能得到 <span class="math display">\[
+v_{\perp}&#39; = qv_{\perp}
+\]</span></p>
+<p>我们可以对 <span class="math inline">\(q\)</span> 继续进行变形： <span class="math display">\[
+\begin{aligned}
+q &amp;= \cos(\theta) + \sin(\theta)u\\
+&amp;= [\cos(\theta), \pmb{0}] + [0, \sin(\theta)\pmb{u}]\\
+&amp;= [\cos(\theta), \sin(\theta)\pmb{u}]\\
+\end{aligned}
+\]</span></p>
+<p>也就是说，如果旋转轴 <span class="math inline">\(\pmb{u}\)</span> 的坐标为 <span class="math inline">\(\begin{bmatrix}u_{x}\\ u_{y}\\ u_{z}\end{bmatrix}\)</span>，旋转角为 <span class="math inline">\(\theta\)</span>，那么完成这一旋转所需的四元数 <span class="math inline">\(q\)</span> 可以构造为 <span class="math display">\[
+q = \cos(\theta) + \sin(\theta)u_{x}i + \sin(\theta)u_{y}j + \sin(\theta)u_{z}k
+\]</span> 这样我们就完成了对 <span class="math inline">\(v_{\perp}\)</span> 的旋转，我们可以得到下面这个定理：</p>
+<div class="note note-primary">
+            <p><strong>Theorem 8：3D 旋转公式（四元数型，正交情况）</strong><br />当 <span class="math inline">\(\pmb{v_{\perp}}\)</span> 正交于旋转轴 <span class="math inline">\(\pmb{u}\)</span> 时，旋转 <span class="math inline">\(\theta\)</span> 角度之后的 <span class="math inline">\(\pmb{v_{\perp}&#39;}\)</span> 可以使用四元数乘法来获得，令 <span class="math inline">\(v_{\perp} = [0, \pmb{v_{\perp}}]\)</span>，<span class="math inline">\(q = [\cos(\theta), \sin(\theta)\pmb{u}]\)</span>，那么： <span class="math display">\[v_{\perp}&#39; = qv_{\perp}\]</span></p>
+          </div>
+<p>这个四元数 <span class="math inline">\(q\)</span> 的模长为 1，它是一个单位四元数，它所代表的变换不会对原向量进行缩放，是一个纯旋转。 <span class="math display">\[
+\begin{aligned}
+\lVert q \rVert &amp;= \sqrt{\cos^2(\theta) + (\sin(\theta)\pmb{u}\cdot\sin(\theta)\pmb{u})}\\
+&amp;= \sqrt{\cos^2(\theta) + \sin^2(\theta)(\pmb{u}\cdot\pmb{u})}\\
+&amp;= \sqrt{\cos^2(\theta) + \sin^2(\theta)(\lVert\pmb{u}\rVert^2)}\\
+&amp;= \sqrt{\cos^2(\theta) + \sin^2(\theta)}\\
+&amp;= 1
+\end{aligned}
+\]</span></p>
+<h4 id="v_parallel-的旋转"><span class="math inline">\(v_{\parallel}\)</span> 的旋转</h4>
+<p>接下来是平行于旋转轴的 <span class="math inline">\(v_{\parallel}\)</span>，由于它平行于旋转轴，所以旋转不会对它作出任何的变换，也就是说：</p>
+<div class="note note-primary">
+            <p><strong>Theorem 9：3D 旋转公式（四元数型，平行情况）</strong><br />当 <span class="math inline">\(\pmb{v_{\parallel}}\)</span> 平行于旋转轴 <span class="math inline">\(\pmb{u}\)</span> 时，旋转 <span class="math inline">\(\theta\)</span> 角度之后的 <span class="math inline">\(\pmb{v_{\parallel}&#39;}\)</span> 可以用四元数写为： <span class="math display">\[v_{\parallel}&#39; = v_{\parallel}\]</span></p>
+          </div>
+<h4 id="v-的旋转"><span class="math inline">\(v\)</span> 的旋转</h4>
+<p><span class="math display">\[
+\begin{aligned}
+v&#39; &amp;= v_{\parallel}&#39; + v_{\perp}&#39;\\
+&amp;= v_{\parallel} + qv_{\perp} \qquad (其中 q = [\cos(\theta), \sin(\theta)\pmb{u}])
+\end{aligned}
+\]</span></p>
+<p>在进一步化简前，我们需要证明几个引理：</p>
+<div class="note note-secondary">
+            <p><strong>Lemma 1</strong><br />如果 <span class="math inline">\(q = [\cos(\theta), \sin(\theta)\pmb{u}]\)</span>，而且 <span class="math inline">\(\pmb{u}\)</span> 为单位向量，那么 <span class="math inline">\(q^2 = qq = [\cos(2\theta), \sin(2\theta)\pmb{u}]\)</span></p>
+          </div>
+<p><span class="math inline">\(Proof\)</span>.</p>
+<p><span class="math display">\[
+\begin{aligned}
+q^2 &amp;= [\cos(\theta), \sin(\theta)\pmb{u}] \cdot [\cos(\theta), \sin(\theta)\pmb{u}]\\
+&amp;= [\cos^2(\theta) - (\sin(\theta)\pmb{u}\cdot\sin(\theta)\pmb{u}), (\cos(\theta)\sin(\theta) + \sin(\theta)\cos(\theta))\pmb{u} + (\sin(\theta)\pmb{u}\times\sin(\theta)\pmb{u})]\\
+&amp;= [\cos^2(\theta) - \sin^2(\theta)\lVert\pmb{u}\rVert^2, 2\sin(\theta)\cos(\theta)\pmb{u} + \pmb{0}]\\
+&amp;= [\cos^2(\theta) - \sin^2(\theta), 2\sin(\theta)\cos(\theta)\pmb{u}]\\
+&amp;= [\cos(2\theta), \sin(2\theta)\pmb{u}]
+\end{aligned}
+\]</span></p>
+<p>这个引理的几何意义是，如果沿着同一个轴 <span class="math inline">\(\pmb{u}\)</span> 连续旋转 <span class="math inline">\(\theta\)</span> 度两次，那么所作出的变换等同于直接沿着 <span class="math inline">\(\pmb{u}\)</span> 旋转 <span class="math inline">\(2\theta\)</span> 度</p>
+<p>那么，我们就能够对原本的旋转公式进行变形了</p>
+<p><span class="math display">\[
+\begin{aligned}
+v&#39; &amp;= v_{\parallel} + qv_{\perp} \qquad\qquad (q = [\cos(\theta), \sin(\theta)\pmb{u}])\\
+&amp;= 1 \cdot v_{\parallel} + qv_{\perp}\\
+&amp;= pp^{-1}v_{\parallel} + ppv_{\perp} \quad (令 q = p^2，则 p = [\cos(\frac{1}{2}\theta), \sin(\frac{1}{2}\theta)\pmb{u}])
+\end{aligned}
+\]</span></p>
+<p>在这里，我们引入了一个新的四元数 <span class="math inline">\(p = [\cos(\frac{1}{2}\theta), \sin(\frac{1}{2}\theta)\pmb{u}]\)</span>。根据刚刚证明的引理，我们可以验证 <span class="math display">\[
+\begin{aligned}
+pp &amp;= p^2\\
+&amp;= [\cos(2\cdot\frac{1}{2}\theta), \sin(2\cdot\frac{1}{2}\theta)\pmb{u}]\\
+&amp;= [\cos(\theta), \sin(\theta)\pmb{u}] = q
+\end{aligned}
+\]</span></p>
+<p>和 <span class="math inline">\(q\)</span> 一样，<span class="math inline">\(\lVert p \rVert = 1\)</span>，<span class="math inline">\(p\)</span> 也是一个单位四元数，也就是说 <span class="math display">\[
+p^{-1} = p^*
+\]</span></p>
+<p>将这个结果代入之前的等式中 <span class="math display">\[
+\begin{aligned}
+v&#39; &amp;= pp^{-1}v_{\parallel} + ppv_{\perp}\\
+&amp;= pp^*v_{\parallel} + ppv_{\perp}
+\end{aligned}
+\]</span></p>
+<p>我们还需再证明两个引理：</p>
+<div class="note note-secondary">
+            <p><strong>Lemma 2</strong><br />假设 <span class="math inline">\(v_{\parallel} = [0, \pmb{v_{\parallel}}]\)</span> 是一个纯四元数，而 <span class="math inline">\(q = [\alpha, \beta\pmb{u}]\)</span>，其中 <span class="math inline">\(\pmb{u}\)</span> 是一个单位向量，<span class="math inline">\(\alpha，\beta \in \mathbb{R}\)</span>，在这种条件下，如果 <span class="math inline">\(\pmb{v_{\parallel}}\)</span> 平行于 <span class="math inline">\(\pmb{u}\)</span>，那么 <span class="math inline">\(qv_{\parallel} = v_{\parallel}q\)</span></p>
+          </div>
+<p><span class="math inline">\(Proof\)</span>.</p>
+<p><span class="math display">\[
+\begin{aligned}
+LHS &amp;= qv_{\parallel}\\
+&amp;= [\alpha, \beta\pmb{u}]\cdot[0, \pmb{v_{\parallel}}]\\
+&amp;= [0 - \beta\pmb{u}\cdot\pmb{v_{\parallel}}, \alpha\pmb{v_{\parallel}} + \pmb{0} + \beta\pmb{u}\times\pmb{v_{\parallel}}]\\
+&amp;= [-\beta\pmb{u}\cdot\pmb{v_{\parallel}}, \alpha\pmb{v_{\parallel}}] \qquad (\pmb{v_{\parallel}} 平行于 \pmb{u}，所以 \beta\pmb{u}\times\pmb{v_{\parallel}} = \pmb{0})
+\end{aligned}
+\]</span> <span class="math display">\[
+\begin{aligned}
+RHS &amp;= v_{\parallel}q\\
+&amp;= [0, \pmb{v_{\parallel}}]\cdot[\alpha, \beta\pmb{u}]\\
+&amp;= [0 - \pmb{v_{\parallel}}\cdot\beta\pmb{u}, \pmb{0} + \alpha\pmb{v_{\parallel}} + \pmb{v_{\parallel}}\times\beta\pmb{u}]\\
+&amp;= [-\pmb{v_{\parallel}}\cdot\beta\pmb{u}, \alpha\pmb{v_{\parallel}}] \qquad ({v_{\parallel}} 平行于 \pmb{u}，所以 \pmb{v_{\parallel}}\times\beta\pmb{u} = \pmb{0})\\
+&amp;= [-\beta\pmb{u}\cdot\pmb{v_{\parallel}}, \alpha\pmb{v_{\parallel}}] = LHS \qquad (点乘遵守交换律)
+\end{aligned}
+\]</span></p>
+<div class="note note-secondary">
+            <p><strong>Lemma 3</strong><br />假设 <span class="math inline">\(v_{\perp} = [0, \pmb{v_{\perp}}]\)</span> 是一个纯四元数，而 <span class="math inline">\(q = [\alpha, \beta\pmb{u}]\)</span>，其中 <span class="math inline">\(\pmb{u}\)</span> 是一个单位向量，<span class="math inline">\(\alpha，\beta \in \mathbb{R}\)</span>，在这种条件下，如果 <span class="math inline">\(\pmb{v_{\perp}}\)</span> 正交于 <span class="math inline">\(\pmb{u}\)</span>，那么 <span class="math inline">\(qv_{\perp} = v_{\perp}q^*\)</span></p>
+          </div>
+<p><span class="math inline">\(Proof\)</span>.</p>
+<p><span class="math display">\[
+\begin{aligned}
+LHS &amp;= qv_{\perp}\\
+&amp;= [\alpha, \beta\pmb{u}]\cdot[0, \pmb{v_{\perp}}]\\
+&amp;= [0 - \beta\pmb{u}\cdot\pmb{v_{\perp}}, \alpha\pmb{v_{\perp}} + \pmb{0} + \beta\pmb{u}\times\pmb{v_{\perp}}]\\
+&amp;= [0, \alpha\pmb{v_{\perp}} + \beta\pmb{u}\times\pmb{v_{\perp}}] \qquad (\pmb{v_{\perp}} 正交于 \pmb{u}，所以 \beta\pmb{u}\cdot\pmb{v_{\perp}} = 0)
+\end{aligned}
+\]</span> <span class="math display">\[
+\begin{aligned}
+RHS &amp;= v_{\perp}q^*\\
+&amp;= [0, \pmb{v_{\perp}}]\cdot[\alpha, -\beta\pmb{u}]\\
+&amp;= [0 + \pmb{v_{\perp}}\cdot\beta\pmb{u}, \pmb{0} + \alpha\pmb{v_{\perp}} + \pmb{v_{\perp}}\times(-\beta\pmb{u})]\\
+&amp;= [0, \alpha\pmb{v_{\perp}} + \pmb{v_{\perp}}\times(-\beta\pmb{u})] \qquad ({v_{\perp}} 正交于 \pmb{u}，所以 \pmb{v_{\perp}}\cdot\beta\pmb{u} = 0)\\
+&amp;= [0, \alpha\pmb{v_{\perp}} - (-\beta\pmb{u})\times\pmb{v_{\perp}}] \qquad (\pmb{a}\times\pmb{b} = -\pmb{b}\times\pmb{a})\\
+&amp;= [0, \alpha\pmb{v_{\perp}} + \beta\pmb{u}\times\pmb{v_{\perp}}] = LHS
+\end{aligned}
+\]</span></p>
+<p>现在，我们能对之前的公式做出最后的变形了： <span class="math display">\[
+\begin{aligned}
+v&#39; &amp;= pp^*v_{\parallel} + ppv_{\perp}\\
+&amp;= pv_{\parallel}p^* + pv_{\perp}p^*\\
+&amp;= p(v_{\parallel} + v_{\perp})p^*\\
+&amp;= pvp^*
+\end{aligned}
+\]</span></p>
+<p>我们可以将上述推导总结为一个定理：</p>
+<div class="note note-primary">
+            <p><strong>Theorem 10：3D 旋转公式（四元数型，一般情况）</strong><br />任意向量 <span class="math inline">\(\pmb{v}\)</span> 沿着以单位向量定义的旋转轴 <span class="math inline">\(\pmb{u}\)</span> 旋转 <span class="math inline">\(\theta\)</span> 度之后的 <span class="math inline">\(\pmb{v&#39;}\)</span> 可以使用四元数乘法来获得。令 <span class="math inline">\(v = [0, \pmb{v}]\)</span>，<span class="math inline">\(q = [\cos(\frac{1}{2}\theta), \sin(\frac{1}{2}\theta)\pmb{u}]\)</span>，那么： <span class="math display">\[v&#39; = qvq^* = qvq^{-1}\]</span></p>
+          </div>
+<p>如果我们有 <span class="math inline">\(q = [\cos(\theta), \sin(\theta)\pmb{u}]\)</span>，那么 <span class="math inline">\(v&#39; = qvq^*\)</span> 可以将 <span class="math inline">\(\pmb{v}\)</span> 沿着 <span class="math inline">\(\pmb{u}\)</span> 旋转 <span class="math inline">\(2\theta\)</span> 度。</p>
+<p>虽然这个公式非常简洁，但是不够直观，想了解它的真正含义的话，还需将它还原到变形之前的式子： <span class="math display">\[
+v&#39; = qvq^* = qq^*v_{\parallel} + qqv_{\perp} = v_{\parallel} + q^2v_{\perp}
+\]</span></p>
+<p>也就是说，<span class="math inline">\(qvq^*\)</span> 这个变换，对 <span class="math inline">\(v\)</span> 平行于旋转轴的分量 <span class="math inline">\(v_{\parallel}\)</span> 实施的变换是 <span class="math inline">\(qq^*\)</span>，这两个变换完全抵消了，也就是没有旋转，而对于正交于旋转轴的分量 <span class="math inline">\(v_{\perp}\)</span> 则实施的是两次变换 <span class="math inline">\(q^2 = qq\)</span>，将它旋转 <span class="math inline">\(\frac{\theta}{2} + \frac{\theta}{2} = \theta\)</span> 度。</p>
+<p>实际上，这个公式和上一篇推导的向量型旋转公式完全等价，证明可能会用到 <span class="math inline">\(\pmb{a}\times(\pmb{b}\times\pmb{c}) = (\pmb{a}\cdot\pmb{c})\pmb{b} - (\pmb{a}\cdot\pmb{b})\pmb{c}\)</span> 这个公式 <span class="math display">\[
+qvq^* = [0, \cos(\theta)\pmb{v} + (1 - \cos(\theta))(\pmb{u}\cdot\pmb{v})\pmb{u} + \sin(\theta)(\pmb{u}\times\pmb{v})]
+\]</span></p>
+<p>因为所有的旋转四元数的实部都只是一个角度的余弦值，假设有一个单位四元数 <span class="math inline">\(q = [a, \pmb{b}]\)</span>，那么我们可以直接得到 <span class="math display">\[
+\frac{\theta}{2} = \arccos(a) \qquad \pmb{u} = \frac{\pmb{b}}{\sin(\arccos(a))}
+\]</span></p>
+<h3 id="d旋转的矩阵形式">3D旋转的矩阵形式</h3>
+<p>左乘一个四元数 <span class="math inline">\(q = a + bi + cj + dk\)</span> 等同于下面这个矩阵 <span class="math display">\[
+L(q) = \begin{bmatrix}
+a&amp;-b&amp;-c&amp;-d\\
+b&amp;a&amp;-d&amp;c\\
+c&amp;d&amp;a&amp;-b\\
+d&amp;-c&amp;b&amp;a\\
+\end{bmatrix}
+\]</span> 而右乘 <span class="math inline">\(q\)</span> 等同于这个矩阵 <span class="math display">\[
+R(q) = \begin{bmatrix}
+a&amp;-b&amp;-c&amp;-d\\
+b&amp;a&amp;d&amp;-c\\
+c&amp;-d&amp;a&amp;b\\
+d&amp;c&amp;-b&amp;a\\
+\end{bmatrix}
+\]</span></p>
+<p>所以，我们可以利用这两个公式将 <span class="math inline">\(v&#39; = qvq^*\)</span> 写成矩阵形式。假设 <span class="math inline">\(a = \cos(\frac{\theta}{2})，b = \sin(\frac{\theta}{2})u_{x}，c = \sin(\frac{\theta}{2})u_{y}，d = \sin(\frac{\theta}{2})u_{z}，q = a + bi + cj + dk\)</span>，我们就能得到： <span class="math display">\[
+\begin{aligned}
+qvq^* &amp;= L(q)R(q^*)v \qquad (或者 R(q^*)L(q)v，它们是等价的)\\
+&amp;= \begin{bmatrix}
+a&amp;-b&amp;-c&amp;-d\\
+b&amp;a&amp;-d&amp;c\\
+c&amp;d&amp;a&amp;-b\\
+d&amp;-c&amp;b&amp;a\\
+\end{bmatrix}
+\begin{bmatrix}
+a&amp;b&amp;c&amp;d\\
+-b&amp;a&amp;-d&amp;c\\
+-c&amp;d&amp;a&amp;-b\\
+-d&amp;-c&amp;b&amp;a\\
+\end{bmatrix}v \qquad (注意 R(q^*) = R(q)^T)\\
+&amp;= \begin{bmatrix}
+a^2 + b^2 + c^2 + d^2&amp;ab - ab - cd + cd&amp;ac + bd - ac - bd&amp;ad - bc + bc - ad\\
+ab - ab + cd - cd&amp;b^2 + a^2 - d^2 - c^2&amp;bc - ad - ad + bc&amp;bd + ac + bd + ac\\
+ac - bd - ac + bd&amp;bc + ad + ad + bc&amp;c^2 - d^2 + a^2 - b^2&amp;cd + cd - ab - ab\\
+ad + bc - bc - ad&amp;bd - ac + bd - ac&amp;cd + cd + ab + ab&amp;d^2 - c^2 - b^2 + a^2\\
+\end{bmatrix}v
+\end{aligned}
+\]</span> 因为 <span class="math inline">\(a^2 + b^2 + c^2 + d^2 = 1\)</span>，这个式子能化简为 <span class="math display">\[
+qvq^* = 
+\begin{bmatrix}
+1&amp;0&amp;0&amp;0\\
+0&amp;1 - 2c^2 - 2d^2&amp;2bc - 2ad&amp;2ac + 2bd\\
+0&amp;2bc + 2ad&amp;1 - 2b^2 - 2d^2&amp;2cd - 2ab\\
+0&amp;2bd - 2ac&amp;2ab + 2cd&amp;1 - 2b^2 - 2c^2\\
+\end{bmatrix}v
+\]</span></p>
+<p>这样我们就得到了 3D 旋转的矩阵形式。因为矩阵的第一行和第一列不会对 <span class="math inline">\(v\)</span> 进行任何变换，我们可以将它压缩成 3 <span class="math inline">\(\times\)</span> 3 矩阵（用作 3D 向量的变换）：</p>
+<div class="note note-primary">
+            <p><strong>Theorem 11：3D 旋转公式（矩阵型）</strong><br />任意向量 <span class="math inline">\(\pmb{v}\)</span> 沿着以单位向量定义的旋转轴 <span class="math inline">\(\pmb{u}\)</span> 旋转 <span class="math inline">\(\theta\)</span> 度之后的 <span class="math inline">\(\pmb{v&#39;}\)</span> 可以使用矩阵乘法来获得。令 <span class="math inline">\(a = \cos(\frac{\theta}{2})，b = \sin(\frac{\theta}{2})u_{x}，c = \sin(\frac{\theta}{2})u_{y}，d = \sin(\frac{\theta}{2})u_{z}\)</span>，那么： <span class="math display">\[v&#39; = \begin{bmatrix}1 - 2c^2 - 2d^2&amp;2bc - 2ad&amp;2ac + 2bd\\2bc + 2ad&amp;1 - 2b^2 - 2d^2&amp;2cd - 2ab\\2bd - 2ac&amp;2ab + 2cd&amp;1 - 2b^2 - 2c^2\\\end{bmatrix}v\]</span></p>
+          </div>
+<p>虽然 3D 旋转的矩阵形式可能不如四元数形式简单，而且占用更多的空间，但是对于大批量的变换，使用<strong>预计算</strong>好的矩阵是比四元数乘法更有效率的。</p>
+<h3 id="旋转的复合">旋转的复合</h3>
+<p>假设有两个表示沿着不同轴，不同角度旋转的四元数 <span class="math inline">\(q_{1}\)</span>，<span class="math inline">\(q_{2}\)</span>，我们先对 <span class="math inline">\(v\)</span> 进行 <span class="math inline">\(q_{1}\)</span> 的变换，再进行 <span class="math inline">\(q_{2}\)</span> 的变换。</p>
+<p>首先，我们实施 <span class="math inline">\(q_{1}\)</span> 的变换，变换后的 <span class="math inline">\(v&#39;\)</span> 为 <span class="math display">\[
+v&#39; = q_{1}vq_{1}^*
+\]</span> 接下来，对 <span class="math inline">\(v&#39;\)</span> 进行 <span class="math inline">\(q_{2}\)</span> 的变换，得到 <span class="math inline">\(v&#39;&#39;\)</span> <span class="math display">\[
+\begin{aligned}
+v&#39;&#39; &amp;= q_{2}v&#39;q_{2}^*\\
+&amp;= q_{2}q_{1}vq_{1}^*q_{2}^*
+\end{aligned}
+\]</span> 我们需要对这两个变换进行复合，写为一个等价变换的形式： <span class="math display">\[
+v&#39;&#39; = q_{net}vq_{net}^*
+\]</span></p>
+<p>为了写成上面这种形式，我们还需要一个引理：</p>
+<div class="note note-secondary">
+            <p><strong>Lemma 4</strong><br />对任意四元数 <span class="math inline">\(q_{1} = [s, \pmb{v}]、q_{2} = [t, \pmb{u}]\)</span> <span class="math display">\[q_{1}^*q_{2}^* = (q_{2}q_{1})^*\]</span></p>
+          </div>
+<p><span class="math inline">\(Proof\)</span>.</p>
+<p><span class="math display">\[
+\begin{aligned}
+LHS &amp;= q_{1}^*q_{2}^*\\
+&amp;= [s, -\pmb{v}]\cdot[t, -\pmb{u}]\\
+&amp;= [st - (-\pmb{v})\cdot(-\pmb{u}), s(-\pmb{u}) + t(-\pmb{v}) + (-\pmb{v})\times(-\pmb{u})]\\
+&amp;= [st - \pmb{v}\cdot\pmb{u}, -s\pmb{u} - t\pmb{v} + \pmb{v}\times\pmb{u}]
+\end{aligned}
+\]</span> <span class="math display">\[
+\begin{aligned}
+RHS &amp;= (q_{2}q_{1})^*\\
+&amp;= ([t, \pmb{u}]\cdot[s, \pmb{v}])^*\\
+&amp;= [ts - \pmb{u}\cdot\pmb{v}, t\pmb{v} + s\pmb{u} + \pmb{u}\times\pmb{v}]\\
+&amp;= [st - \pmb{v}\cdot\pmb{u}, -s\pmb{u} - t\pmb{v} + \pmb{v}\times\pmb{u}] = LHS
+\end{aligned}
+\]</span></p>
+<p>所以我们能得到 <span class="math display">\[
+\begin{aligned}
+v&#39;&#39; &amp;= q_{2}q_{1}vq_{1}^*q_{2}^*\\
+&amp;= (q_{2}q_{1})v(q_{2}q_{1})^*\\
+\end{aligned}
+\]</span></p>
+<p>这也就是说，<span class="math inline">\(q_{net} = q_{2}q_{1}\)</span>。注意四元数乘法的顺序，我们先进行的是 <span class="math inline">\(q_{1}\)</span> 的变换，再进行 <span class="math inline">\(q_{2}\)</span> 的变换。这和矩阵与函数的复合非常相似，都是从右往左叠加。</p>
+<p>要注意的是，<span class="math inline">\(q_{1}\)</span> 与 <span class="math inline">\(q_{2}\)</span> 的等价旋转 <span class="math inline">\(q_{net}\)</span> 并不是分别沿着 <span class="math inline">\(q_{1}\)</span> 和 <span class="math inline">\(q_{2}\)</span> 的两个旋转轴进行的两次旋转。它是沿着一个全新的旋转轴进行的一次等价旋转，仅仅只有旋转的结果相同。</p>
+<p>虽然我们讨论的是两个旋转的复合，但是它可以很容易地推广到多个旋转的复合。比如说我们还需要进行第三个旋转 <span class="math inline">\(q_{3}\)</span>，那么 <span class="math display">\[
+\begin{aligned}
+v&#39;&#39;&#39; &amp;= q_{3}(q_{2}q_{1})v(q_{2}q_{1})^*q_{3}^*\\
+&amp;= (q_{3}q_{2}q_{1})v(q_{3}q_{2}q_{1})^*
+\end{aligned}
+\]</span> 它的等价旋转就是 <span class="math inline">\(q_{net} = q_{3}q_{2}q_{1}\)</span></p>
+<h3 id="双倍覆盖">双倍覆盖</h3>
+<p>四元数与 3D 旋转的关系并不是一对一的，同一个 3D 旋转可以使用两个不同的四元数来表示。对任意的四元数 <span class="math inline">\(q = [\cos(\frac{\theta}{2}), \sin(\frac{\theta}{2})\pmb{u}]\)</span>，<span class="math inline">\(q\)</span> 与 <span class="math inline">\(-q\)</span> 代表的是同一个旋转。如果 <span class="math inline">\(q\)</span> 表示的是沿着旋转轴 <span class="math inline">\(\pmb{u}\)</span> 旋转 <span class="math inline">\(\theta\)</span> 度，那么 <span class="math inline">\(-q\)</span> 代表的是沿着相反的旋转轴 <span class="math inline">\(-\pmb{u}\)</span> 旋转 <span class="math inline">\((2\pi - \theta)\)</span> 度： <span class="math display">\[
+\begin{aligned}
+-q &amp;= [-\cos(\frac{\theta}{2}), -\sin(\frac{\theta}{2})\pmb{u}]\\
+&amp;= [\cos(\pi - \frac{\theta}{2}), \sin(\pi - \frac{\theta}{2})(-\pmb{u})]\qquad (\cos(\pi - \theta) = -\cos(\theta), \sin(\pi - \theta) = \sin(\theta))
+\end{aligned}
+\]</span> 所以，这个四元数旋转的角度为 <span class="math inline">\(2(\pi - \frac{\theta}{2}) = 2\pi - \theta\)</span>。从下面的图中我们可以看到，这两个旋转是完全等价的：</p>
+<p><img src="/posts_image/Quaternion/Quaternion_8.png" srcset="/img/loading.gif" lazyload /></p>
+<p>其实从四元数的旋转公式中也能推导出相同的结果 <span class="math display">\[
+(-q)v(-q)^* = (-1)^2qvq^* = qvq^*
+\]</span></p>
+<p>所以，我们经常说单位四元数与 3D 旋转有一个“<strong>2对1满射同态</strong>”关系，或者说单位四元数“<strong>双倍覆盖</strong>”了 3D 旋转。</p>
+<p>因为这个映射是满射，我们可以说所有的单位四元数都对应着一个 3D 旋转。或者说，一个四维单位超球面（也叫做 <span class="math inline">\(\mathbb{S}^3\)</span>）上任意一点所对应的四元数（<span class="math inline">\(\lVert q \rVert = 1\)</span>）都对应着一个 3D 旋转。</p>
+<p>有一点需要注意的是，虽然 <span class="math inline">\(q\)</span> 与 <span class="math inline">\(-q\)</span> 是两个不同的四元数，但是由于旋转矩阵中的每一项都包含了四元数两个分量的乘积，它们的旋转矩阵是完全相同的。旋转矩阵并不会出现双倍覆盖的问题。</p>
+<h3 id="指数形式">指数形式</h3>
+<p>在讨论复数的时候，我们利用欧拉公式将 2D 的旋转写成了 <span class="math inline">\(v&#39; = e^{i\theta}v\)</span> 这样的指数形式。实际上，我们也可以利用四元数将 3D 旋转写成类似的形式。</p>
+<p>类似于复数的欧拉公式，四元数也有一个类似的公式，如果 <span class="math inline">\(\pmb{u}\)</span> 是一个单位向量，那么对于单位四元数 <span class="math inline">\(u = [0, \pmb{u}]\)</span>，有 <span class="math display">\[
+e^{u\theta} = \cos(\theta) + u\sin(\theta) = \cos(\theta) + \pmb{u}\sin(\theta)
+\]</span> 也就是说，<span class="math inline">\(q = [\cos(\theta), \sin(\theta)\pmb{u}]\)</span> 可以使用指数表示为 <span class="math inline">\(e^{u\theta}\)</span>。这个公式的证明与欧拉公式的证明非常类似，直接使用级数展开就可以了。</p>
+<p><span class="math inline">\(Proof\)</span>.</p>
+<p>我们知道，<span class="math inline">\(e^{x}\)</span>，<span class="math inline">\(\sin(x)\)</span>，<span class="math inline">\(\cos(x)\)</span> 分别能用泰勒级数展开为：</p>
+<p><span class="math display">\[
+\begin{aligned}
+e^{x} &amp;= \sum_{n=0}^{\infty}{\frac{x^{n}}{n!}} = 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + \frac{x^4}{4!} + \dots\\
+\sin(x) &amp;= \sum_{n=0}^{\infty}{\frac{(-1)^n}{(2n + 1)!}x^{2n + 1}} = x - \frac{x^3}{3!} + \frac{x^5}{5!} - \frac{x^7}{7!} + \dots\\
+\cos(x) &amp;= \sum_{n=0}^{\infty}{\frac{(-1)^n}{(2n)!}x^{2n}} = 1 - \frac{x^2}{2!} + \frac{x^4}{4!} - \frac{x^6}{6!} + \dots\\
+\end{aligned}
+\]</span></p>
+<p>我们可以将 <span class="math inline">\(x = u\theta\)</span> 代入 <span class="math inline">\(e^x\)</span>，得到 <span class="math display">\[
+\begin{aligned}
+LHS = e^{u\theta} &amp;= \sum_{n=0}^{\infty}{\frac{(u\theta)^n}{n!}}\\
+&amp;= 1 + u\theta + \frac{(u\theta)^2}{2!} + \frac{(u\theta)^3}{3!} + \frac{(u\theta)^4}{4!} + \frac{(u\theta)^5}{5!} + \dots\\
+&amp;= 1 + u\theta + \frac{u^2\theta^2}{2!} + \frac{u^3\theta^3}{3!} + \frac{u^4\theta^4}{4!} + \frac{u^5\theta^5}{5!} + \dots\\
+\end{aligned}
+\]</span></p>
+<p>因为 <span class="math inline">\(u^2 = [-\pmb{u}\cdot\pmb{u}, \pmb{0}] = -\lVert u \rVert^2 = -1\)</span>，我们可以对 <span class="math inline">\(e^{u\theta}\)</span> 进一步化简 <span class="math display">\[
+\begin{aligned}
+LHS &amp;= 1 + u\theta + \frac{u^2\theta^2}{2!} + \frac{uu^2\theta^3}{3!} + \frac{(u^2)^2\theta^4}{4!} + \frac{u(u^2)^2\theta^5}{5!} + \dots\\
+&amp;= 1 + u\theta - \frac{\theta^2}{2!} - \frac{u\theta^3}{3!} + \frac{\theta^4}{4!} + \frac{u\theta^5}{5!} - \dots\\
+\end{aligned}
+\]</span></p>
+<p>同理，将 <span class="math inline">\(\theta\)</span> 代入 <span class="math inline">\(\cos(x)\)</span> 和 <span class="math inline">\(\sin(x)\)</span>， <span class="math display">\[
+\begin{aligned}
+\sin(\theta) &amp;= \sum_{n=0}^{\infty}{\frac{(-1)^n}{(2n + 1)!}\theta^{2n + 1}}\\
+&amp;= \theta - \frac{\theta^3}{3!} + \frac{\theta^5}{5!} - \frac{\theta^7}{7!} + \dots\\
+\\
+\cos(\theta) &amp;= \sum_{n=0}^{\infty}{\frac{(-1)^n}{(2n)!}\theta^{2n}}\\
+&amp;= 1 - \frac{\theta^2}{2!} + \frac{\theta^4}{4!} - \frac{\theta^6}{6!} + \dots\\
+\end{aligned}
+\]</span></p>
+<p>所以， <span class="math display">\[
+\begin{aligned}
+RHS &amp;= \cos(\theta) + u\sin(\theta)\\
+&amp;= \sum_{n=0}^{\infty}{\frac{(-1)^n}{(2n)!}\theta^{2n}} + u\sum_{n=0}^{\infty}{\frac{(-1)^n}{(2n + 1)!}\theta^{2n + 1}}\\
+&amp;= 1 + u\theta - \frac{\theta^2}{2!} - \frac{u\theta^3}{3!} + \frac{\theta^4}{4!} + \frac{u\theta^5}{5!} - \dots = LHS
+\end{aligned}
+\]</span></p>
+<p>因为 <span class="math inline">\(\pmb{u}\)</span> 是一个单位向量，<span class="math inline">\(u^2 = [-\pmb{u}\cdot\pmb{u}, \pmb{0}] = -\lVert u \rVert^2 = -1\)</span>，这与欧拉公式中的 <span class="math inline">\(i\)</span> 是非常类似的。</p>
+<p>有了指数型的表示方式，我们就能够将之前四元数的旋转公式改写为指数形式了：</p>
+<div class="note note-primary">
+            <p><strong>Theorem 12：3D 旋转公式（指数型）</strong><br />任意向量 <span class="math inline">\(\pmb{v}\)</span> 沿着以单位向量定义的旋转轴 <span class="math inline">\(\pmb{u}\)</span> 旋转 <span class="math inline">\(\theta\)</span> 度之后的 <span class="math inline">\(\pmb{v&#39;}\)</span> 可以使用四元数的指数表示。令 <span class="math inline">\(v = [0, \pmb{v}]，u = [0, \pmb{u}]\)</span>，那么： <span class="math display">\[v&#39; = e^{u\frac{\theta}{2}}ve^{-u\frac{\theta}{2}}\]</span></p>
+          </div>
+<p>有了四元数的指数定义，我们就能够定义四元数的更多运算了，首先是自然对数 <span class="math inline">\(\log\)</span>，对任意单位四元数 <span class="math inline">\(q = [\cos(\theta), \sin(\theta)\pmb{u}]\)</span>， <span class="math display">\[
+\log(q) = \log(e^{u\theta}) = [0, \pmb{u}\theta]
+\]</span> 接下来是四元数的幂运算 <span class="math display">\[
+q^t = (e^{u\theta})^t = e^{u(t\theta)} = [\cos(t\theta), \sin(t\theta)\pmb{u}]
+\]</span> 可以看到，一个单位四元数的 <span class="math inline">\(t\)</span> 次幂等同于将它的旋转角缩放至 <span class="math inline">\(t\)</span> 倍，并且不会改变它的旋转轴（<span class="math inline">\(u\)</span> 必须是单位向量，所以一般不能与 <span class="math inline">\(t\)</span> 结合）。这些运算会在之后讨论四元数插值时非常有用。</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Computer-Graphics/">Computer Graphics</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Math/">Math</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/%E5%9B%9B%E5%85%83%E6%95%B0%E5%92%8C%E4%B8%89%E7%BB%B4%E6%97%8B%E8%BD%AC(%E4%B8%80)/">
+                        <span class="hidden-mobile">四元数和三维旋转(一)</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/css/gitalk.css')
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"7bbb87323a0faa8998e9","clientSecret":"adaeef1cc5e02a3327b5a18a608b197148c2d48e","repo":"JiLingXiaoBai.github.io","owner":"JiLingXiaoBai","admin":"JiLingXiaoBai","language":"zh-CN","labels":["Gitalk"],"perPage":10,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":false,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},
+          {
+            id: 'fb4539435df1d8f7763779081faf6638'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        loader: {
+          load: ['ui/lazy']
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
