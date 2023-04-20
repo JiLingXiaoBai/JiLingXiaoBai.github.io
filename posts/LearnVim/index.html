@@ -16,26 +16,22 @@
   <meta name="author" content="祭零小白">
   <meta name="keywords" content="">
   
-    <meta name="description" content="标准光照模型 虽然光照模型有很多种类，但在早期游戏引擎中往往只使用一个光照模型，这个模型被称为标准光照模型。标准光照模型在BRDF理论被提出之前就已经被广泛使用了。标准光照模型只关心直接光照(direct light)，也就是那些直接从光源发射出来照射到物体表面后，经过物体表面的一次反射直接进入摄像机的光线 它的基本方法是，把进入到摄像机内的光线分为4个部分，每个部分使用一种方法来计算它的贡献">
+    <meta name="description" content="onoremap Is :&lt;c-u&gt;normal! F]vi]&lt;cr&gt; 用 onoremap 映射一个 motion，上面代码的意思为将 Is 按键映射为找到本行光标前的 &#39;]&#39; 符号，并选择在 &#39;[]&#39; 内的内容。按 dIs 就可以删除本行内光标位置之前的 &#39;[]&#39; 中的内容。 :&lt;c-r&gt;&lt;c-w&gt; 在命令模式下使用 ctrl + r 加">
 <meta property="og:type" content="article">
-<meta property="og:title" content="标准光照模型">
-<meta property="og:url" content="http://example.com/posts/%E6%A0%87%E5%87%86%E5%85%89%E7%85%A7%E6%A8%A1%E5%9E%8B/index.html">
+<meta property="og:title" content="LearnVim">
+<meta property="og:url" content="http://example.com/posts/LearnVim/index.html">
 <meta property="og:site_name" content="小白的笔记本">
-<meta property="og:description" content="标准光照模型 虽然光照模型有很多种类，但在早期游戏引擎中往往只使用一个光照模型，这个模型被称为标准光照模型。标准光照模型在BRDF理论被提出之前就已经被广泛使用了。标准光照模型只关心直接光照(direct light)，也就是那些直接从光源发射出来照射到物体表面后，经过物体表面的一次反射直接进入摄像机的光线 它的基本方法是，把进入到摄像机内的光线分为4个部分，每个部分使用一种方法来计算它的贡献">
+<meta property="og:description" content="onoremap Is :&lt;c-u&gt;normal! F]vi]&lt;cr&gt; 用 onoremap 映射一个 motion，上面代码的意思为将 Is 按键映射为找到本行光标前的 &#39;]&#39; 符号，并选择在 &#39;[]&#39; 内的内容。按 dIs 就可以删除本行内光标位置之前的 &#39;[]&#39; 中的内容。 :&lt;c-r&gt;&lt;c-w&gt; 在命令模式下使用 ctrl + r 加">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/posts_image/Standard_Lighting_Model/Standard_Lighting_Model_1.png">
-<meta property="og:image" content="http://example.com/posts_image/Standard_Lighting_Model/Standard_Lighting_Model_2.png">
-<meta property="article:published_time" content="2022-01-19T02:25:01.000Z">
-<meta property="article:modified_time" content="2023-04-14T16:02:31.773Z">
+<meta property="article:published_time" content="2022-09-14T08:50:13.000Z">
+<meta property="article:modified_time" content="2023-04-14T16:02:31.752Z">
 <meta property="article:author" content="祭零小白">
-<meta property="article:tag" content="Math">
-<meta property="article:tag" content="Light">
+<meta property="article:tag" content="Vim">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://example.com/posts_image/Standard_Lighting_Model/Standard_Lighting_Model_1.png">
   
   
   
-  <title>标准光照模型 - 小白的笔记本</title>
+  <title>LearnVim - 小白的笔记本</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
 
@@ -214,7 +210,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="标准光照模型"></span>
+            <span id="subtitle" data-typed-text="LearnVim"></span>
           
         </div>
 
@@ -225,8 +221,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2022-01-19 10:25" pubdate>
-          2022年1月19日 上午
+        <time datetime="2022-09-14 16:50" pubdate>
+          2022年9月14日 下午
         </time>
       </span>
     
@@ -238,7 +234,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          3.4k 字
+          3.2k 字
         
       </span>
     
@@ -250,7 +246,7 @@
         
         
           <!-- compatible with older versions-->
-          28 分钟
+          27 分钟
         
       </span>
     
@@ -288,7 +284,7 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">标准光照模型</h1>
+            <h1 style="display: none">LearnVim</h1>
             
               <p class="note note-info">
                 
@@ -302,62 +298,320 @@
             
               <div class="markdown-body">
                 
-                <h2 id="标准光照模型">标准光照模型</h2>
-<p>虽然光照模型有很多种类，但在早期游戏引擎中往往只使用一个光照模型，这个模型被称为标准光照模型。标准光照模型在BRDF理论被提出之前就已经被广泛使用了。标准光照模型只关心直接光照(direct light)，也就是那些直接从光源发射出来照射到物体表面后，经过物体表面的一次反射直接进入摄像机的光线</p>
-<p>它的基本方法是，把进入到摄像机内的光线分为4个部分，每个部分使用一种方法来计算它的贡献度。这四个部分是</p>
+                <h4 id="onoremap-is-c-unormal-fvicr">onoremap Is :&lt;c-u&gt;normal! F]vi]&lt;cr&gt;</h4>
+<p>用 onoremap 映射一个 motion，上面代码的意思为将 Is 按键映射为找到本行光标前的 ']' 符号，并选择在 '[]' 内的内容。按 dIs 就可以删除本行内光标位置之前的 '[]' 中的内容。</p>
+<h4 id="c-rc-w">:&lt;c-r&gt;&lt;c-w&gt;</h4>
+<p>在命令模式下使用 ctrl + r 加 ctrl + w，代表把当前光标下的字符串写入命令行。</p>
+<h4 id="i">10i#</h4>
+<p>插入 10 个 '#'</p>
+<h4 id="normal-和-normal">normal 和 normal!</h4>
+<p>例如给 F 添加一个映射：nnoremap F x</p>
+<p>这时 F 就有了两个含义：</p>
 <ul>
-<li><strong>自发光(emissive)</strong>部分，这个部分用于描述当给定一个方向时，一个表面本身会向该方向发射多少辐射量。需要注意的是，如果没有使用全局光照(global illumination)技术，这些自发光的表面并不会真的照亮周围的物体，而是它本身看起来更亮了而已。</li>
-<li><strong>高光反射(specular)</strong>部分，这个部分用于描述当光线从光源照射到模型表面时，该表面会在完全镜面反射方向散射多少辐射量。</li>
-<li><strong>漫反射(diffuse)</strong>部分，这个部分用于描述当光线从光源照射到模型表面时，该表面会向每个方向散射多少辐射量。</li>
-<li><strong>环境光(ambient)</strong>部分，它用于描述其他所有的间接光照。</li>
+<li>vim 的出厂设置定义：反向查找</li>
+<li>用户的自定义：x 代表删除</li>
 </ul>
-<h3 id="环境光">环境光</h3>
-<p>虽然标准光照模型的重点在于描述直接光照，但在真实的世界中，物体也可以被<strong>间接光照(indirect light)</strong>所照亮。间接光照指的是，光线通常会在多个物体之间反射，最后进入摄像机，也就是说，在光线进入摄像机前，经过了不止一次的物体反射。</p>
-<p>在标准光照模型中，我们使用了一种被称为环境光的部分来近似模拟间接光照。环境光的计算非常简单，它通常是一个全局变量，即场景中的所有物体都使用这个环境光。下面的等式给出了计算环境光的部分： <span class="math display">\[
-c_{ambient} = g_{ambient}
-\]</span></p>
-<h3 id="自发光">自发光</h3>
-<p>光线也可以直接由光源发射进入摄像机，而不需要经过任何物体的反射。标准光照模型使用自发光来计算这个部分的贡献度。它的计算也很简单，就是直接使用了该材质的自发光颜色： <span class="math display">\[
-c_{emissive} = m_{emissive}
-\]</span> 通常在实时渲染中，自发光的表面往往并不会照亮周围的表面，也就是说，这个物体并不会被当成一个光源。而使用全局光照系统则可以模拟这类自发光物体对周围物体的影响。</p>
-<h3 id="漫反射">漫反射</h3>
-<p>漫反射光照是用于对那些被物体表面随机散射到各个方向的辐射度进行建模的。在漫反射中，视角的位置是不重要的，因为反射是完全随机的，因此可以认为在任何反射方向上的分布都是一样的。但是，入射光线的角度很重要。</p>
-<p>漫反射光照符合<strong>兰伯特定律(Lambert's law)</strong>：反射光线的强度与表面法线和光源方向之间夹角的余弦值成正比。因此，漫反射部分的计算如下： <span class="math display">\[
-c_{diffuse} = (c_{light} \cdot m_{diffuse})\max(0, n \cdot I)
-\]</span> 其中，<span class="math inline">\(n\)</span>是表面法线，<span class="math inline">\(I\)</span>是指向光源的单位矢量，<span class="math inline">\(m_{diffuse}\)</span>是材质的漫反射颜色，<span class="math inline">\(c_{light}\)</span>是光源颜色。需要注意的是，我们需要防止法线和光源方向点乘的结果为负值，为此，我们使用取最大值的函数来将其截取到0，这可以防止物体被从后面来的光源照亮。</p>
-<h3 id="高光反射">高光反射</h3>
-<p>这里的高光反射是一种经验模型，也就是说，它并不完全符合真实世界中的高光反射现象。它可用于计算那些沿着完全镜面反射方向被反射的光线，这可以让物体看起来是有光泽的，例如金属材质。</p>
-<p>计算高光反射需要知道的信息比较多，如表面法线、视角方向、光源方向、反射方向等。我们假设这些矢量都是单位矢量。下图给出了这些方向矢量。</p>
-<figure>
-<img src="/posts_image/Standard_Lighting_Model/Standard_Lighting_Model_1.png" srcset="/img/loading.gif" lazyload title="Phong模型高光反射" alt="Phong模型高光反射" /><figcaption aria-hidden="true">Phong模型高光反射</figcaption>
-</figure>
-<p>在这四个矢量中，我们实际上只需要知道其中3个矢量即可，而第四个矢量——反射方向可以通过其他信息计算得到： <span class="math display">\[
-r = 2(n \cdot I)n - I
-\]</span> 这样，我们就可以利用Phong模型来计算高光反射的部分： <span class="math display">\[
-c_{specular} = (c_{light} \cdot m_{specular})\max(0, v \cdot r)^{m_{gloss}}
-\]</span> 其中，<span class="math inline">\(m_{gloss}\)</span> 是材质的<strong>光泽度(gloss)</strong>，也被称为<strong>反光度(shininess)</strong>。它用于控制高光区域的“亮点”有多宽，<span class="math inline">\(m_{gloss}\)</span> 越大，亮点就越小。<span class="math inline">\(m_{specular}\)</span> 是材质的高光反射颜色，它用于控制该材质对于高光反射的强度和颜色。<span class="math inline">\(c_{light}\)</span> 则是光源的颜色和强度。同样，这里也需要防止<span class="math inline">\(v \cdot r\)</span>的结果为负数。</p>
-<p>和上述的Phong模型相比，Blinn提出了一个简单的修改方法来得到类似的效果。它的基本思想是，避免计算反射方向<span class="math inline">\(r\)</span>。为此，Blinn模型引入了一个新的矢量<span class="math inline">\(h\)</span>，它是通过对<span class="math inline">\(v\)</span>和<span class="math inline">\(I\)</span>的取平均后再归一化得到的。即 <span class="math display">\[
-h = \cfrac{v + I}{\vert v + I \vert}
-\]</span> 然后，使用<span class="math inline">\(n\)</span>和<span class="math inline">\(h\)</span>之间对夹角进行计算，而非<span class="math inline">\(v\)</span>和<span class="math inline">\(r\)</span>之间的夹角，如下图所示。</p>
-<figure>
-<img src="/posts_image/Standard_Lighting_Model/Standard_Lighting_Model_2.png" srcset="/img/loading.gif" lazyload title="Blinn模型高光反射" alt="Blinn模型高光反射" /><figcaption aria-hidden="true">Blinn模型高光反射</figcaption>
-</figure>
-<p>总结一下，Blinn模型的公式如下： <span class="math display">\[
-c_{specular} = (c_{light} \cdot m_{specular})\max(0,n \cdot h)^{m_{gloss}}
-\]</span> 在硬件实现时，如果摄像机和光源距离模型足够远的话，Blinn模型会快于Phong模型，这是因为，此时可以认为<span class="math inline">\(v\)</span>和<span class="math inline">\(I\)</span>都是定值，因此<span class="math inline">\(h\)</span>将是一个常量。但是，当<span class="math inline">\(v\)</span>或者<span class="math inline">\(I\)</span>不是定值时，Phong模型可能反而更快一些。需要注意的是，这两种光照模型都是经验模型，也就是说，我们不应该认为Blinn模型是对“正确的”Phong模型的近似。实际上，在一些情况下，Blinn模型更符合实验结果。</p>
-<h3 id="半兰伯特模型">半兰伯特模型</h3>
-<p>广义的半兰伯特光照模型的公式如下： <span class="math display">\[
-c_{diffuse} = (c_{light} \cdot m_{diffuse})(\alpha(n \cdot I) + \beta)
-\]</span> 可以看出，与原兰伯特模型相比，半兰伯特光照模型没有使用 <span class="math inline">\(\max\)</span> 操作来防止<span class="math inline">\(n\)</span>和<span class="math inline">\(I\)</span>的点积为负值，而是对其结果进行了一个<span class="math inline">\(\alpha\)</span>倍的缩放再加上一个<span class="math inline">\(\beta\)</span>大小的偏移。绝大多数情况下，<span class="math inline">\(\alpha\)</span>和<span class="math inline">\(\beta\)</span>的值均为0.5，即公式为： <span class="math display">\[
-c_{diffuse} = (c_{light} \cdot m_{diffuse})(0.5(n \cdot I) + 0.5)
-\]</span> 通过这样的方式，我们可以把 <span class="math inline">\(n \cdot l\)</span> 的结果范围从[-1, 1]映射到[0, 1]范围内。也就是说，对于模型的背光面，在原兰伯特光照模型中点积结果将映射到同一个值，即0值处；而在半兰伯特模型中，背光面也可以有明暗变化，不同的点积结果会映射到不同的值上。</p>
-<p>需要注意的是，半兰伯特是没有任何物理依据的，它仅仅是一个视觉加强技术。</p>
-<h2 id="逐像素还是逐顶点">逐像素还是逐顶点</h2>
-<p>上面，我们给出了基本光照模型使用的数学公式，那么我们在哪里计算这些光照模型呢？通常来讲，我们有两种选择：在片元着色器中计算，也被称为<strong>逐像素光照(per-pixel lighting)</strong>;在顶点着色器中计算，也被称为<strong>逐顶点光照(per-vertex lighting)</strong>。</p>
-<p>在逐像素光照中，我们会以每个像素为基础，得到它的法线(可以是对顶点法线插值得到的，也可以是从法线纹理中采样得到的)，然后进行光照模型的计算。这种在面片之间对顶点法线进行插值的技术被称为<strong>Phong着色(Phong shading)</strong>，也被称为Phong插值或法线插值着色技术。这不同于我们之前讲到的Phong光照模型。</p>
-<p>与之相对的是逐顶点光照，也被称为<strong>高洛徳着色(Gouraud shading)</strong>。在逐顶点光照中，我们在每个顶点上计算光照，然后会在渲染图元内部进行线性插值，最后输出成像素颜色。由于顶点数目往往小于像素数目，因此，逐顶点光照的计算量往往要小于像素数目。但是，由于逐顶点光照依赖于线性插值来得到像素光照，因此，当光照模型中有非线性的计算(例如计算高光反射时)时，逐顶点光照就会出现问题。而且，由于逐顶点光照会在渲染图元内部对顶点颜色进行插值，这会导致渲染图元内部的颜色总是暗于顶点处的最高颜色值，这在某些情况下会产生明显的棱角现象。</p>
-<h2 id="参考">参考</h2>
-<p>《Unity Shader入门精要》</p>
+<p>normal F 代表用户的自定义用法，即 x 删除。normal! F 代表 vim 的出厂设置定义，即反向查找。</p>
+<h4 id="s-和-r">s 和 r</h4>
+<p>s 是替换当前光标下的字母并进入插入模式，r 是替换当前光标下的字母并保持在当前模式。</p>
+<h4 id="vnoremap-.-normal-.cr">vnoremap . :normal! .&lt;cr&gt;</h4>
+<p>可视模式下的映射，将 "." 映射为普通模式下的 "." 操作，普通模式下的 "." 操作为重复执行上一步的操作。例如：</p>
+<p>asfdasdf aslfk sdf asdfklsdf fklasdjf sladfjaslas sdffasd asdkfjksdjfksjdf sdfj</p>
+<p>在第一行按 "A;"，给第一行添加了分号，然后在可视模式下选中剩下的三行，按下 "."，就可以给剩下三行也在最后添加分号。</p>
+<h4 id="改变数字">改变数字</h4>
+<p>当光标在数字之前，可以按 ctrl + a 来增加数字的大小，按 ctrl + x 来减小数字的大小，然而光标在数字之后不可以如此操作。因此我们可以先按 0 来将光标置于行首来改变数字大小。</p>
+<p>如果将一列数字改变，如下：</p>
+<p>array[0] = 0;<br />
+array[0] = 0;<br />
+array[0] = 0;<br />
+array[0] = 0;<br />
+array[0] = 0;<br />
+array[0] = 0;<br />
+array[0] = 0;</p>
+<p>可以使用可视块模式，即 ctrl + v 选中方括号中的 0 这一列，然后按 ctrl + a 来增加选中的全部数字的大小，按 ctrl + x 来减小选中的全部数字的大小。</p>
+<p>如果想让数字递增，第一行的数字为 1，第二行的数字为 2 等，可以按 g ctrl + a 来实现，如果想让数字递减，可以按 g ctrl + x 来实现。</p>
+<h4 id="生成数字">生成数字</h4>
+<p>:put =range(1, 10) 可以从当前光标所在行的下一行开始，每一行插入一个数字，第一行为 1，第二行为 2，等等。</p>
+<p>:0put =range(1, 10) 可以从首行开始，每一行插入一个数字，第一行为 1，第二行为 2，等等。</p>
+<p>:for i in range(1, 10) | put ='196.168.0.' . i | endfor 可以生成十行字符串: 196.168.0.1<br />
+196.168.0.2<br />
+196.168.0.3<br />
+196.168.0.4<br />
+196.168.0.5<br />
+196.168.0.6<br />
+196.168.0.7<br />
+196.168.0.8<br />
+196.168.0.9<br />
+196.168.0.10</p>
+<h4 id="录制宏及替代">录制宏及替代</h4>
+<p><strong>普通宏：</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>q</th>
+<th>a</th>
+<th>&lt;operation&gt;</th>
+<th>q</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>记录宏命令</td>
+<td>记录宏到 a 寄存器</td>
+<td>宏操作</td>
+<td>记录结束退出</td>
+</tr>
+</tbody>
+</table>
+<p>qa&lt;operation&gt;q</p>
+<p>使用宏：<span class="citation" data-cites="a">@a</span> 或者 &lt;number&gt;<span class="citation" data-cites="a">@a</span> 来重复执行 number 次。</p>
+<p><strong>录制套娃宏：</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>q</th>
+<th>a</th>
+<th>&lt;operation&gt;</th>
+<th><span class="citation" data-cites="a">@a</span></th>
+<th>q</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>记录宏命令</td>
+<td>记录宏到 a 寄存器</td>
+<td>宏操作</td>
+<td>套娃</td>
+<td>记录结束退出</td>
+</tr>
+</tbody>
+</table>
+<p>qa&lt;operation&gt;<span class="citation" data-cites="aq">@aq</span></p>
+<p>使用宏：<span class="citation" data-cites="a">@a</span></p>
+<p><strong>替代方案：</strong></p>
+<p>nnoremap &lt;leader&gt;nl :%s/^/\=printf('%-4d', line('.'))&lt;cr&gt; 给所有行添加行标。</p>
+<p>vnoremap &lt;leader&gt;vn : s/^/\=printf("%d. ", line(".") - line("'&lt;") + 1)&lt;cr&gt; 可视模式下给选中的行加行标。</p>
+<h4 id="set-path">set path+=**</h4>
+<p>递归搜索目录，即搜索所有的目录，包括它们的子目录，子目录的子目录，一直循环下去，意味着目录下所有的文件和文件夹都要搜索。以 find 命令为例，添加这个设置后，可以找到子目录下的文件。</p>
+<h4 id="set-textwidth70-和-set-fomm">set textwidth=70 和 set fo+=Mm</h4>
+<p>set textwidth=70 可以让一行显示70个字母，多的会自动换行，set fo+=Mm 可以让 textwidth 设置同样应用到中文，一行只显示 70 个汉字。</p>
+<h4 id="搜索-和">搜索 / 和 ?</h4>
+<p>用 / 是从上往下搜索，按 n 是从上往下搜索下一个，按 N 是从下往上搜索上一个。用 ? 搜索，方向与 / 相反。</p>
+<h4 id="搜索-和-1">搜索 * 和 #</h4>
+<p>从上到下：</p>
+<ul>
+<li>精确搜索：*</li>
+<li>模糊搜索：g*</li>
+</ul>
+<p>从下到上：</p>
+<ul>
+<li>精确搜索：#</li>
+<li>模糊搜索：g#</li>
+</ul>
+<h4 id="正则表达式">正则表达式</h4>
+<table>
+<thead>
+<tr class="header">
+<th>表达式</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>[ab1]</td>
+<td>a 或者 b 或者 1</td>
+</tr>
+<tr class="even">
+<td>[0-9]</td>
+<td>0 到 9 里的任意数字</td>
+</tr>
+<tr class="odd">
+<td>[a-z]</td>
+<td>a 到 z 里的任意字母</td>
+</tr>
+<tr class="even">
+<td>[A-Z]</td>
+<td>A 到 Z 里的任意字母</td>
+</tr>
+<tr class="odd">
+<td>[^0-9]</td>
+<td>非 0-9 数字的任意字符</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr class="header">
+<th>符号</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>.</td>
+<td>任意一个字符</td>
+</tr>
+<tr class="even">
+<td>?</td>
+<td>没有或者一个</td>
+</tr>
+<tr class="odd">
+<td>*</td>
+<td>没有或者多个</td>
+</tr>
+<tr class="even">
+<td>+</td>
+<td>一个或者多个</td>
+</tr>
+<tr class="odd">
+<td>[^a]</td>
+<td>不是 a 的字符</td>
+</tr>
+<tr class="even">
+<td>^</td>
+<td>行首</td>
+</tr>
+<tr class="odd">
+<td>$</td>
+<td>行末</td>
+</tr>
+<tr class="even">
+<td>\d</td>
+<td>[0-9]</td>
+</tr>
+<tr class="odd">
+<td>\D</td>
+<td>[^0-9]</td>
+</tr>
+<tr class="even">
+<td>\w</td>
+<td>[a-zA-Z0-9_]</td>
+</tr>
+<tr class="odd">
+<td>\W</td>
+<td>[^a-zA-Z0-9_]</td>
+</tr>
+<tr class="even">
+<td>\s</td>
+<td>空格</td>
+</tr>
+<tr class="odd">
+<td>\S</td>
+<td>非空格</td>
+</tr>
+<tr class="even">
+<td>{min,max}</td>
+<td>重复</td>
+</tr>
+<tr class="odd">
+<td>()</td>
+<td>组</td>
+</tr>
+<tr class="even">
+<td>(A|B)</td>
+<td>组 A 或者组 B</td>
+</tr>
+</tbody>
+</table>
+<h4 id="计算混合运算">计算混合运算</h4>
+<p>inoremap &lt;leader&gt;js &lt;C-O&gt;yiW&lt;End&gt;=&lt;C-R&gt;=&lt;C-R&gt;0&lt;CR&gt; 在插入模式下按 &lt;leader&gt;js 就可以计算式子，其中&lt;C-O&gt;为一次性使用命令，使用后仍回到插入模式，&lt;C-R&gt;为调用寄存器</p>
+<h4 id="窗口管理">窗口管理</h4>
+<p>命令行下</p>
+<p>vim -o &lt;filename1&gt;&lt;filename2&gt; 依次水平打开窗口<br />
+vim -O &lt;filename1&gt;&lt;filename2&gt; 依次垂直打开窗口</p>
+<p>&lt;c-w&gt;| 最大化宽度 &lt;c-w&gt;_ 最大化高度</p>
+<p>:on 或者 :only 关闭除当前光标所在窗口外的所有窗口</p>
+<p>:mksession&lt;filename&gt; 将当前窗口的 layout 记录到文件里，想要回到这样的 layout 就使用 :so&lt;filename&gt; 命令</p>
+<h4 id="替换搜索到的字符">替换搜索到的字符</h4>
+<p>nnoremap &lt;leader&gt;s :%s/\&lt;&lt;C-R&gt;&lt;C-W&gt;&gt;//g&lt;left&gt;&lt;left&gt;</p>
+<h4 id="cnoreabbrev-q-q">cnoreabbrev Q! q!</h4>
+<p>在命令模式下，将 Q! 映射为 q!</p>
+<ul>
+<li>c：命令行指令，也就是说该命令只在命令行里起作用</li>
+<li>nore：不循环映射</li>
+<li>abbrev：映射命令</li>
+</ul>
+<h4 id="在命令行快速移动及修改">在命令行快速移动及修改</h4>
+<p><strong>移动</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>快捷键</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>&lt;-</td>
+<td>向左移动一个位置</td>
+</tr>
+<tr class="even">
+<td>-&gt;</td>
+<td>向右移动一个位置</td>
+</tr>
+<tr class="odd">
+<td>&lt;S-Left&gt; or &lt;C-Left&gt;</td>
+<td>向左移动一个 word 位置</td>
+</tr>
+<tr class="even">
+<td>&lt;S-Right&gt; or &lt;C-Right&gt;</td>
+<td>向右移动一个 word 位置</td>
+</tr>
+<tr class="odd">
+<td>CTRL-B or &lt;Home&gt;</td>
+<td>到行首位置</td>
+</tr>
+<tr class="even">
+<td>CTRL-E or &lt;End&gt;</td>
+<td>到行尾位置</td>
+</tr>
+</tbody>
+</table>
+<p><strong>删除</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>快捷键</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>CTRL-w</td>
+<td>删除一个 word</td>
+</tr>
+<tr class="even">
+<td>CTRL-u</td>
+<td>从光标位置删除到行首</td>
+</tr>
+</tbody>
+</table>
+<p><strong>覆盖</strong></p>
+<p>&lt;Insert&gt;: 进入覆盖模式，输入的字符覆盖以前的字符，再次按 &lt;Insert&gt; 退出覆盖模式。</p>
+<p><strong>取消输入，回到 Normal 模式</strong></p>
+<ul>
+<li>CTRL-c</li>
+<li>&lt;Esc&gt;</li>
+</ul>
+<h4 id="命令行窗口">命令行窗口</h4>
+<p>在命令行窗口可以使用 normal 模式下的移动，可以使用各种 vimrc 里的映射。</p>
+<p>可以通过两种方式打开这个窗口：</p>
+<ul>
+<li>如果已经在命令行：'ctrl-f'</li>
+<li>如果在 normal 模式：'q:'</li>
+</ul>
+<p>退出 command-line window：</p>
+<ul>
+<li>执行命令退出回到编辑窗口：&lt;CR&gt;</li>
+<li>通常使用的方式：':q'，':qa'，':qa!'</li>
+<li>ctrl-c：进入命令行，'q'，'qa'，'qa!'</li>
+</ul>
+<p>甚至搜索模式下，也可以使用以下方式来打开 command-line 窗口来进行编辑：</p>
+<ul>
+<li>从上到下的搜索：'q/'</li>
+<li>从下到上的搜索：'q?'</li>
+</ul>
+<p>如果在命令行的命令比较长，或者避免使用箭头按键来移动，就可以使用命令行窗口。</p>
 
                 
               </div>
@@ -376,7 +630,7 @@ c_{diffuse} = (c_{light} \cdot m_{diffuse})(0.5(n \cdot I) + 0.5)
     
       <span class="category-chain">
         
-  <a href="/categories/Unity-Shader/" class="category-chain-item">Unity Shader</a>
+  <a href="/categories/Editor/" class="category-chain-item">Editor</a>
   
   
 
@@ -391,9 +645,7 @@ c_{diffuse} = (c_{light} \cdot m_{diffuse})(0.5(n \cdot I) + 0.5)
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/Math/">#Math</a>
-      
-        <a href="/tags/Light/">#Light</a>
+        <a href="/tags/Vim/">#Vim</a>
       
     </div>
   
@@ -405,8 +657,8 @@ c_{diffuse} = (c_{light} \cdot m_{diffuse})(0.5(n \cdot I) + 0.5)
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>标准光照模型</div>
-      <div>http://example.com/posts/标准光照模型/</div>
+      <div>LearnVim</div>
+      <div>http://example.com/posts/LearnVim/</div>
     </div>
     <div class="license-meta">
       
@@ -418,7 +670,7 @@ c_{diffuse} = (c_{light} \cdot m_{diffuse})(0.5(n \cdot I) + 0.5)
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2022年1月19日</div>
+          <div>2022年9月14日</div>
         </div>
       
       
@@ -450,18 +702,12 @@ c_{diffuse} = (c_{light} \cdot m_{diffuse})(0.5(n \cdot I) + 0.5)
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/posts/%E5%9F%BA%E7%A1%80%E7%BA%B9%E7%90%86(%E4%B8%80)/" title="基础纹理(一)">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">基础纹理(一)</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/posts/Clip-Space/" title="Clip Space">
-                        <span class="hidden-mobile">Clip Space</span>
+                      <a href="/posts/%E7%94%BB%E7%BA%BF%E5%92%8C%E7%94%BB%E9%9D%A2%E7%AE%97%E6%B3%95/" title="画线和画三角形方法">
+                        <span class="hidden-mobile">画线和画三角形方法</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -484,7 +730,7 @@ c_{diffuse} = (c_{light} \cdot m_{diffuse})(0.5(n \cdot I) + 0.5)
         var options = Object.assign(
           {"clientID":"7bbb87323a0faa8998e9","clientSecret":"adaeef1cc5e02a3327b5a18a608b197148c2d48e","repo":"JiLingXiaoBai.github.io","owner":"JiLingXiaoBai","admin":"JiLingXiaoBai","language":"zh-CN","labels":["Gitalk"],"perPage":10,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":false,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},
           {
-            id: '638e6f03a63b89720e6d9dd066a9db93'
+            id: '630d8671b7ad5d99f6a129ed9bbc0044'
           }
         )
         var gitalk = new Gitalk(options);
@@ -545,12 +791,6 @@ c_{diffuse} = (c_{light} \cdot m_{diffuse})(0.5(n \cdot I) + 0.5)
 
 
   
-
-
-  
-  
-
-
 
 
 
@@ -744,49 +984,6 @@ c_{diffuse} = (c_{light} \cdot m_{diffuse})(0.5(n \cdot I) + 0.5)
 
 
   <script>Fluid.plugins.imageCaption();</script>
-
-  
-      <script>
-        if (!window.MathJax) {
-          window.MathJax = {
-            tex    : {
-              inlineMath: { '[+]': [['$', '$']] }
-            },
-            loader : {
-              load: ['ui/lazy']
-            },
-            options: {
-              renderActions: {
-                insertedScript: [200, () => {
-                  document.querySelectorAll('mjx-container').forEach(node => {
-                    let target = node.parentNode;
-                    if (target.nodeName.toLowerCase() === 'li') {
-                      target.parentNode.classList.add('has-jax');
-                    }
-                  });
-                }, '', false]
-              }
-            }
-          };
-        } else {
-          MathJax.startup.document.state(0);
-          MathJax.texReset();
-          MathJax.typeset();
-          MathJax.typesetPromise();
-        }
-
-        Fluid.events.registerRefreshCallback(function() {
-          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
-            MathJax.startup.document.state(0);
-            MathJax.texReset();
-            MathJax.typeset();
-            MathJax.typesetPromise();
-          }
-        });
-      </script>
-    
-
-  <script  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" ></script>
 
   <script  src="/js/local-search.js" ></script>
 
