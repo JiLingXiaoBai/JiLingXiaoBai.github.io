@@ -136,3 +136,76 @@ ClassName className = o as ClassName;
 
 * 接口方法的显示实现：如果多个接口里有相同的方法名，那么第一个方法名默认的引用的是排在最前面的接口，如果要使用后面接口的方法，就要显示实现：接口名.方法名。访问修饰符是private
 
+# 其他
+
+* 结构体可以实现接口，但是不能继承其他类或者其他结构体；结构体不能有显式的无参构造器，但是可以有显式的有参构造器。
+
+* 枚举成员默认类型是 int 类型，通过继承可以声明枚举成员为其他类型，枚举类型一定是继承自 byte、sbyte、short、ushort、int、uint、long 和 ulong 中的一种，不能是其它类型。比如：
+
+```csharp
+public enum Days : byte
+{
+    Monday = 1,
+    Tuesday = 2,
+    Wednesday = 3,
+    Thursday = 4,
+    Friday = 5,
+    Saturday = 6,
+    Sunday = 7
+}
+```
+
+* 枚举成员如果没有手动指定成员的值的话，就是一个从 0 开始，步长为 1 的等差数列，即 1，2，3，4，5...
+
+* 枚举成员如果被手动赋值的话，那么被赋值的成员的值即为所指定的值，但是其递增步长不会变，总是为 1：
+  
+```csharp
+public enum DriveType : sbyte 
+{     
+    CDRom,                                  //值为0
+    Fixed = -2,                             //值为-2
+    Network,                                //值为-1
+    NoRootDirectory = -1,                   //值为-1
+    Ram,                                    //值为0
+    Removable = Network * NoRootDirectory,  //值为1
+    Unknown                                 //值为2
+}  
+```
+
+* Flags关键字允许我们在使用枚举变量时,可以使用多个组合值。
+
+```csharp
+[Flags]
+public enum Options : byte
+{
+    None    = 0,
+    One     = 1 << 0,   // 1 0b1
+    Two     = 1 << 1,   // 2 0b10
+    Three   = 1 << 2,   // 4 0b100
+    Four    = 1 << 3,   // 8 0b1000
+}
+static void Main(){
+    Options option = Options.None | Options.One | Options.Two | Options.Three | Options.Four;
+    Console.WriteLine(option.ToString());
+    //输出：One, Two, Three, Four  如果不加 Flags 的特性，输出：15
+    Console.WriteLine((int)option);
+    //输出：15
+    Console.WriteLine(option.HasFlag(Options.None));
+    //输出：True
+    Console.WriteLine(option.HasFlag(Options.One));
+    //输出：True
+
+    option = Options.One | Options.Two;
+    Console.WriteLine(option.ToString());
+    //输出：One, Two  如果不加 Flags 的特性，输出：3
+    Console.WriteLine((int)option)
+    //输出：3
+    Console.WriteLine(option.HasFlag(Options.None));
+    //输出：True
+    Console.WriteLine(option.HasFlag(Options.One));
+    //输出：True
+     Console.WriteLine(option.HasFlag(Options.Three));
+    //输出：False
+}
+```
+所以有 [Flags] 特性时尽量不要将成员的值设为 0。
