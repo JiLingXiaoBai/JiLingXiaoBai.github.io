@@ -22,20 +22,20 @@ math: false
 
 <div class="center">
 
-|Operation|Category|Member|
-|:---------------|:---------------|:---------------|
-|Create|Constructor|List\<T\>()|
-|Create|Constructor|List\<T\>(IEnumerable\<T\>)|
-|Create|Constructor|List\<T\>(Int32)|
-|Create||Add(T)|
-|Create||AddRange(IEnumerable\<T\>)|
-|Create||Insert(Int32, T)|
-|Create||InsertRange(Int32, IEnumerable\<T\>)|
-|Delete||Clear()|
-|Delete||RemoveAt(Int32)|
-|Delete||RemoveRange(Int32, Int32)|
-|Delete||Remove(T)|
-|Delete||RemoveAll(Predicate\<T\>)|
+| Operation | Category    | Member                               |
+| :-------- | :---------- | :----------------------------------- |
+| Create    | Constructor | List\<T\>()                          |
+| Create    | Constructor | List\<T\>(IEnumerable\<T\>)          |
+| Create    | Constructor | List\<T\>(Int32)                     |
+| Create    |             | Add(T)                               |
+| Create    |             | AddRange(IEnumerable\<T\>)           |
+| Create    |             | Insert(Int32, T)                     |
+| Create    |             | InsertRange(Int32, IEnumerable\<T\>) |
+| Delete    |             | Clear()                              |
+| Delete    |             | RemoveAt(Int32)                      |
+| Delete    |             | RemoveRange(Int32, Int32)            |
+| Delete    |             | Remove(T)                            |
+| Delete    |             | RemoveAll(Predicate\<T\>)            |
 
 </div>
 
@@ -46,14 +46,14 @@ math: false
 
 <div class="center">
 
-|Operation|Category|Member|
-|:---------------|:---------------|:---------------|
-|Read||Count|
-|Read||Capacity|
-|Read||Item\[Int32\]|
-|Read||GetRange(Int32, Int32)|
-|Read|Iterate|GetEnumerator()|
-|Read|Iterate|ForEach(Action\<T\>)|
+| Operation | Category | Member                 |
+| :-------- | :------- | :--------------------- |
+| Read      |          | Count                  |
+| Read      |          | Capacity               |
+| Read      |          | Item\[Int32\]          |
+| Read      |          | GetRange(Int32, Int32) |
+| Read      | Iterate  | GetEnumerator()        |
+| Read      | Iterate  | ForEach(Action\<T\>)   |
 
 </div>
 
@@ -104,40 +104,51 @@ foreach(var val in bookList){
 
 <div class="center">
 
-|Operation|Category|Member|
-|:---------------|:---------------|:---------------|
-|Read||Contains(T)|
-|Read||Exists(Predicate\<T\>)|
-|Read||TrueForAll(Predicate\<T\>)|
-|Read||IndexOf(T)|
-|Read||IndexOf(T, Int32)|
-|Read||IndexOf(T, Int32, Int32)|
-|Read||LastIndexOf(T)|
-|Read||LastIndexOf(T, Int32)|
-|Read||LastIndexOf(T, Int32, Int32)|
+| Operation | Category | Member                       |
+| :-------- | :------- | :--------------------------- |
+| Read      |          | Contains(T)                  |
+| Read      |          | Exists(Predicate\<T\>)       |
+| Read      |          | TrueForAll(Predicate\<T\>)   |
+| Read      |          | IndexOf(T)                   |
+| Read      |          | IndexOf(T, Int32)            |
+| Read      |          | IndexOf(T, Int32, Int32)     |
+| Read      |          | LastIndexOf(T)               |
+| Read      |          | LastIndexOf(T, Int32)        |
+| Read      |          | LastIndexOf(T, Int32, Int32) |
 
 </div>
 
-
-
-
+* Contains(T) 确定某元素是否在列表中，返回一个 bool 值，如果 T 是引用类型，那么参数可以为 null。这里判断相等的方法是调用底层的 Equals 方法，我们可以重写 Equals 方法来改变判断的结果，从而影响 Contains 方法返回的值。
+* Exists(Predicate\<T\>) 确定是否含有与指定的委托所定义的条件相匹配的元素。
+* TrueForAll(Predicate\<T\>) 确定所有元素是否与指定的委托所定义的条件相匹配。
+* IndexOf(T) 返回整个列表中第一个与参数相等的元素的从零开始的索引。IndexOf(T, Int32) 返回整个列表中第一个与参数相等的元素的从指定位置开始的索引。IndexOf(T, Int32, Int32) 第二个参数为搜索开始的索引，第三个参数为要搜索的索引数。IndexOf(Item, 2, 3) 即表示从索引为 2 的位置开始向后搜索三个元素，并返回第一个与 Item 相等的元素的索引值。如果没有相等的元素，那么返回 -1，这里判断相等的方法也是调用底层的 Equals 方法。
+* LastIndexOf 方法和 IndexOf 方法相似，区别是 IndexOf 方法是从前往后找，LastIndexOf 方法是从后往前找。
 
 
 <div class="center">
 
-|Operation|Category|Member|
-|:---------------|:---------------|:---------------|
-|Read||Find(Predicate\<T\>)|
-|Read||FindLast(Predicate\<T\>)|
-|Read||FindAll(Predicate\<T\>)|
-|Read||FindIndex(Int32, Int32, Predicate\<T\>)|
-|Read||FindIndex(Int32, Predicate\<T\>)|
-|Read||FindIndex(Predicate\<T\>)|
-|Read||FindLastIndex(Int32, Int32, Predicate\<T\>)|
-|Read||FindLastIndex(Int32, Predicate\<T\>)|
-|Read||FindLastIndex(Predicate\<T\>)|
-|Read|Algorithm|BinarySearch(Int32, Int32, T, IComparer\<T\>)|
-|Read|Algorithm|BinarySearch(T)|
-|Read|Algorithm|BinarySearch(T, IComparer\<T\>)|
+| Operation | Category  | Member                                        |
+| :-------- | :-------- | :-------------------------------------------- |
+| Read      |           | Find(Predicate\<T\>)                          |
+| Read      |           | FindLast(Predicate\<T\>)                      |
+| Read      |           | FindAll(Predicate\<T\>)                       |
+| Read      |           | FindIndex(Int32, Int32, Predicate\<T\>)       |
+| Read      |           | FindIndex(Int32, Predicate\<T\>)              |
+| Read      |           | FindIndex(Predicate\<T\>)                     |
+| Read      |           | FindLastIndex(Int32, Int32, Predicate\<T\>)   |
+| Read      |           | FindLastIndex(Int32, Predicate\<T\>)          |
+| Read      |           | FindLastIndex(Predicate\<T\>)                 |
+| Read      | Algorithm | BinarySearch(Int32, Int32, T, IComparer\<T\>) |
+| Read      | Algorithm | BinarySearch(T)                               |
+| Read      | Algorithm | BinarySearch(T, IComparer\<T\>)               |
 
 </div>
+
+* Find(Predicate\<T\>) 方法返回与指定的委托所定义的条件相匹配的元素，如果没有相匹配的元素，则返回类型 T 的默认值。
+* FindLast(Predicate\<T\>) 与 Find(Predicate\<T\>) 相似，区别是 Find 方法是从前往后找，FindLast 方法是从后往前找。
+* FindAll(Predicate\<T\>) 方法返回一个新的列表，其元素为与指定的委托所定义的条件相匹配的所有元素。
+* FindIndex(Int32, Int32, Predicate\<T\>) 搜索与指定委托所定义的条件相匹配的一个元素，并返回列表中从指定的索引开始、包含指定元素个数的元素范围内第一个匹配项的从零开始的索引。
+* FindIndex(Int32, Predicate\<T\>) 搜索与指定委托所定义的条件相匹配的元素，并返回列表中从指定索引到最后一个元素的元素范围内第一个匹配项的从零开始的索引。
+* FindIndex(Predicate\<T\>) 搜索与指定委托所定义的条件相匹配的元素，并返回整个列表中第一个匹配元素的从零开始的索引。
+* FindLastIndex 方法与 FindIndex 方法相似，区别是 FindIndex 方法是从前往后找，FindLastIndex 方法是从后往前找。
+* BinarySearch 二分查找，调用者需为有序列表，即二分查找前要么使用 Sort() 方法排序，这时排序的对象需要实现 IComparable 泛型接口，即实现 CompareTo 方法；要么使用带 IComparer\<T\> 参数的重载，使用此比较器进行排序。而二分查找时需调用底层的 Equals 方法来判定是否相等。BinarySearch 方法返回的是已经排好序的列表中相等元素的索引值。
