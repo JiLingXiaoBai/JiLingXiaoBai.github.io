@@ -16,22 +16,22 @@
   <meta name="author" content="祭零小白">
   <meta name="keywords" content="">
   
-    <meta name="description" content="onoremap Is :&lt;c-u&gt;normal! F]vi]&lt;cr&gt; 用 onoremap 映射一个 motion，上面代码的意思为将 Is 按键映射为找到本行光标前的 &#39;]&#39; 符号，并选择在 &#39;[]&#39; 内的内容。按 dIs 就可以删除本行内光标位置之前的 &#39;[]&#39; 中的内容。 :&lt;c-r&gt;&lt;c-w&gt; 在命令模式下使用 ctrl + r 加">
+    <meta name="description" content="List&lt;T&gt; 泛型 List 在底层实现中是由数组来承载数据，所以又被称为“动态数组”。数组的大小即为容量(capacity)，可以手动或自动地调整。当容量不足时，会自动创建一个更长的数组，将原数组中的内容复制到新的数组中实现扩容。默认新创建的不含任何元素的 List 容量为 0，加入一个元素后容量为 4，容量不足时进行二倍扩容，即容量变为 8、16、32... 当 List 调用">
 <meta property="og:type" content="article">
-<meta property="og:title" content="LearnVim">
-<meta property="og:url" content="http://example.com/posts/LearnVim/index.html">
+<meta property="og:title" content="C# List&lt;T&gt;">
+<meta property="og:url" content="http://example.com/posts/CSharpList/index.html">
 <meta property="og:site_name" content="小白的笔记本">
-<meta property="og:description" content="onoremap Is :&lt;c-u&gt;normal! F]vi]&lt;cr&gt; 用 onoremap 映射一个 motion，上面代码的意思为将 Is 按键映射为找到本行光标前的 &#39;]&#39; 符号，并选择在 &#39;[]&#39; 内的内容。按 dIs 就可以删除本行内光标位置之前的 &#39;[]&#39; 中的内容。 :&lt;c-r&gt;&lt;c-w&gt; 在命令模式下使用 ctrl + r 加">
+<meta property="og:description" content="List&lt;T&gt; 泛型 List 在底层实现中是由数组来承载数据，所以又被称为“动态数组”。数组的大小即为容量(capacity)，可以手动或自动地调整。当容量不足时，会自动创建一个更长的数组，将原数组中的内容复制到新的数组中实现扩容。默认新创建的不含任何元素的 List 容量为 0，加入一个元素后容量为 4，容量不足时进行二倍扩容，即容量变为 8、16、32... 当 List 调用">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-09-14T08:50:13.000Z">
-<meta property="article:modified_time" content="2023-04-14T16:02:31.752Z">
+<meta property="article:published_time" content="2023-04-27T09:13:22.000Z">
+<meta property="article:modified_time" content="2023-04-27T14:39:57.680Z">
 <meta property="article:author" content="祭零小白">
-<meta property="article:tag" content="Vim">
+<meta property="article:tag" content="CSharp">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>LearnVim - 小白的笔记本</title>
+  <title>C# List&lt;T&gt; - 小白的笔记本</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
 
@@ -210,7 +210,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="LearnVim"></span>
+            <span id="subtitle" data-typed-text="C# List&lt;T&gt;"></span>
           
         </div>
 
@@ -221,8 +221,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2022-09-14 16:50" pubdate>
-          2022年9月14日 下午
+        <time datetime="2023-04-27 17:13" pubdate>
+          2023年4月27日 下午
         </time>
       </span>
     
@@ -234,7 +234,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          3.2k 字
+          4.3k 字
         
       </span>
     
@@ -246,7 +246,7 @@
         
         
           <!-- compatible with older versions-->
-          27 分钟
+          36 分钟
         
       </span>
     
@@ -284,13 +284,13 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">LearnVim</h1>
+            <h1 style="display: none">C# List&lt;T&gt;</h1>
             
               <p class="note note-info">
                 
                   
                     <!-- compatible with older versions-->
-                    本文最后更新于：2023年4月15日 凌晨
+                    本文最后更新于：2023年4月27日 晚上
                   
                 
               </p>
@@ -298,320 +298,294 @@
             
               <div class="markdown-body">
                 
-                <h4 id="onoremap-is-c-unormal-fvicr">onoremap Is :&lt;c-u&gt;normal! F]vi]&lt;cr&gt;</h4>
-<p>用 onoremap 映射一个 motion，上面代码的意思为将 Is 按键映射为找到本行光标前的 ']' 符号，并选择在 '[]' 内的内容。按 dIs 就可以删除本行内光标位置之前的 '[]' 中的内容。</p>
-<h4 id="c-rc-w">:&lt;c-r&gt;&lt;c-w&gt;</h4>
-<p>在命令模式下使用 ctrl + r 加 ctrl + w，代表把当前光标下的字符串写入命令行。</p>
-<h4 id="i">10i#</h4>
-<p>插入 10 个 '#'</p>
-<h4 id="normal-和-normal">normal 和 normal!</h4>
-<p>例如给 F 添加一个映射：nnoremap F x</p>
-<p>这时 F 就有了两个含义：</p>
-<ul>
-<li>vim 的出厂设置定义：反向查找</li>
-<li>用户的自定义：x 代表删除</li>
-</ul>
-<p>normal F 代表用户的自定义用法，即 x 删除。normal! F 代表 vim 的出厂设置定义，即反向查找。</p>
-<h4 id="s-和-r">s 和 r</h4>
-<p>s 是替换当前光标下的字母并进入插入模式，r 是替换当前光标下的字母并保持在当前模式。</p>
-<h4 id="vnoremap-.-normal-.cr">vnoremap . :normal! .&lt;cr&gt;</h4>
-<p>可视模式下的映射，将 "." 映射为普通模式下的 "." 操作，普通模式下的 "." 操作为重复执行上一步的操作。例如：</p>
-<p>asfdasdf aslfk sdf asdfklsdf fklasdjf sladfjaslas sdffasd asdkfjksdjfksjdf sdfj</p>
-<p>在第一行按 "A;"，给第一行添加了分号，然后在可视模式下选中剩下的三行，按下 "."，就可以给剩下三行也在最后添加分号。</p>
-<h4 id="改变数字">改变数字</h4>
-<p>当光标在数字之前，可以按 ctrl + a 来增加数字的大小，按 ctrl + x 来减小数字的大小，然而光标在数字之后不可以如此操作。因此我们可以先按 0 来将光标置于行首来改变数字大小。</p>
-<p>如果将一列数字改变，如下：</p>
-<p>array[0] = 0;<br />
-array[0] = 0;<br />
-array[0] = 0;<br />
-array[0] = 0;<br />
-array[0] = 0;<br />
-array[0] = 0;<br />
-array[0] = 0;</p>
-<p>可以使用可视块模式，即 ctrl + v 选中方括号中的 0 这一列，然后按 ctrl + a 来增加选中的全部数字的大小，按 ctrl + x 来减小选中的全部数字的大小。</p>
-<p>如果想让数字递增，第一行的数字为 1，第二行的数字为 2 等，可以按 g ctrl + a 来实现，如果想让数字递减，可以按 g ctrl + x 来实现。</p>
-<h4 id="生成数字">生成数字</h4>
-<p>:put =range(1, 10) 可以从当前光标所在行的下一行开始，每一行插入一个数字，第一行为 1，第二行为 2，等等。</p>
-<p>:0put =range(1, 10) 可以从首行开始，每一行插入一个数字，第一行为 1，第二行为 2，等等。</p>
-<p>:for i in range(1, 10) | put ='196.168.0.' . i | endfor 可以生成十行字符串: 196.168.0.1<br />
-196.168.0.2<br />
-196.168.0.3<br />
-196.168.0.4<br />
-196.168.0.5<br />
-196.168.0.6<br />
-196.168.0.7<br />
-196.168.0.8<br />
-196.168.0.9<br />
-196.168.0.10</p>
-<h4 id="录制宏及替代">录制宏及替代</h4>
-<p><strong>普通宏：</strong></p>
+                <h1 id="listt">List&lt;T&gt;</h1>
+<p>泛型 List 在底层实现中是由数组来承载数据，所以又被称为“动态数组”。数组的大小即为容量(capacity)，可以手动或自动地调整。当容量不足时，会自动创建一个更长的数组，将原数组中的内容复制到新的数组中实现扩容。默认新创建的不含任何元素的 List 容量为 0，加入一个元素后容量为 4，容量不足时进行二倍扩容，即容量变为 8、16、32... 当 List 调用 Clear 方法后，其数组长度即容量不变。泛型 List 与非泛型的 ArrayList 相对应，后者元素都为 object 类型。</p>
+<style>
+.center 
+{
+  width: auto;
+  display: table;
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>
+<div class="center">
 <table>
 <thead>
 <tr class="header">
-<th>q</th>
-<th>a</th>
-<th>&lt;operation&gt;</th>
-<th>q</th>
+<th style="text-align: left;">Operation</th>
+<th style="text-align: left;">Category</th>
+<th style="text-align: left;">Member</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>记录宏命令</td>
-<td>记录宏到 a 寄存器</td>
-<td>宏操作</td>
-<td>记录结束退出</td>
+<td style="text-align: left;">Create</td>
+<td style="text-align: left;">Constructor</td>
+<td style="text-align: left;">List&lt;T&gt;()</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Create</td>
+<td style="text-align: left;">Constructor</td>
+<td style="text-align: left;">List&lt;T&gt;(IEnumerable&lt;T&gt;)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Create</td>
+<td style="text-align: left;">Constructor</td>
+<td style="text-align: left;">List&lt;T&gt;(Int32)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Create</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Add(T)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Create</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">AddRange(IEnumerable&lt;T&gt;)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Create</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Insert(Int32, T)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Create</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">InsertRange(Int32, IEnumerable&lt;T&gt;)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Delete</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Clear()</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Delete</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">RemoveAt(Int32)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Delete</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">RemoveRange(Int32, Int32)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Delete</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Remove(T)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Delete</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">RemoveAll(Predicate&lt;T&gt;)</td>
 </tr>
 </tbody>
 </table>
-<p>qa&lt;operation&gt;q</p>
-<p>使用宏：<span class="citation" data-cites="a">@a</span> 或者 &lt;number&gt;<span class="citation" data-cites="a">@a</span> 来重复执行 number 次。</p>
-<p><strong>录制套娃宏：</strong></p>
+</div>
+<ul>
+<li>Add(T) 和 AddRange(IEnumerable&lt;T&gt;) 是在 List 最后添加新的元素。</li>
+<li>Insert(Int32, T) 和 InsertRange(Int32, IEnumerable&lt;T&gt;) 是在指定位置插入元素，会造成被插入位置和其后的所有元素整体后移。</li>
+<li>RemoveAt(Int32) 和 RemoveRange(Int32, Int32) 是移除指定位置的元素，会造成被移除元素位置之后的所有元素整体前移。</li>
+<li>Remove(T) 是移除特定对象的第一个匹配项，RemoveAll(Predicate&lt;T&gt;) 的参数是一个参数为 T，返回值为 bool 类型的委托，它会移除与指定的委托所定义的条件相匹配的所有元素。也会造成被移除元素位置之后的所有元素整体前移。</li>
+</ul>
+<div class="center">
 <table>
 <thead>
 <tr class="header">
-<th>q</th>
-<th>a</th>
-<th>&lt;operation&gt;</th>
-<th><span class="citation" data-cites="a">@a</span></th>
-<th>q</th>
+<th style="text-align: left;">Operation</th>
+<th style="text-align: left;">Category</th>
+<th style="text-align: left;">Member</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>记录宏命令</td>
-<td>记录宏到 a 寄存器</td>
-<td>宏操作</td>
-<td>套娃</td>
-<td>记录结束退出</td>
+<td style="text-align: left;">Read</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Count</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Read</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Capacity</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Read</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Item[Int32]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Read</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">GetRange(Int32, Int32)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Read</td>
+<td style="text-align: left;">Iterate</td>
+<td style="text-align: left;">GetEnumerator()</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Read</td>
+<td style="text-align: left;">Iterate</td>
+<td style="text-align: left;">ForEach(Action&lt;T&gt;)</td>
 </tr>
 </tbody>
 </table>
-<p>qa&lt;operation&gt;<span class="citation" data-cites="aq">@aq</span></p>
-<p>使用宏：<span class="citation" data-cites="a">@a</span></p>
-<p><strong>替代方案：</strong></p>
-<p>nnoremap &lt;leader&gt;nl :%s/^/\=printf('%-4d', line('.'))&lt;cr&gt; 给所有行添加行标。</p>
-<p>vnoremap &lt;leader&gt;vn : s/^/\=printf("%d. ", line(".") - line("'&lt;") + 1)&lt;cr&gt; 可视模式下给选中的行加行标。</p>
-<h4 id="set-path">set path+=**</h4>
-<p>递归搜索目录，即搜索所有的目录，包括它们的子目录，子目录的子目录，一直循环下去，意味着目录下所有的文件和文件夹都要搜索。以 find 命令为例，添加这个设置后，可以找到子目录下的文件。</p>
-<h4 id="set-textwidth70-和-set-fomm">set textwidth=70 和 set fo+=Mm</h4>
-<p>set textwidth=70 可以让一行显示70个字母，多的会自动换行，set fo+=Mm 可以让 textwidth 设置同样应用到中文，一行只显示 70 个汉字。</p>
-<h4 id="搜索-和">搜索 / 和 ?</h4>
-<p>用 / 是从上往下搜索，按 n 是从上往下搜索下一个，按 N 是从下往上搜索上一个。用 ? 搜索，方向与 / 相反。</p>
-<h4 id="搜索-和-1">搜索 * 和 #</h4>
-<p>从上到下：</p>
+</div>
 <ul>
-<li>精确搜索：*</li>
-<li>模糊搜索：g*</li>
+<li>Count 是当前列表中元素的个数，Capacity 是列表容量，即数组的长度，Item[Int32] 是索引器，即可以使用数组下标访问元素。</li>
+<li>GetRange(Int32, Int32) 参数分别为起始索引和终止索引，将当前列表中从起始索引到终止索引的元素加入子列表，将子列表返回。</li>
+<li>GetEnumerator() 拿到迭代器，调用返回值为 bool 类型的 MoveNext() 方法进行遍历，迭代器的指针默认指向的并不是 list 中的第一个元素，而是第一个元素之前的位置，遍历所有元素后会指向 list 之外的位置，所以遍历 list 最好使用 foreach。</li>
+<li>使用 foreach 进行遍历时不可以添加或者删除元素，可以修改元素内部的属性值，但是不可以修改元素本身的值。</li>
 </ul>
-<p>从下到上：</p>
-<ul>
-<li>精确搜索：#</li>
-<li>模糊搜索：g#</li>
-</ul>
-<h4 id="正则表达式">正则表达式</h4>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><code class="hljs csharp">List&lt;<span class="hljs-built_in">int</span>&gt; intList = <span class="hljs-keyword">new</span> List&lt;<span class="hljs-built_in">int</span>&gt;&#123;<span class="hljs-number">100</span>, <span class="hljs-number">200</span>, <span class="hljs-number">300</span>, <span class="hljs-number">400</span>&#125;;<br><span class="hljs-keyword">var</span> e = intList.GetEnumerator();<br>Console.WriteLine(e.Current);<br><span class="hljs-keyword">while</span>(e.MoveNext())&#123;<br>    Console.WriteLine(e.Current);<br>&#125;<br>Console.WriteLine(e.Current);<br><span class="hljs-comment">//输出：</span><br><span class="hljs-comment">//0</span><br><span class="hljs-comment">//100</span><br><span class="hljs-comment">//200</span><br><span class="hljs-comment">//300</span><br><span class="hljs-comment">//400</span><br><span class="hljs-comment">//0</span><br><br><span class="hljs-keyword">foreach</span>(<span class="hljs-keyword">var</span> val <span class="hljs-keyword">in</span> intList)&#123;<br>    Console.WriteLine(val);<br>    <span class="hljs-comment">//val++; //invalid 不可以修改元素本身的值</span><br>&#125;<br><span class="hljs-comment">//输出：</span><br><span class="hljs-comment">//100</span><br><span class="hljs-comment">//200</span><br><span class="hljs-comment">//300</span><br><span class="hljs-comment">//400</span><br><br><span class="hljs-keyword">class</span> <span class="hljs-title">Book</span>&#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-built_in">int</span> Id&#123;<span class="hljs-keyword">get</span>;<span class="hljs-keyword">set</span>;&#125;<br>    <span class="hljs-keyword">public</span> <span class="hljs-built_in">string</span> Name&#123;<span class="hljs-keyword">get</span>;<span class="hljs-keyword">set</span>;&#125;<br>    <span class="hljs-keyword">public</span> <span class="hljs-built_in">float</span> Price&#123;<span class="hljs-keyword">get</span>;<span class="hljs-keyword">set</span>;&#125;<br>&#125;<br>List&lt;Book&gt; bookList = <span class="hljs-keyword">new</span> List&lt;Book&gt;();<br><span class="hljs-keyword">for</span>(<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10</span>; i++;)<br>    bookList.Add(<span class="hljs-keyword">new</span> Book&#123;Id = i, Name = <span class="hljs-string">$&quot;Book-<span class="hljs-subst">&#123;i&#125;</span>&quot;</span>, Price = <span class="hljs-number">10</span> * i&#125;);<br><br><span class="hljs-keyword">foreach</span>(<span class="hljs-keyword">var</span> val <span class="hljs-keyword">in</span> bookList)&#123;<br>    val.Price++; <span class="hljs-comment">//valid 可以修改元素的属性的值 </span><br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="center">
 <table>
 <thead>
 <tr class="header">
-<th>表达式</th>
-<th>含义</th>
+<th style="text-align: left;">Operation</th>
+<th style="text-align: left;">Category</th>
+<th style="text-align: left;">Member</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>[ab1]</td>
-<td>a 或者 b 或者 1</td>
+<td style="text-align: left;">Read</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Contains(T)</td>
 </tr>
 <tr class="even">
-<td>[0-9]</td>
-<td>0 到 9 里的任意数字</td>
+<td style="text-align: left;">Read</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Exists(Predicate&lt;T&gt;)</td>
 </tr>
 <tr class="odd">
-<td>[a-z]</td>
-<td>a 到 z 里的任意字母</td>
+<td style="text-align: left;">Read</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">TrueForAll(Predicate&lt;T&gt;)</td>
 </tr>
 <tr class="even">
-<td>[A-Z]</td>
-<td>A 到 Z 里的任意字母</td>
+<td style="text-align: left;">Read</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">IndexOf(T)</td>
 </tr>
 <tr class="odd">
-<td>[^0-9]</td>
-<td>非 0-9 数字的任意字符</td>
+<td style="text-align: left;">Read</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">IndexOf(T, Int32)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Read</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">IndexOf(T, Int32, Int32)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Read</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">LastIndexOf(T)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Read</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">LastIndexOf(T, Int32)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Read</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">LastIndexOf(T, Int32, Int32)</td>
 </tr>
 </tbody>
 </table>
+</div>
+<ul>
+<li>Contains(T) 确定某元素是否在列表中，返回一个 bool 值，如果 T 是引用类型，那么参数可以为 null。这里判断相等的方法是调用底层的 Equals 方法，我们可以重写 Equals 方法来改变判断的结果，从而影响 Contains 方法返回的值。</li>
+<li>Exists(Predicate&lt;T&gt;) 确定是否含有与指定的委托所定义的条件相匹配的元素。</li>
+<li>TrueForAll(Predicate&lt;T&gt;) 确定所有元素是否与指定的委托所定义的条件相匹配。</li>
+<li>IndexOf(T) 返回整个列表中第一个与参数相等的元素的从零开始的索引。IndexOf(T, Int32) 返回整个列表中第一个与参数相等的元素的从指定位置开始的索引。IndexOf(T, Int32, Int32) 第二个参数为搜索开始的索引，第三个参数为要搜索的索引数。IndexOf(Item, 2, 3) 即表示从索引为 2 的位置开始向后搜索三个元素，并返回第一个与 Item 相等的元素的索引值。如果没有相等的元素，那么返回 -1，这里判断相等的方法也是调用底层的 Equals 方法。</li>
+<li>LastIndexOf 方法和 IndexOf 方法相似，区别是 IndexOf 方法是从前往后找，LastIndexOf 方法是从后往前找。</li>
+</ul>
+<div class="center">
 <table>
 <thead>
 <tr class="header">
-<th>符号</th>
-<th>含义</th>
+<th style="text-align: left;">Operation</th>
+<th style="text-align: left;">Category</th>
+<th style="text-align: left;">Member</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>.</td>
-<td>任意一个字符</td>
+<td style="text-align: left;">Read</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Find(Predicate&lt;T&gt;)</td>
 </tr>
 <tr class="even">
-<td>?</td>
-<td>没有或者一个</td>
+<td style="text-align: left;">Read</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">FindLast(Predicate&lt;T&gt;)</td>
 </tr>
 <tr class="odd">
-<td>*</td>
-<td>没有或者多个</td>
+<td style="text-align: left;">Read</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">FindAll(Predicate&lt;T&gt;)</td>
 </tr>
 <tr class="even">
-<td>+</td>
-<td>一个或者多个</td>
+<td style="text-align: left;">Read</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">FindIndex(Int32, Int32, Predicate&lt;T&gt;)</td>
 </tr>
 <tr class="odd">
-<td>[^a]</td>
-<td>不是 a 的字符</td>
+<td style="text-align: left;">Read</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">FindIndex(Int32, Predicate&lt;T&gt;)</td>
 </tr>
 <tr class="even">
-<td>^</td>
-<td>行首</td>
+<td style="text-align: left;">Read</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">FindIndex(Predicate&lt;T&gt;)</td>
 </tr>
 <tr class="odd">
-<td>$</td>
-<td>行末</td>
+<td style="text-align: left;">Read</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">FindLastIndex(Int32, Int32, Predicate&lt;T&gt;)</td>
 </tr>
 <tr class="even">
-<td>\d</td>
-<td>[0-9]</td>
+<td style="text-align: left;">Read</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">FindLastIndex(Int32, Predicate&lt;T&gt;)</td>
 </tr>
 <tr class="odd">
-<td>\D</td>
-<td>[^0-9]</td>
+<td style="text-align: left;">Read</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">FindLastIndex(Predicate&lt;T&gt;)</td>
 </tr>
 <tr class="even">
-<td>\w</td>
-<td>[a-zA-Z0-9_]</td>
+<td style="text-align: left;">Read</td>
+<td style="text-align: left;">Algorithm</td>
+<td style="text-align: left;">BinarySearch(Int32, Int32, T, IComparer&lt;T&gt;)</td>
 </tr>
 <tr class="odd">
-<td>\W</td>
-<td>[^a-zA-Z0-9_]</td>
+<td style="text-align: left;">Read</td>
+<td style="text-align: left;">Algorithm</td>
+<td style="text-align: left;">BinarySearch(T)</td>
 </tr>
 <tr class="even">
-<td>\s</td>
-<td>空格</td>
-</tr>
-<tr class="odd">
-<td>\S</td>
-<td>非空格</td>
-</tr>
-<tr class="even">
-<td>{min,max}</td>
-<td>重复</td>
-</tr>
-<tr class="odd">
-<td>()</td>
-<td>组</td>
-</tr>
-<tr class="even">
-<td>(A|B)</td>
-<td>组 A 或者组 B</td>
+<td style="text-align: left;">Read</td>
+<td style="text-align: left;">Algorithm</td>
+<td style="text-align: left;">BinarySearch(T, IComparer&lt;T&gt;)</td>
 </tr>
 </tbody>
 </table>
-<h4 id="计算混合运算">计算混合运算</h4>
-<p>inoremap &lt;leader&gt;js &lt;C-O&gt;yiW&lt;End&gt;=&lt;C-R&gt;=&lt;C-R&gt;0&lt;CR&gt; 在插入模式下按 &lt;leader&gt;js 就可以计算式子，其中&lt;C-O&gt;为一次性使用命令，使用后仍回到插入模式，&lt;C-R&gt;为调用寄存器</p>
-<h4 id="窗口管理">窗口管理</h4>
-<p>命令行下</p>
-<p>vim -o &lt;filename1&gt;&lt;filename2&gt; 依次水平打开窗口<br />
-vim -O &lt;filename1&gt;&lt;filename2&gt; 依次垂直打开窗口</p>
-<p>&lt;c-w&gt;| 最大化宽度 &lt;c-w&gt;_ 最大化高度</p>
-<p>:on 或者 :only 关闭除当前光标所在窗口外的所有窗口</p>
-<p>:mksession&lt;filename&gt; 将当前窗口的 layout 记录到文件里，想要回到这样的 layout 就使用 :so&lt;filename&gt; 命令</p>
-<h4 id="替换搜索到的字符">替换搜索到的字符</h4>
-<p>nnoremap &lt;leader&gt;s :%s/\&lt;&lt;C-R&gt;&lt;C-W&gt;&gt;//g&lt;left&gt;&lt;left&gt;</p>
-<h4 id="cnoreabbrev-q-q">cnoreabbrev Q! q!</h4>
-<p>在命令模式下，将 Q! 映射为 q!</p>
+</div>
 <ul>
-<li>c：命令行指令，也就是说该命令只在命令行里起作用</li>
-<li>nore：不循环映射</li>
-<li>abbrev：映射命令</li>
+<li>Find(Predicate&lt;T&gt;) 方法返回与指定的委托所定义的条件相匹配的元素，如果没有相匹配的元素，则返回类型 T 的默认值。</li>
+<li>FindLast(Predicate&lt;T&gt;) 与 Find(Predicate&lt;T&gt;) 相似，区别是 Find 方法是从前往后找，FindLast 方法是从后往前找。</li>
+<li>FindAll(Predicate&lt;T&gt;) 方法返回一个新的列表，其元素为与指定的委托所定义的条件相匹配的所有元素。</li>
+<li>FindIndex(Int32, Int32, Predicate&lt;T&gt;) 搜索与指定委托所定义的条件相匹配的一个元素，并返回列表中从指定的索引开始、包含指定元素个数的元素范围内第一个匹配项的从零开始的索引。</li>
+<li>FindIndex(Int32, Predicate&lt;T&gt;) 搜索与指定委托所定义的条件相匹配的元素，并返回列表中从指定索引到最后一个元素的元素范围内第一个匹配项的从零开始的索引。</li>
+<li>FindIndex(Predicate&lt;T&gt;) 搜索与指定委托所定义的条件相匹配的元素，并返回整个列表中第一个匹配元素的从零开始的索引。</li>
+<li>FindLastIndex 方法与 FindIndex 方法相似，区别是 FindIndex 方法是从前往后找，FindLastIndex 方法是从后往前找。</li>
+<li>BinarySearch 二分查找，调用者需为有序列表，即二分查找前要么使用 Sort() 方法排序，这时排序的对象需要实现 IComparable 泛型接口，即实现 CompareTo 方法；要么使用带 IComparer&lt;T&gt; 参数的重载，使用此比较器进行排序。而二分查找时需调用底层的 Equals 方法来判定是否相等。BinarySearch 方法返回的是已经排好序的列表中相等元素的索引值。</li>
 </ul>
-<h4 id="在命令行快速移动及修改">在命令行快速移动及修改</h4>
-<p><strong>移动</strong></p>
-<table>
-<thead>
-<tr class="header">
-<th>快捷键</th>
-<th>含义</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>&lt;-</td>
-<td>向左移动一个位置</td>
-</tr>
-<tr class="even">
-<td>-&gt;</td>
-<td>向右移动一个位置</td>
-</tr>
-<tr class="odd">
-<td>&lt;S-Left&gt; or &lt;C-Left&gt;</td>
-<td>向左移动一个 word 位置</td>
-</tr>
-<tr class="even">
-<td>&lt;S-Right&gt; or &lt;C-Right&gt;</td>
-<td>向右移动一个 word 位置</td>
-</tr>
-<tr class="odd">
-<td>CTRL-B or &lt;Home&gt;</td>
-<td>到行首位置</td>
-</tr>
-<tr class="even">
-<td>CTRL-E or &lt;End&gt;</td>
-<td>到行尾位置</td>
-</tr>
-</tbody>
-</table>
-<p><strong>删除</strong></p>
-<table>
-<thead>
-<tr class="header">
-<th>快捷键</th>
-<th>含义</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>CTRL-w</td>
-<td>删除一个 word</td>
-</tr>
-<tr class="even">
-<td>CTRL-u</td>
-<td>从光标位置删除到行首</td>
-</tr>
-</tbody>
-</table>
-<p><strong>覆盖</strong></p>
-<p>&lt;Insert&gt;: 进入覆盖模式，输入的字符覆盖以前的字符，再次按 &lt;Insert&gt; 退出覆盖模式。</p>
-<p><strong>取消输入，回到 Normal 模式</strong></p>
-<ul>
-<li>CTRL-c</li>
-<li>&lt;Esc&gt;</li>
-</ul>
-<h4 id="命令行窗口">命令行窗口</h4>
-<p>在命令行窗口可以使用 normal 模式下的移动，可以使用各种 vimrc 里的映射。</p>
-<p>可以通过两种方式打开这个窗口：</p>
-<ul>
-<li>如果已经在命令行：'ctrl-f'</li>
-<li>如果在 normal 模式：'q:'</li>
-</ul>
-<p>退出 command-line window：</p>
-<ul>
-<li>执行命令退出回到编辑窗口：&lt;CR&gt;</li>
-<li>通常使用的方式：':q'，':qa'，':qa!'</li>
-<li>ctrl-c：进入命令行，'q'，'qa'，'qa!'</li>
-</ul>
-<p>甚至搜索模式下，也可以使用以下方式来打开 command-line 窗口来进行编辑：</p>
-<ul>
-<li>从上到下的搜索：'q/'</li>
-<li>从下到上的搜索：'q?'</li>
-</ul>
-<p>如果在命令行的命令比较长，或者避免使用箭头按键来移动，就可以使用命令行窗口。</p>
 
                 
               </div>
@@ -630,7 +604,7 @@ vim -O &lt;filename1&gt;&lt;filename2&gt; 依次垂直打开窗口</p>
     
       <span class="category-chain">
         
-  <a href="/categories/Editor/" class="category-chain-item">Editor</a>
+  <a href="/categories/Languages/" class="category-chain-item">Languages</a>
   
   
 
@@ -645,7 +619,7 @@ vim -O &lt;filename1&gt;&lt;filename2&gt; 依次垂直打开窗口</p>
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/Vim/">#Vim</a>
+        <a href="/tags/CSharp/">#CSharp</a>
       
     </div>
   
@@ -657,8 +631,8 @@ vim -O &lt;filename1&gt;&lt;filename2&gt; 依次垂直打开窗口</p>
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>LearnVim</div>
-      <div>http://example.com/posts/LearnVim/</div>
+      <div>C# List&lt;T&gt;</div>
+      <div>http://example.com/posts/CSharpList/</div>
     </div>
     <div class="license-meta">
       
@@ -670,7 +644,7 @@ vim -O &lt;filename1&gt;&lt;filename2&gt; 依次垂直打开窗口</p>
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2022年9月14日</div>
+          <div>2023年4月27日</div>
         </div>
       
       
@@ -702,18 +676,12 @@ vim -O &lt;filename1&gt;&lt;filename2&gt; 依次垂直打开窗口</p>
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/posts/CSharp%E7%B1%BB%E5%92%8C%E6%8E%A5%E5%8F%A3/" title="C# 类和接口">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">C# 类和接口</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/posts/%E7%94%BB%E7%BA%BF%E5%92%8C%E7%94%BB%E9%9D%A2%E7%AE%97%E6%B3%95/" title="画线和画三角形方法">
-                        <span class="hidden-mobile">画线和画三角形方法</span>
+                      <a href="/posts/CSharp%E6%A8%A1%E5%BC%8F%E5%8C%B9%E9%85%8D-%E6%9E%90%E6%9E%84%E5%85%83%E7%BB%84-%E5%BC%83%E5%85%83/" title="C# 模式匹配、析构元组和弃元">
+                        <span class="hidden-mobile">C# 模式匹配、析构元组和弃元</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -736,7 +704,7 @@ vim -O &lt;filename1&gt;&lt;filename2&gt; 依次垂直打开窗口</p>
         var options = Object.assign(
           {"clientID":"7bbb87323a0faa8998e9","clientSecret":"adaeef1cc5e02a3327b5a18a608b197148c2d48e","repo":"JiLingXiaoBai.github.io","owner":"JiLingXiaoBai","admin":"JiLingXiaoBai","language":"zh-CN","labels":["Gitalk"],"perPage":10,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":false,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},
           {
-            id: '630d8671b7ad5d99f6a129ed9bbc0044'
+            id: '72710bbe93740f68b52b2209ea559248'
           }
         )
         var gitalk = new Gitalk(options);

@@ -237,6 +237,189 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/posts/%E6%9B%B4%E5%A4%8D%E6%9D%82%E7%9A%84%E5%85%89%E7%85%A7(%E4%B8%80)/" target="_self">
+          更复杂的光照(一)
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/posts/%E6%9B%B4%E5%A4%8D%E6%9D%82%E7%9A%84%E5%85%89%E7%85%A7(%E4%B8%80)/" target="_self">
+        <div>
+          Unity 的渲染路径 在 Unity 里，渲染路径(Rendering Path)决定光照是如何运用到 Unity Shader 中的。我们需要为每个 Pass 指定它使用的渲染路径，只有这样才能让 Unity 正确地为我们准备光源和处理后的光照信息等数据，也就是说，我们只有为 Shader 正确地选择和设置了需要的渲染路径，该 Shader 的光照计算才能被正确执行。 Unity 支持多种
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-02-17 11:31" pubdate>
+              2022-02-17
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Unity-Shader/" class="category-chain-item">Unity Shader</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Light/">#Light</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/posts/%E9%80%8F%E6%98%8E%E6%95%88%E6%9E%9C(%E4%BA%8C)/" target="_self">
+          透明效果(二)
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/posts/%E9%80%8F%E6%98%8E%E6%95%88%E6%9E%9C(%E4%BA%8C)/" target="_self">
+        <div>
+          开启深度写入的半透明效果 在上一篇中，我们给出了一种由于关闭深度写入而造成排序错误的情况。一种解决办法是使用两个 Pass 来渲染模型：第一个 Pass 开启深度写入，但不输出颜色，它的目的仅仅是为了把该模型的深度值写入到深度缓冲中；第二个 Pass 进行正常的透明度混合，由于上一个 Pass 已经得到了逐像素的正确的深度信息，该 Pass 就可以按照像素级别的深度排序结果进行透明渲染。但这个方
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-01-27 22:53" pubdate>
+              2022-01-27
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Unity-Shader/" class="category-chain-item">Unity Shader</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Alpha/">#Alpha</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/posts/%E9%80%8F%E6%98%8E%E6%95%88%E6%9E%9C(%E4%B8%80)/" target="_self">
+          透明效果(一)
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/posts/%E9%80%8F%E6%98%8E%E6%95%88%E6%9E%9C(%E4%B8%80)/" target="_self">
+        <div>
+          透明效果 在实时渲染中要实现透明效果，通常会在渲染模型时控制它的透明通道(Alpha Channel)。当开启透明混合后，当一个物体被渲染到屏幕上时，每个片元除了颜色值和深度值之外，它还有另一个属性——透明度。当透明度为 1 时，表示该像素是完全不透明的，而当其为 0 时，则表示该像素完全不会显示。 在 Unity 中，我们通常使用两种方法来实现透明效果：第一种是使用透明度测试(Alpha T
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-01-25 22:26" pubdate>
+              2022-01-25
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Unity-Shader/" class="category-chain-item">Unity Shader</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Alpha/">#Alpha</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/posts/%E5%9F%BA%E7%A1%80%E7%BA%B9%E7%90%86(%E4%BA%8C)/" target="_self">
           基础纹理(二)
         </a>

@@ -1,3 +1,6 @@
+http://example.com/posts/CSharpList/
+http://example.com/posts/CSharp%E6%A8%A1%E5%BC%8F%E5%8C%B9%E9%85%8D-%E6%9E%90%E6%9E%84%E5%85%83%E7%BB%84-%E5%BC%83%E5%85%83/
+http://example.com/posts/CSharp%E7%B1%BB%E5%92%8C%E6%8E%A5%E5%8F%A3/
 http://example.com/about/index.html
 http://example.com/posts/%E9%AB%98%E7%BA%A7%E7%BA%B9%E7%90%86(%E4%BA%8C)/
 http://example.com/posts/%E9%AB%98%E7%BA%A7%E7%BA%B9%E7%90%86(%E4%B8%80)/
@@ -25,8 +28,9 @@ http://example.com/posts/Spatial-Transform/
 http://example.com/posts/LearnVim/
 http://example.com/posts/Clip-Space/
 http://example.com/
-http://example.com/tags/Math/
+http://example.com/tags/CSharp/
 http://example.com/tags/Vim/
+http://example.com/tags/Math/
 http://example.com/tags/Texture/
 http://example.com/tags/Animation/
 http://example.com/tags/Post-Processing/
@@ -34,6 +38,7 @@ http://example.com/tags/Light/
 http://example.com/tags/Fundamental-of-Computer-Graphics/
 http://example.com/tags/Alpha/
 http://example.com/tags/Rendering/
+http://example.com/categories/Languages/
+http://example.com/categories/Editor/
 http://example.com/categories/Unity-Shader/
 http://example.com/categories/Computer-Graphics/
-http://example.com/categories/Editor/
