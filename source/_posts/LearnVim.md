@@ -240,3 +240,97 @@ nnoremap \<leader>s :%s/\\<\<C-R>\<C-W>\>//g\<left>\<left>
 * 从下到上的搜索：'q?'
 
 如果在命令行的命令比较长，或者避免使用箭头按键来移动，就可以使用命令行窗口。
+
+#### IdeaVimrc
+
+```
+" ================================================================================================
+" Extensions 
+" ================================================================================================
+"下列插件需要在IDEA中下载
+"ideaVim
+"IdeaVim-EasyMotion
+"IdeaVimExtension
+"CodeGlance Pro
+
+" ================================================================================================
+" Basic settings
+" ================================================================================================
+"设置在光标距离窗口顶部或底部一定行数时，开始滚动屏幕内容的行为
+set scrolloff=5
+
+set easymotion
+
+set cursorline
+
+set showmatch
+
+set nobackup
+
+set surround
+
+set ruler
+
+set clipboard^=unnamed,unnamedplus
+
+"--递增搜索功能：在执行搜索（使用 / 或 ? 命令）时，
+"Vim 会在您输入搜索模式的过程中逐步匹配并高亮显示匹配的文本。
+set incsearch
+
+"--在搜索时忽略大小写
+set ignorecase
+
+"--将搜索匹配的文本高亮显示
+set hlsearch
+
+"--设置相对行号 和 当前行的绝对行号
+set number relativenumber
+
+"--设置返回normal模式时回到英文输入法
+set keep-english-in-normal
+
+" ================================================================================================
+" No Leader Keymaps
+" ================================================================================================
+
+" go to somewhere (g in normal mode for goto somewhere)
+nnoremap ga :<C-u>action GotoAction<CR>
+nnoremap gb :<C-u>action JumpToLastChange<CR>
+nnoremap gc :<C-u>action GotoClass<CR>
+nnoremap gd :<C-u>action GotoDeclaration<CR>
+nnoremap gs :<C-u>action GotoSuperMethod<CR>
+nnoremap gi :<C-u>action GotoImplementation<CR>
+nnoremap gf :<C-u>action GotoFile<CR>
+nnoremap gm :<C-u>action GotoSymbol<CR>
+nnoremap gu :<C-u>action ShowUsages<CR>
+nnoremap gt :<C-u>action GotoTest<CR>
+nnoremap gp :<C-u>action FindInPath<CR>
+nnoremap gr :<C-u>action RecentFiles<CR>
+nnoremap gh :<C-u>action Back<CR>
+nnoremap gl :<C-u>action Forward<CR>
+
+nnoremap ta :<C-u>action Annotate<cr>
+nnoremap tb :<C-u>action ToggleLineBreakpoint<cr>
+nnoremap tm :<C-u>action ToggleBookmark<cr>
+nnoremap tp :<C-u>action ActivateProjectToolWindow<CR>
+
+nnoremap <C-f> :<C-u>action ReformatCode<CR>
+nnoremap J :<C-u>action MethodDown<CR>
+nnoremap K :<C-u>action MethodUp<CR>
+nnoremap <S-Down> :<C-u>action EditorCloneCaretBelow<CR>
+nnoremap <S-Up> :<C-u>action EditorCloneCaretAbove<CR>
+
+" ================================================================================================
+"️️ Leader Keymaps
+" ================================================================================================
+let mapleader = " "
+nnoremap <Leader>o :<C-u>action RecentProjectListGroup<CR>
+nnoremap <Leader>r :<C-u>action Replace<CR>
+nnoremap <Leader>f :<C-u>action Find<CR>
+nnoremap <Leader>h gT
+nnoremap <Leader>l g
+nnoremap <leader>ns :action NextSplitter<CR>
+nnoremap <leader>ps :action PrevSplitter<CR>
+nnoremap <leader>sh :action SplitHorizontally<CR>
+nnoremap <leader>sv :action SplitVertically<CR>
+```
