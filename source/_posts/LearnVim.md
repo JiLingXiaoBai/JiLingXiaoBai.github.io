@@ -304,7 +304,6 @@ nnoremap gf :<C-u>action GotoFile<CR>
 nnoremap gm :<C-u>action GotoSymbol<CR>
 nnoremap gu :<C-u>action ShowUsages<CR>
 nnoremap gt :<C-u>action GotoTest<CR>
-nnoremap gp :<C-u>action FindInPath<CR>
 nnoremap gr :<C-u>action RecentFiles<CR>
 nnoremap gh :<C-u>action Back<CR>
 nnoremap gl :<C-u>action Forward<CR>
@@ -326,9 +325,15 @@ nnoremap <S-Up> :<C-u>action EditorCloneCaretAbove<CR>
 let mapleader = " "
 nnoremap <Leader>o :<C-u>action RecentProjectListGroup<CR>
 nnoremap <Leader>r :<C-u>action Replace<CR>
+vnoremap <Leader>r :<C-u>action Replace<CR>
+nnoremap <Leader>R :<C-u>action ReplaceInPath<CR>
+vnoremap <Leader>R :<C-u>action ReplaceInPath<CR>
 nnoremap <Leader>f :<C-u>action Find<CR>
+vnoremap <Leader>f :<C-u>action Find<CR>
+nnoremap <Leader>F :<C-u>action FindInPath<CR>
+vnoremap <Leader>F :<C-u>action FindInPath<CR>
 nnoremap <Leader>h gT
-nnoremap <Leader>l g
+nnoremap <Leader>l gt
 nnoremap <leader>ns :action NextSplitter<CR>
 nnoremap <leader>ps :action PrevSplitter<CR>
 nnoremap <leader>sh :action SplitHorizontally<CR>
