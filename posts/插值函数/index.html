@@ -16,34 +16,18 @@
   <meta name="author" content="祭零小白">
   <meta name="keywords" content="">
   
-    <meta name="description" content="线性插值函数 $$ lerp(y_1, y_2, weight) &#x3D; y_1 + (y_2 - y_1) \times weight $$ 其中 $weight$ 是一个在 [0, 1] 区间的实数，倒不是因为取更大的值后这个函数就无定义了，而是因为取了更大的值，这个函数就失去了我们构造它的理由，另外，CG 会限制 $weight$ 的值在 [0, 1] 的范围内，超过这个范围会被留在边界 0 或">
+    <meta name="description" content="线性插值函数 \[ lerp(y_1, y_2, weight) &#x3D; y_1 + (y_2 - y_1) \times weight \] 其中 \(weight\) 是一个在 [0, 1] 区间的实数，倒不是因为取更大的值后这个函数就无定义了，而是因为取了更大的值，这个函数就失去了我们构造它的理由，另外，CG 会限制 \(weight\) 的值在 [0, 1] 的范围内，超过这个范">
 <meta property="og:type" content="article">
 <meta property="og:title" content="插值函数">
 <meta property="og:url" content="http://example.com/posts/%E6%8F%92%E5%80%BC%E5%87%BD%E6%95%B0/index.html">
 <meta property="og:site_name" content="小白的笔记本">
-<meta property="og:description" content="线性插值函数 $$ lerp(y_1, y_2, weight) &#x3D; y_1 + (y_2 - y_1) \times weight $$ 其中 $weight$ 是一个在 [0, 1] 区间的实数，倒不是因为取更大的值后这个函数就无定义了，而是因为取了更大的值，这个函数就失去了我们构造它的理由，另外，CG 会限制 $weight$ 的值在 [0, 1] 的范围内，超过这个范围会被留在边界 0 或">
+<meta property="og:description" content="线性插值函数 \[ lerp(y_1, y_2, weight) &#x3D; y_1 + (y_2 - y_1) \times weight \] 其中 \(weight\) 是一个在 [0, 1] 区间的实数，倒不是因为取更大的值后这个函数就无定义了，而是因为取了更大的值，这个函数就失去了我们构造它的理由，另外，CG 会限制 \(weight\) 的值在 [0, 1] 的范围内，超过这个范">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/posts_image/InterpolationFunction/InterpolationFunction_1.png">
-<meta property="og:image" content="http://example.com/posts_image/InterpolationFunction/InterpolationFunction_2.png">
-<meta property="og:image" content="http://example.com/posts_image/InterpolationFunction/InterpolationFunction_3.png">
-<meta property="og:image" content="http://example.com/posts_image/InterpolationFunction/InterpolationFunction_4.png">
-<meta property="og:image" content="http://example.com/posts_image/InterpolationFunction/InterpolationFunction_5.png">
-<meta property="og:image" content="http://example.com/posts_image/InterpolationFunction/InterpolationFunction_6.png">
-<meta property="og:image" content="http://example.com/posts_image/InterpolationFunction/InterpolationFunction_7.png">
-<meta property="og:image" content="http://example.com/posts_image/InterpolationFunction/InterpolationFunction_8.png">
-<meta property="og:image" content="http://example.com/posts_image/InterpolationFunction/InterpolationFunction_9.png">
-<meta property="og:image" content="http://example.com/posts_image/InterpolationFunction/InterpolationFunction_10.png">
-<meta property="og:image" content="http://example.com/posts_image/InterpolationFunction/InterpolationFunction_11.png">
-<meta property="og:image" content="http://example.com/posts_image/InterpolationFunction/InterpolationFunction_12.png">
-<meta property="og:image" content="http://example.com/posts_image/InterpolationFunction/InterpolationFunction_13.png">
-<meta property="og:image" content="http://example.com/posts_image/InterpolationFunction/InterpolationFunction_14.png">
-<meta property="og:image" content="http://example.com/posts_image/InterpolationFunction/InterpolationFunction_15.png">
 <meta property="article:published_time" content="2022-02-20T08:15:09.000Z">
 <meta property="article:modified_time" content="2025-04-17T08:30:56.687Z">
 <meta property="article:author" content="祭零小白">
 <meta property="article:tag" content="Math">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://example.com/posts_image/InterpolationFunction/InterpolationFunction_1.png">
   
   
   
@@ -250,7 +234,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          2.5k 字
+          2.9k 字
         
       </span>
     
@@ -262,7 +246,7 @@
         
         
           <!-- compatible with older versions-->
-          21 分钟
+          24 分钟
         
       </span>
     
@@ -315,103 +299,271 @@
               <div class="markdown-body">
                 
                 <h2 id="线性插值函数">线性插值函数</h2>
-<p>$$<br>
-lerp(y_1, y_2, weight) = y_1 + (y_2 - y_1) \times weight<br>
-$$</p>
-<p>其中 $weight$ 是一个在 [0, 1] 区间的实数，倒不是因为取更大的值后这个函数就无定义了，而是因为取了更大的值，这个函数就失去了我们构造它的理由，另外，CG 会限制 $weight$ 的值在 [0, 1] 的范围内，超过这个范围会被留在边界 0 或者边界 1。</p>
-<p>这里 $y_1$ 被称为起点，而 $y_2$ 被称为终点，lerp 函数就是取值 $y_1$ 到 $y_2$ 中间的一个值。取值由 $weight$ 来控制，当 $weight$ 为 0.5 时，取值刚好在起点和终点之间。为了更加方便理解，可以把公式写成这种形式：<br>
-$$<br>
-lerp(y_1, y_2, weight) = (1 - weight) \times y_1 + weight \times y_2<br>
-$$</p>
-<p>简单来说，lerp 函数是在 $y_1$ 和 $y_2$ 之间过渡。$y_1$ 和 $y_2$ 可以是一个值，也可以是一个函数。比如，我们可以在正弦函数和线性函数之间做过渡，我们先看一下正弦函数：</p>
-<p><img src="/posts_image/InterpolationFunction/InterpolationFunction_1.png" srcset="/img/loading.gif" lazyload alt="正弦函数曲线" title="正弦函数曲线"></p>
-<p>再看一下最简单的线性函数 $y = x$</p>
-<p><img src="/posts_image/InterpolationFunction/InterpolationFunction_2.png" srcset="/img/loading.gif" lazyload alt="线性函数曲线" title="线性函数曲线"></p>
-<p>在它俩之间过渡，我们只需要使用 $lerp(\sin x, x, 0.5)$ 即可。当然可以调整 $weight$ 参数观察不同的结果。</p>
-<p><img src="/posts_image/InterpolationFunction/InterpolationFunction_3.png" srcset="/img/loading.gif" lazyload alt="weight 为 0.5" title="weight 为 0.5"></p>
-<p><img src="/posts_image/InterpolationFunction/InterpolationFunction_4.png" srcset="/img/loading.gif" lazyload alt="weight 为 0.8" title="weight 为 0.8"></p>
-<p><img src="/posts_image/InterpolationFunction/InterpolationFunction_5.png" srcset="/img/loading.gif" lazyload alt="weight 为 0.2" title="weight 为 0.2"></p>
-<p>当 $y_1$ 和 $y_2$ 分别为两个点时，结果就是两点间的位置。</p>
-<p><img src="/posts_image/InterpolationFunction/InterpolationFunction_6.png" srcset="/img/loading.gif" lazyload alt="线性插值" title="线性插值"></p>
+<p><span class="math display">\[
+lerp(y_1, y_2, weight) = y_1 + (y_2 - y_1) \times weight
+\]</span></p>
+<p>其中 <span class="math inline">\(weight\)</span> 是一个在 [0, 1]
+区间的实数，倒不是因为取更大的值后这个函数就无定义了，而是因为取了更大的值，这个函数就失去了我们构造它的理由，另外，CG
+会限制 <span class="math inline">\(weight\)</span> 的值在 [0, 1]
+的范围内，超过这个范围会被留在边界 0 或者边界 1。</p>
+<p>这里 <span class="math inline">\(y_1\)</span> 被称为起点，而 <span
+class="math inline">\(y_2\)</span> 被称为终点，lerp 函数就是取值 <span
+class="math inline">\(y_1\)</span> 到 <span
+class="math inline">\(y_2\)</span> 中间的一个值。取值由 <span
+class="math inline">\(weight\)</span> 来控制，当 <span
+class="math inline">\(weight\)</span> 为 0.5
+时，取值刚好在起点和终点之间。为了更加方便理解，可以把公式写成这种形式：
+<span class="math display">\[
+lerp(y_1, y_2, weight) = (1 - weight) \times y_1 + weight \times y_2
+\]</span></p>
+<p>简单来说，lerp 函数是在 <span class="math inline">\(y_1\)</span> 和
+<span class="math inline">\(y_2\)</span> 之间过渡。<span
+class="math inline">\(y_1\)</span> 和 <span
+class="math inline">\(y_2\)</span>
+可以是一个值，也可以是一个函数。比如，我们可以在正弦函数和线性函数之间做过渡，我们先看一下正弦函数：</p>
+<figure>
+<img
+src="/posts_image/InterpolationFunction/InterpolationFunction_1.png" srcset="/img/loading.gif" lazyload
+title="正弦函数曲线" alt="正弦函数曲线" />
+<figcaption aria-hidden="true">正弦函数曲线</figcaption>
+</figure>
+<p>再看一下最简单的线性函数 <span class="math inline">\(y =
+x\)</span></p>
+<figure>
+<img
+src="/posts_image/InterpolationFunction/InterpolationFunction_2.png" srcset="/img/loading.gif" lazyload
+title="线性函数曲线" alt="线性函数曲线" />
+<figcaption aria-hidden="true">线性函数曲线</figcaption>
+</figure>
+<p>在它俩之间过渡，我们只需要使用 <span class="math inline">\(lerp(\sin
+x, x, 0.5)\)</span> 即可。当然可以调整 <span
+class="math inline">\(weight\)</span> 参数观察不同的结果。</p>
+<figure>
+<img
+src="/posts_image/InterpolationFunction/InterpolationFunction_3.png" srcset="/img/loading.gif" lazyload
+title="weight 为 0.5" alt="weight 为 0.5" />
+<figcaption aria-hidden="true">weight 为 0.5</figcaption>
+</figure>
+<figure>
+<img
+src="/posts_image/InterpolationFunction/InterpolationFunction_4.png" srcset="/img/loading.gif" lazyload
+title="weight 为 0.8" alt="weight 为 0.8" />
+<figcaption aria-hidden="true">weight 为 0.8</figcaption>
+</figure>
+<figure>
+<img
+src="/posts_image/InterpolationFunction/InterpolationFunction_5.png" srcset="/img/loading.gif" lazyload
+title="weight 为 0.2" alt="weight 为 0.2" />
+<figcaption aria-hidden="true">weight 为 0.2</figcaption>
+</figure>
+<p>当 <span class="math inline">\(y_1\)</span> 和 <span
+class="math inline">\(y_2\)</span>
+分别为两个点时，结果就是两点间的位置。</p>
+<figure>
+<img
+src="/posts_image/InterpolationFunction/InterpolationFunction_6.png" srcset="/img/loading.gif" lazyload
+title="线性插值" alt="线性插值" />
+<figcaption aria-hidden="true">线性插值</figcaption>
+</figure>
 <h4 id="贝塞尔曲线">贝塞尔曲线</h4>
-<p>当有 $A$、$B$、$C$ 三个点且有 $D$ 为从 $A$ 到 $C$ 上权重为 $t$ 的插值，$E$ 为从 $C$ 到 $B$ 上权重为 $t$ 的插值，点 $F$ 为从 $D$ 到 $E$ 上权重为 $t$ 的插值，则点 $F$ 是以 $A$ 为起点、$B$ 为终点、$C$ 为控制点的二阶贝塞尔曲线上的一点。</p>
-<p><img src="/posts_image/InterpolationFunction/InterpolationFunction_7.png" srcset="/img/loading.gif" lazyload alt="贝塞尔二阶曲线上的点" title="贝塞尔二阶曲线上的点"></p>
-<p><img src="/posts_image/InterpolationFunction/InterpolationFunction_8.png" srcset="/img/loading.gif" lazyload alt="贝塞尔二阶曲线上的点" title="贝塞尔二阶曲线上的点"></p>
-<p>同理，当有 $A$、$B$、$C$、$D$ 四个点，$E$ 为从 $A$ 到 $C$ 上权重为 $t$ 的插值，$F$ 为从 $C$ 到 $D$ 上权重为 $t$ 的插值，$G$ 为从 $D$ 到 $B$ 上权重为 $t$ 的插值，且 $H$ 为从 $E$ 到 $F$ 上权重为 $t$ 的插值，$I$ 为从 $F$ 到 $G$ 上权重为 $t$ 的插值，$J$ 为从 $H$ 到 $I$ 上权重为 $t$ 的插值，则点 $J$ 是以 $A$ 为起点、$B$ 为终点、$C$ 和 $D$ 为控制点的三阶贝塞尔曲线上的一点。</p>
-<p><img src="/posts_image/InterpolationFunction/InterpolationFunction_9.png" srcset="/img/loading.gif" lazyload alt="贝塞尔三阶曲线上的点" title="贝塞尔三阶曲线上的点"></p>
-<p><img src="/posts_image/InterpolationFunction/InterpolationFunction_10.png" srcset="/img/loading.gif" lazyload alt="贝塞尔三阶曲线上的点" title="贝塞尔三阶曲线上的点"></p>
+<p>当有 <span class="math inline">\(A\)</span>、<span
+class="math inline">\(B\)</span>、<span class="math inline">\(C\)</span>
+三个点且有 <span class="math inline">\(D\)</span> 为从 <span
+class="math inline">\(A\)</span> 到 <span
+class="math inline">\(C\)</span> 上权重为 <span
+class="math inline">\(t\)</span> 的插值，<span
+class="math inline">\(E\)</span> 为从 <span
+class="math inline">\(C\)</span> 到 <span
+class="math inline">\(B\)</span> 上权重为 <span
+class="math inline">\(t\)</span> 的插值，点 <span
+class="math inline">\(F\)</span> 为从 <span
+class="math inline">\(D\)</span> 到 <span
+class="math inline">\(E\)</span> 上权重为 <span
+class="math inline">\(t\)</span> 的插值，则点 <span
+class="math inline">\(F\)</span> 是以 <span
+class="math inline">\(A\)</span> 为起点、<span
+class="math inline">\(B\)</span> 为终点、<span
+class="math inline">\(C\)</span> 为控制点的二阶贝塞尔曲线上的一点。</p>
+<figure>
+<img
+src="/posts_image/InterpolationFunction/InterpolationFunction_7.png" srcset="/img/loading.gif" lazyload
+title="贝塞尔二阶曲线上的点" alt="贝塞尔二阶曲线上的点" />
+<figcaption aria-hidden="true">贝塞尔二阶曲线上的点</figcaption>
+</figure>
+<figure>
+<img
+src="/posts_image/InterpolationFunction/InterpolationFunction_8.png" srcset="/img/loading.gif" lazyload
+title="贝塞尔二阶曲线上的点" alt="贝塞尔二阶曲线上的点" />
+<figcaption aria-hidden="true">贝塞尔二阶曲线上的点</figcaption>
+</figure>
+<p>同理，当有 <span class="math inline">\(A\)</span>、<span
+class="math inline">\(B\)</span>、<span
+class="math inline">\(C\)</span>、<span class="math inline">\(D\)</span>
+四个点，<span class="math inline">\(E\)</span> 为从 <span
+class="math inline">\(A\)</span> 到 <span
+class="math inline">\(C\)</span> 上权重为 <span
+class="math inline">\(t\)</span> 的插值，<span
+class="math inline">\(F\)</span> 为从 <span
+class="math inline">\(C\)</span> 到 <span
+class="math inline">\(D\)</span> 上权重为 <span
+class="math inline">\(t\)</span> 的插值，<span
+class="math inline">\(G\)</span> 为从 <span
+class="math inline">\(D\)</span> 到 <span
+class="math inline">\(B\)</span> 上权重为 <span
+class="math inline">\(t\)</span> 的插值，且 <span
+class="math inline">\(H\)</span> 为从 <span
+class="math inline">\(E\)</span> 到 <span
+class="math inline">\(F\)</span> 上权重为 <span
+class="math inline">\(t\)</span> 的插值，<span
+class="math inline">\(I\)</span> 为从 <span
+class="math inline">\(F\)</span> 到 <span
+class="math inline">\(G\)</span> 上权重为 <span
+class="math inline">\(t\)</span> 的插值，<span
+class="math inline">\(J\)</span> 为从 <span
+class="math inline">\(H\)</span> 到 <span
+class="math inline">\(I\)</span> 上权重为 <span
+class="math inline">\(t\)</span> 的插值，则点 <span
+class="math inline">\(J\)</span> 是以 <span
+class="math inline">\(A\)</span> 为起点、<span
+class="math inline">\(B\)</span> 为终点、<span
+class="math inline">\(C\)</span> 和 <span
+class="math inline">\(D\)</span> 为控制点的三阶贝塞尔曲线上的一点。</p>
+<figure>
+<img
+src="/posts_image/InterpolationFunction/InterpolationFunction_9.png" srcset="/img/loading.gif" lazyload
+title="贝塞尔三阶曲线上的点" alt="贝塞尔三阶曲线上的点" />
+<figcaption aria-hidden="true">贝塞尔三阶曲线上的点</figcaption>
+</figure>
+<figure>
+<img
+src="/posts_image/InterpolationFunction/InterpolationFunction_10.png" srcset="/img/loading.gif" lazyload
+title="贝塞尔三阶曲线上的点" alt="贝塞尔三阶曲线上的点" />
+<figcaption aria-hidden="true">贝塞尔三阶曲线上的点</figcaption>
+</figure>
 <h6 id="二阶贝塞尔曲线公式推导">二阶贝塞尔曲线公式推导</h6>
-<p>由 $f(p_0, p_1, t) = (p_1 - p_0) \times t + p_0$ 可得：</p>
-<p>$$<br>
-\begin{aligned}<br>
-D &amp;= (C - A)t + A\<br>
-E &amp;= (B - C)t + C\<br>
-F &amp;= (E - D)t + D\<br>
-&amp;= (((B - C)t + C) - ((C - A)t + A)t + ((C - A)t + A))\<br>
-&amp;= (At + Bt -2Ct + C - A)t + Ct - At + A\<br>
-&amp;= (t - 1)^2A + t^2B + 2t(1 - t)C\<br>
-\<br>
-B(t) &amp;= (1 - t)^2A + t^2B + 2t(1 - t)C, t \in [0, 1]<br>
-\end{aligned}<br>
-$$</p>
+<p>由 <span class="math inline">\(f(p_0, p_1, t) = (p_1 - p_0) \times t
++ p_0\)</span> 可得：</p>
+<p><span class="math display">\[
+\begin{aligned}
+D &amp;= (C - A)t + A\\
+E &amp;= (B - C)t + C\\
+F &amp;= (E - D)t + D\\
+  &amp;= (((B - C)t + C) - ((C - A)t + A)t + ((C - A)t + A))\\
+  &amp;= (At + Bt -2Ct + C - A)t + Ct - At + A\\
+  &amp;= (t - 1)^2A + t^2B + 2t(1 - t)C\\
+\\
+B(t) &amp;= (1 - t)^2A + t^2B + 2t(1 - t)C, t \in [0, 1]
+\end{aligned}
+\]</span></p>
 <h6 id="三阶贝塞尔曲线公式推导">三阶贝塞尔曲线公式推导</h6>
-<p>由 $f(p_0, p_1, t) = (p_1 - p_0) \times t + p_0$ 可得：</p>
-<p>$$<br>
-\begin{aligned}<br>
-E &amp;= (C - A)t + A\<br>
-F &amp;= (D - C)t + C\<br>
-G &amp;= (B - D)t + D\<br>
-\end{aligned}<br>
-$$</p>
-<p>$H$ 可以看作以 $A$ 为起点、$D$ 为终点、$C$ 为控制点的二阶贝塞尔曲线上的点，$I$ 可以看作以 $C$ 为起点、$B$ 为终点、$D$ 为控制点的二阶贝塞尔曲线上的点，所以由二阶贝塞尔曲线公式可得：</p>
-<p>$$<br>
-\begin{aligned}<br>
-H &amp;= (F - E)t + E\<br>
-&amp;= (1 - t)^2A + t^2D + 2t(1 - t)C\<br>
-\<br>
-I &amp;= (G - F)t + F\<br>
-&amp;= (1 - t)^2C + t^2B + 2t(1 - t)D\<br>
-\<br>
-J &amp;= (I - H)t + H\<br>
-&amp;= (((1 - t)^2C + t^2B + 2t(1 - t)D) - ((1 - t)^2A + t^2D + 2t(1 - t)C))t + ((1 - t)^2A + t^2D + 2t(1 - t)C)\<br>
-&amp;= (1 - t)^3A + t^3B + 3t(1 - t)^2C + 3t^2(1 - t)D\<br>
-\<br>
-B(t) &amp;= (1 - t)^3A + t^3B + 3t(1 - t)^2C + 3t^2(1 - t)D, t \in [0, 1]<br>
-\end{aligned}<br>
-$$</p>
-<p>或者 $J$ 也可以看作以 $E$ 为起点、$G$ 为终点、$F$ 为控制点的二阶贝塞尔曲线上的点，由二阶贝塞尔曲线公式可得：</p>
-<p>$$<br>
-\begin{aligned}<br>
-E &amp;= (C - A)t + A\<br>
-F &amp;= (D - C)t + C\<br>
-G &amp;= (B - D)t + D\<br>
-J &amp;= (1 - t)^2E + t^2G + 2t(1 - t)F\<br>
-&amp;= (1 - t)^2((C - A)t + A) + t^2((B - D)t + D) + 2t(1 - t)((D - C)t + C)\<br>
-&amp;= (1 - t)^3A + t^3B + 3t(1 - t)^2C + 3t^2(1 - t)D\<br>
-\<br>
-B(t) &amp;= (1 - t)^3A + t^3B + 3t(1 - t)^2C + 3t^2(1 - t)D, t \in [0, 1]<br>
-\end{aligned}<br>
-$$</p>
+<p>由 <span class="math inline">\(f(p_0, p_1, t) = (p_1 - p_0) \times t
++ p_0\)</span> 可得：</p>
+<p><span class="math display">\[
+\begin{aligned}
+E &amp;= (C - A)t + A\\
+F &amp;= (D - C)t + C\\
+G &amp;= (B - D)t + D\\
+\end{aligned}
+\]</span></p>
+<p><span class="math inline">\(H\)</span> 可以看作以 <span
+class="math inline">\(A\)</span> 为起点、<span
+class="math inline">\(D\)</span> 为终点、<span
+class="math inline">\(C\)</span> 为控制点的二阶贝塞尔曲线上的点，<span
+class="math inline">\(I\)</span> 可以看作以 <span
+class="math inline">\(C\)</span> 为起点、<span
+class="math inline">\(B\)</span> 为终点、<span
+class="math inline">\(D\)</span>
+为控制点的二阶贝塞尔曲线上的点，所以由二阶贝塞尔曲线公式可得：</p>
+<p><span class="math display">\[
+\begin{aligned}
+H &amp;= (F - E)t + E\\
+  &amp;= (1 - t)^2A + t^2D + 2t(1 - t)C\\
+\\
+I &amp;= (G - F)t + F\\
+  &amp;= (1 - t)^2C + t^2B + 2t(1 - t)D\\
+\\
+J &amp;= (I - H)t + H\\
+  &amp;= (((1 - t)^2C + t^2B + 2t(1 - t)D) - ((1 - t)^2A + t^2D + 2t(1 -
+t)C))t + ((1 - t)^2A + t^2D + 2t(1 - t)C)\\
+  &amp;= (1 - t)^3A + t^3B + 3t(1 - t)^2C + 3t^2(1 - t)D\\
+\\
+B(t) &amp;= (1 - t)^3A + t^3B + 3t(1 - t)^2C + 3t^2(1 - t)D, t \in [0,
+1]
+\end{aligned}
+\]</span></p>
+<p>或者 <span class="math inline">\(J\)</span> 也可以看作以 <span
+class="math inline">\(E\)</span> 为起点、<span
+class="math inline">\(G\)</span> 为终点、<span
+class="math inline">\(F\)</span>
+为控制点的二阶贝塞尔曲线上的点，由二阶贝塞尔曲线公式可得：</p>
+<p><span class="math display">\[
+\begin{aligned}
+E &amp;= (C - A)t + A\\
+F &amp;= (D - C)t + C\\
+G &amp;= (B - D)t + D\\
+J &amp;= (1 - t)^2E + t^2G + 2t(1 - t)F\\
+  &amp;= (1 - t)^2((C - A)t + A) + t^2((B - D)t + D) + 2t(1 - t)((D -
+C)t + C)\\
+  &amp;= (1 - t)^3A + t^3B + 3t(1 - t)^2C + 3t^2(1 - t)D\\
+\\
+B(t) &amp;= (1 - t)^3A + t^3B + 3t(1 - t)^2C + 3t^2(1 - t)D, t \in [0,
+1]
+\end{aligned}
+\]</span></p>
 <h2 id="阶梯插值函数">阶梯插值函数</h2>
 <p>step 函数的逻辑是</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs shaderlab">step(a, x)&#123;<br>    if(x &lt; a)<br>        return 0;<br>    else<br>        return 1;  <br>&#125;<br></code></pre></td></tr></table></figure>
-<p><img src="/posts_image/InterpolationFunction/InterpolationFunction_11.png" srcset="/img/loading.gif" lazyload alt="阶梯插值函数" title="阶梯插值函数"></p>
+<figure>
+<img
+src="/posts_image/InterpolationFunction/InterpolationFunction_11.png" srcset="/img/loading.gif" lazyload
+title="阶梯插值函数" alt="阶梯插值函数" />
+<figcaption aria-hidden="true">阶梯插值函数</figcaption>
+</figure>
 <h2 id="平滑阶梯插值函数">平滑阶梯插值函数</h2>
-<p>smoothstep 函数可以用来生成 0 到 1 的平滑过渡值，它也叫平滑阶梯函数。smoothstep 函数的定义是</p>
+<p>smoothstep 函数可以用来生成 0 到 1
+的平滑过渡值，它也叫平滑阶梯函数。smoothstep 函数的定义是</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs shaderlab">float smoothstep(float a, float b, float x) <br>&#123;<br>  x = clamp((x - a) / (b- a), 0.0, 1.0); <br>  return x * x * (3 - 2 * x);<br>&#125;<br></code></pre></td></tr></table></figure>
 <p>简单来说就是：</p>
 <ul>
-<li>在 a &lt; b 的情况下，当 x &lt; a 时，返回 0，当 x &gt; b 时，返回 1，否则在 0 和 1 之间平滑过渡：</li>
+<li>在 a &lt; b 的情况下，当 x &lt; a 时，返回 0，当 x &gt; b 时，返回
+1，否则在 0 和 1 之间平滑过渡：</li>
 </ul>
-<p><img src="/posts_image/InterpolationFunction/InterpolationFunction_12.png" srcset="/img/loading.gif" lazyload alt="平滑阶梯插值函数" title="平滑阶梯插值函数"></p>
+<figure>
+<img
+src="/posts_image/InterpolationFunction/InterpolationFunction_12.png" srcset="/img/loading.gif" lazyload
+title="平滑阶梯插值函数" alt="平滑阶梯插值函数" />
+<figcaption aria-hidden="true">平滑阶梯插值函数</figcaption>
+</figure>
 <ul>
-<li>在 a &gt; b 的情况下，当 x &lt; b 时，返回 1，当 x &gt; a 时，返回 0，否则在 0 和 1 之间平滑过渡：</li>
+<li>在 a &gt; b 的情况下，当 x &lt; b 时，返回 1，当 x &gt; a 时，返回
+0，否则在 0 和 1 之间平滑过渡：</li>
 </ul>
-<p><img src="/posts_image/InterpolationFunction/InterpolationFunction_13.png" srcset="/img/loading.gif" lazyload alt="平滑阶梯插值函数" title="平滑阶梯插值函数"></p>
-<p>两个 smoothstep 进行减法运算可以得到一些波形图，例如 smoothstep(1, 2, x) - smoothstep(2, 3, x):</p>
-<p><img src="/posts_image/InterpolationFunction/InterpolationFunction_14.png" srcset="/img/loading.gif" lazyload alt="smoothstep(1, 2, x) - smoothstep(2, 3, x)" title="smoothstep(1, 2, x) - smoothstep(2, 3, x)"></p>
-<p>想要增加波峰的持续宽度，可以构造 smoothstep(1, 2, x) - smoothstep(3, 4, x)：</p>
-<p><img src="/posts_image/InterpolationFunction/InterpolationFunction_15.png" srcset="/img/loading.gif" lazyload alt="smoothstep(1, 2, x) - smoothstep(3, 4, x)" title="smoothstep(1, 2, x) - smoothstep(3, 4, x)"></p>
+<figure>
+<img
+src="/posts_image/InterpolationFunction/InterpolationFunction_13.png" srcset="/img/loading.gif" lazyload
+title="平滑阶梯插值函数" alt="平滑阶梯插值函数" />
+<figcaption aria-hidden="true">平滑阶梯插值函数</figcaption>
+</figure>
+<p>两个 smoothstep 进行减法运算可以得到一些波形图，例如 smoothstep(1, 2,
+x) - smoothstep(2, 3, x):</p>
+<figure>
+<img
+src="/posts_image/InterpolationFunction/InterpolationFunction_14.png" srcset="/img/loading.gif" lazyload
+title="smoothstep(1, 2, x) - smoothstep(2, 3, x)"
+alt="smoothstep(1, 2, x) - smoothstep(2, 3, x)" />
+<figcaption aria-hidden="true">smoothstep(1, 2, x) - smoothstep(2, 3,
+x)</figcaption>
+</figure>
+<p>想要增加波峰的持续宽度，可以构造 smoothstep(1, 2, x) - smoothstep(3,
+4, x)：</p>
+<figure>
+<img
+src="/posts_image/InterpolationFunction/InterpolationFunction_15.png" srcset="/img/loading.gif" lazyload
+title="smoothstep(1, 2, x) - smoothstep(3, 4, x)"
+alt="smoothstep(1, 2, x) - smoothstep(3, 4, x)" />
+<figcaption aria-hidden="true">smoothstep(1, 2, x) - smoothstep(3, 4,
+x)</figcaption>
+</figure>
 
                 
               </div>
