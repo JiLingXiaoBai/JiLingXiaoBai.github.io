@@ -1,0 +1,856 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/tabIcon.png">
+  <link rel="icon" href="/img/tabIcon.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="祭零小白">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="建立一个基本的屏幕后处理脚本系统 屏幕后处理，通常指的是在渲染完整个场景得到屏幕图像后，再对这个图像进行一系列操作，实现各种屏幕特效。使用这种技术，可以为游戏画面添加更多的艺术效果，例如景深（Depth of Field）、运动模糊（Motion Blur）等。 因此，想要实现屏幕后处理的基础在于得到渲染后的屏幕图像，即抓取屏幕，而 Unity 为我们提供了这样一个方便的接口——OnRenderI">
+<meta property="og:type" content="article">
+<meta property="og:title" content="屏幕后处理">
+<meta property="og:url" content="http://example.com/posts/%E5%B1%8F%E5%B9%95%E5%90%8E%E5%A4%84%E7%90%86/index.html">
+<meta property="og:site_name" content="小白的笔记本">
+<meta property="og:description" content="建立一个基本的屏幕后处理脚本系统 屏幕后处理，通常指的是在渲染完整个场景得到屏幕图像后，再对这个图像进行一系列操作，实现各种屏幕特效。使用这种技术，可以为游戏画面添加更多的艺术效果，例如景深（Depth of Field）、运动模糊（Motion Blur）等。 因此，想要实现屏幕后处理的基础在于得到渲染后的屏幕图像，即抓取屏幕，而 Unity 为我们提供了这样一个方便的接口——OnRenderI">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/posts_image/Post_Processing/Post_Processing_1.png">
+<meta property="og:image" content="http://example.com/posts_image/Post_Processing/Post_Processing_2.png">
+<meta property="og:image" content="http://example.com/posts_image/Post_Processing/Post_Processing_3.png">
+<meta property="og:image" content="http://example.com/posts_image/Post_Processing/Post_Processing_4.png">
+<meta property="og:image" content="http://example.com/posts_image/Post_Processing/Post_Processing_5.png">
+<meta property="og:image" content="http://example.com/posts_image/Post_Processing/Post_Processing_6.png">
+<meta property="og:image" content="http://example.com/posts_image/Post_Processing/Post_Processing_7.png">
+<meta property="og:image" content="http://example.com/posts_image/Post_Processing/Post_Processing_8.png">
+<meta property="og:image" content="http://example.com/posts_image/Post_Processing/Post_Processing_9.png">
+<meta property="article:published_time" content="2022-03-04T02:19:05.000Z">
+<meta property="article:modified_time" content="2025-04-17T12:55:15.933Z">
+<meta property="article:author" content="祭零小白">
+<meta property="article:tag" content="Post Processing">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/posts_image/Post_Processing/Post_Processing_1.png">
+  
+  
+  
+  <title>屏幕后处理 - 小白的笔记本</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null},"gtag":null,"woyaola":null,"cnzz":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="小白的笔记本" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>祭零小白</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/page_background.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="屏幕后处理"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-03-04 10:19" pubdate>
+          2022年3月4日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          8.8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          73 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">屏幕后处理</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    <!-- compatible with older versions-->
+                    本文最后更新于：2025年4月17日 晚上
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="建立一个基本的屏幕后处理脚本系统">建立一个基本的屏幕后处理脚本系统</h2>
+<p>屏幕后处理，通常指的是在渲染完整个场景得到屏幕图像后，再对这个图像进行一系列操作，实现各种屏幕特效。使用这种技术，可以为游戏画面添加更多的艺术效果，例如景深（Depth of Field）、运动模糊（Motion Blur）等。</p>
+<p>因此，想要实现屏幕后处理的基础在于得到渲染后的屏幕图像，即抓取屏幕，而 Unity 为我们提供了这样一个方便的接口——<strong>OnRenderImage 函数</strong>。它的函数声明如下：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs csharp">MonoBehaviour.OnRenderImage(RenderTexture src, RenderTexture dest)<br></code></pre></td></tr></table></figure>
+<p>当我们在脚本中声明此函数后，Unity 会把当前渲染得到的图像存储在第一个参数对应的源渲染纹理中，通过函数中的一系列操作后，再把目标渲染纹理，即第二个参数对应的渲染纹理显示到屏幕上。在 OnRenderImage 函数中，我们通常是利用 <strong>Graphics.Blit 函数</strong>来完成对渲染纹理的处理。它有 3 种函数声明：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Blit</span>(<span class="hljs-params">Texture src, RenderTexture dest</span>)</span>;<br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Blit</span>(<span class="hljs-params">Texture src, RenderTexture dest, Material mat, <span class="hljs-built_in">int</span> pass = <span class="hljs-number">-1</span></span>)</span>;<br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Blit</span>(<span class="hljs-params">Texture src, Material mat, <span class="hljs-built_in">int</span> pass = <span class="hljs-number">-1</span></span>)</span>;<br></code></pre></td></tr></table></figure>
+<p>其中，参数 src 对应了源纹理，在屏幕后处理技术中，这个参数通常就是当前屏幕的渲染纹理或是上一步处理后得到的渲染纹理。参数 dest 是目标渲染纹理，如果它的值为 null 就会直接将结果显示在屏幕上。参数 mat 是我们使用的材质，这个材质使用的 Unity Shader 将会进行各种屏幕后处理操作，而 src 纹理将会被传递给 Shader 中名为 _MainTex 的纹理属性。参数 pass 的默认值为 -1，表示将会依次调用 Shader 内的所有 Pass。否则，只会调用给定索引的 Pass。</p>
+<p>在默认情况下，OnRenderImage 函数会在所有的不透明和透明的 Pass 执行完毕后被调用，以便对场景中所有游戏对象都产生影响。但有时，我们希望在不透明的 Pass（即渲染队列小于等于 2500 的 Pass，内置的 Background、Geometry 和 AlphaTest 渲染队列均在此范围内）执行完毕后立即调动 OnRenderImage 函数，从而不对透明物体产生任何影响。此时，我们可以在 OnRenderImage 函数前添加 ImageEffectOpaque 属性来实现这样的目的。</p>
+<p>要在 Unity 中实现屏幕后处理效果，过程通常如下：我们首先需要在摄像机中添加一个用于屏幕后处理的脚本。在这个脚本中，我们会实现 OnRenderImage 函数来获取当前屏幕的渲染纹理。然后，再调用 Graphics.Blit 函数使用特定的 Unity Shader 来对当前图像进行处理，再把返回的渲染纹理显示到屏幕上。对于一些复杂的屏幕特效，我们可能需要多次调用 Graphics.Blit 函数来对上一步的输出结果进行下一步处理。</p>
+<p>但是，在进行屏幕后处理之前，我们需要检查一系列条件是否满足，例如当前平台是否支持渲染纹理和屏幕特效，是否支持当前使用的 Unity Shader 等。为此，我们创建了一个用于屏幕后处理效果的基类，在实现各种屏幕特效时，我们只需要继承自该基类，再实现派生类中不同的操作即可。PostEffectsBase.cs 的主要代码如下。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">using</span> UnityEngine;<br><span class="hljs-keyword">using</span> System.Collections;<br><br>[<span class="hljs-meta">ExecuteInEditMode</span>]<br>[<span class="hljs-meta">RequireComponent (typeof(Camera))</span>]<br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">PostEffectsBase</span> : <span class="hljs-title">MonoBehaviour</span> &#123;<br><br>	<span class="hljs-comment">// Called when start</span><br>	<span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title">CheckResources</span>()</span> &#123;<br>		<span class="hljs-built_in">bool</span> isSupported = CheckSupport();<br>		<br>		<span class="hljs-keyword">if</span> (isSupported == <span class="hljs-literal">false</span>) &#123;<br>			NotSupported();<br>		&#125;<br>	&#125;<br><br>	<span class="hljs-comment">// Called in CheckResources to check support on this platform</span><br>	<span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-built_in">bool</span> <span class="hljs-title">CheckSupport</span>()</span> &#123;<br>		<span class="hljs-keyword">if</span> (SystemInfo.supportsImageEffects == <span class="hljs-literal">false</span> || SystemInfo.supportsRenderTextures == <span class="hljs-literal">false</span>) &#123;<br>			Debug.LogWarning(<span class="hljs-string">&quot;This platform does not support image effects or render textures.&quot;</span>);<br>			<span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>		&#125;<br>		<br>		<span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>	&#125;<br><br>	<span class="hljs-comment">// Called when the platform doesn&#x27;t support this effect</span><br>	<span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title">NotSupported</span>()</span> &#123;<br>		enabled = <span class="hljs-literal">false</span>;<br>	&#125;<br>	<br>	<span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Start</span>()</span> &#123;<br>		CheckResources();<br>	&#125;<br><br>	<span class="hljs-comment">// Called when need to create the material used by this effect</span><br>	<span class="hljs-function"><span class="hljs-keyword">protected</span> Material <span class="hljs-title">CheckShaderAndCreateMaterial</span>(<span class="hljs-params">Shader shader, Material material</span>)</span> &#123;<br>		<span class="hljs-keyword">if</span> (shader == <span class="hljs-literal">null</span>) &#123;<br>			<span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>		&#125;<br>		<br>		<span class="hljs-keyword">if</span> (shader.isSupported &amp;&amp; material &amp;&amp; material.shader == shader)<br>			<span class="hljs-keyword">return</span> material;<br>		<br>		<span class="hljs-keyword">if</span> (!shader.isSupported) &#123;<br>			<span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>		&#125;<br>		<span class="hljs-keyword">else</span> &#123;<br>			material = <span class="hljs-keyword">new</span> Material(shader);<br>			material.hideFlags = HideFlags.DontSave;<br>			<span class="hljs-keyword">if</span> (material)<br>				<span class="hljs-keyword">return</span> material;<br>			<span class="hljs-keyword">else</span> <br>				<span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>		&#125;<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>CheckShaderAndCreateMaterial 函数接受两个参数，第一个参数指定了该特效需要使用的 Shader，第二个参数则是用于后期处理的材质。该函数首先检查 Shader 的可用性，检查通过后就返回一个使用了该 Shader 的材质，否则返回 null。</p>
+<h2 id="调整屏幕的亮度、饱和度和对比度">调整屏幕的亮度、饱和度和对比度</h2>
+<p>首先编写 BrightnessSaturationAndContrast.cs 脚本。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">using</span> UnityEngine;<br><span class="hljs-keyword">using</span> System.Collections;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">BrightnessSaturationAndContrast</span> : <span class="hljs-title">PostEffectsBase</span> &#123;<br><br>	<span class="hljs-keyword">public</span> Shader briSatConShader;<br>	<span class="hljs-keyword">private</span> Material briSatConMaterial;<br>	<span class="hljs-keyword">public</span> Material material &#123;  <br>		<span class="hljs-keyword">get</span> &#123;<br>			briSatConMaterial = CheckShaderAndCreateMaterial(briSatConShader, briSatConMaterial);<br>			<span class="hljs-keyword">return</span> briSatConMaterial;<br>		&#125;  <br>	&#125;<br><br>	[<span class="hljs-meta">Range(0.0f, 3.0f)</span>]<br>	<span class="hljs-keyword">public</span> <span class="hljs-built_in">float</span> brightness = <span class="hljs-number">1.0f</span>;<br><br>	[<span class="hljs-meta">Range(0.0f, 3.0f)</span>]<br>	<span class="hljs-keyword">public</span> <span class="hljs-built_in">float</span> saturation = <span class="hljs-number">1.0f</span>;<br><br>	[<span class="hljs-meta">Range(0.0f, 3.0f)</span>]<br>	<span class="hljs-keyword">public</span> <span class="hljs-built_in">float</span> contrast = <span class="hljs-number">1.0f</span>;<br><br>	<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">OnRenderImage</span>(<span class="hljs-params">RenderTexture src, RenderTexture dest</span>)</span> &#123;<br>		<span class="hljs-keyword">if</span> (material != <span class="hljs-literal">null</span>) &#123;<br>			material.SetFloat(<span class="hljs-string">&quot;_Brightness&quot;</span>, brightness);<br>			material.SetFloat(<span class="hljs-string">&quot;_Saturation&quot;</span>, saturation);<br>			material.SetFloat(<span class="hljs-string">&quot;_Contrast&quot;</span>, contrast);<br><br>			Graphics.Blit(src, dest, material);<br>		&#125; <span class="hljs-keyword">else</span> &#123;<br>			Graphics.Blit(src, dest);<br>		&#125;<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>每当 OnRenderImage 函数被调用时，它会检查材质是否可用。如果可用，就把参数传递给材质，再调用 Graphics.Blit 进行处理；否则，直接把原图像显示到屏幕上，不做任何处理。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><code class="hljs shaderlab">Shader &quot;Custom/Chapter12/Chapter12-BrightnessSaturationAndContrast&quot;<br>&#123;<br>    <br>    Properties &#123;<br>		_MainTex (&quot;Base (RGB)&quot;, 2D) = &quot;white&quot; &#123;&#125;<br>		// _Brightness (&quot;Brightness&quot;, Float) = 1<br>		// _Saturation(&quot;Saturation&quot;, Float) = 1<br>		// _Contrast(&quot;Contrast&quot;, Float) = 1<br>	&#125;<br>	SubShader &#123;<br>		Pass &#123;  <br>			ZTest Always Cull Off ZWrite Off<br>			<br>			CGPROGRAM  <br>			#pragma vertex vert  <br>			#pragma fragment frag  <br>			  <br>			#include &quot;UnityCG.cginc&quot;  <br>			  <br>			sampler2D _MainTex;  <br>			half _Brightness;<br>			half _Saturation;<br>			half _Contrast;<br>			  <br>			struct v2f &#123;<br>				float4 pos : SV_POSITION;<br>				half2 uv: TEXCOORD0;<br>			&#125;;<br>			  <br>			v2f vert(appdata_img v) &#123;<br>				v2f o;<br>				<br>				o.pos = UnityObjectToClipPos(v.vertex);<br>				<br>				o.uv = v.texcoord;<br>						 <br>				return o;<br>			&#125;<br>		<br>			fixed4 frag(v2f i) : SV_Target &#123;<br>				fixed4 renderTex = tex2D(_MainTex, i.uv);  <br>				  <br>				// Apply brightness<br>				fixed3 finalColor = renderTex.rgb * _Brightness;<br>				<br>				// Apply saturation<br>				fixed luminance = 0.2125 * renderTex.r + 0.7154 * renderTex.g + 0.0721 * renderTex.b;<br>				fixed3 luminanceColor = fixed3(luminance, luminance, luminance);<br>				finalColor = lerp(luminanceColor, finalColor, _Saturation);<br>				<br>				// Apply contrast<br>				fixed3 avgColor = fixed3(0.5, 0.5, 0.5);<br>				finalColor = lerp(avgColor, finalColor, _Contrast);<br>				<br>				return fixed4(finalColor, renderTex.a);  <br>			&#125;  <br>			  <br>			ENDCG<br>		&#125;  <br>	&#125;<br>	<br>	Fallback Off<br>&#125;<br><br></code></pre></td></tr></table></figure>
+<p>我们提到 Graphics.Blit(src, dest, material) 将把第一个参数传递给 Shader 中名为 _MainTex 的属性，因此我们必须声明一个名为 _MainTex 的纹理属性。除此之外，我们还声明了用于调整亮度、饱和度和对比度的属性。这些值将会由脚本传递而得。事实上，我们可以省略 Properties 中的属性声明，Properties 中声明的属性仅仅是为了显示在材质面板中，但对于屏幕特效来说，它们使用的材质都是临时创建的，我们也不需要在材质面板上调整参数，而是直接从脚本传递给 Unity Shader。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shaderlab">ZTest Always Cull Off ZWrite Off<br></code></pre></td></tr></table></figure>
+<p>屏幕后处理实际上是在场景中绘制了一个与屏幕同宽同高的四边形面片，为了防止它对其他物体产生影响，我们需要设置相关的渲染状态，在这里我们关闭了深度写入，是为了防止它“挡住”在其后面被渲染的物体。例如，如果当前的 OnRenderImage 函数在所有不透明的 Pass 执行完毕后立即被调用，不关闭深度写入就会影响后面透明的 Pass 的渲染。这些状态设置可以认为是用于屏幕后处理的 Shader 的“标配”。</p>
+<p>首先，我们得到对原屏幕图像（存储在 _MainTex 中)的采样结果 renderTex。然后利用 _Brightness 属性来调整亮度。亮度的调整非常简单，我们只需要把原颜色乘以亮度系数 _Brightness 即可。然后，我们计算该像素对应的亮度值（luminance），这是通过对每个颜色乘以一个特定的系数再相加得到的。我们使用该亮度值创建了一个饱和度为 0 的颜色值，并使用 _Saturation 属性在其和上一步得到的颜色之间进行插值，从而得到希望的饱和度颜色。对比度的处理类似，我们首先创建一个对比度为 0 的颜色值（各分量均为 0.5），再使用 _Contrast 属性在其和上一步得到的颜色之间进行插值，从而得到最终的处理结果。</p>
+<p><img src="/posts_image/Post_Processing/Post_Processing_1.png" srcset="/img/loading.gif" lazyload alt="调整屏幕的亮度、饱和度和对比度" title="调整屏幕的亮度、饱和度和对比度"></p>
+<h2 id="边缘检测">边缘检测</h2>
+<p>边缘检测的原理是利用一些边缘检测算子对图像进行**卷积（convolution）**操作，我们首先来了解什么是卷积。</p>
+<h3 id="什么是卷积">什么是卷积</h3>
+<p>在图像处理中，卷积操作指的就是使用一个**卷积核（kernel）**对一张图像中的每个像素进行一系列操作。卷积核通常是一个四方形网格结构（例如 2 $\times$ 2、3 $\times$ 3 的方形区域），该区域内每个方格都有一个权重值。当对图像中的某个像素进行卷积时，我们会把卷积核的中心放置于该像素上，如下图所示，翻转核之后再依次计算核中每个元素和其覆盖的图像像素值的乘积并求和，得到的结果就是该位置的新像素值。</p>
+<p><img src="/posts_image/Post_Processing/Post_Processing_2.png" srcset="/img/loading.gif" lazyload alt="卷积核与卷积" title="卷积核与卷积"></p>
+<p>这样的计算过程虽然简单，但可以实现很多常见的图像处理效果，例如图像模糊、边缘检测等。例如，如果我们想要对图像进行均值模糊，可以使用一个 3 $\times$ 3 的卷积核，核内每个元素的值均为 1/9。</p>
+<h3 id="常见的边缘检测算子">常见的边缘检测算子</h3>
+<p>卷积操作的神奇之处在于选择的卷积核。那么，用于边缘检测的卷积核（也被称为边缘检测算子）应该是什么样子的？在回答这个问题之前，我们可以首先回想一下边到底是如何形成的。如果相邻像素之间存在差别明显的颜色、亮度、纹理等属性，我们就会认为它们之间应该有一条边界。这种相邻像素之间的差值可以用**梯度（gradient）**来表示，可以想像得到，边缘处的梯度绝对值会比较大。基于这样的理解，有几种不同的边缘检测算子被先后提出来。</p>
+<p><img src="/posts_image/Post_Processing/Post_Processing_3.png" srcset="/img/loading.gif" lazyload alt="3 种常见的边缘检测算子" title="3 种常见的边缘检测算子"></p>
+<p>3 种常见的边缘检测算子如上图所示，它们都包含了两个方向的卷积核，分别用于检测水平方向和竖直方向上的边缘信息。在进行边缘检测时，我们需要对每个像素分别进行一次卷积计算，得到两个方向上的梯度值 $G_x$ 和 $G_y$，而整体的梯度可按下面的公式计算而得：</p>
+<p>$$<br>
+G = \sqrt{G_x^2 + G_y^2}<br>
+$$</p>
+<p>由于上述计算包含了开根号操作，出于性能的考虑，我们有时会使用绝对值操作来代替开根号操作：</p>
+<p>$$<br>
+G = |G_x| + |G_y|<br>
+$$</p>
+<p>当得到梯度 $G$ 后，我们就可以据此来判断哪些像素对应了边缘（梯度值越大，越有可能是边缘点）。</p>
+<h3 id="实现">实现</h3>
+<p>我们首先来编写 EdgeDetection 脚本。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">using</span> UnityEngine;<br><span class="hljs-keyword">using</span> System.Collections;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">EdgeDetection</span> : <span class="hljs-title">PostEffectsBase</span> &#123;<br><br>	<span class="hljs-keyword">public</span> Shader edgeDetectShader;<br>	<span class="hljs-keyword">private</span> Material edgeDetectMaterial = <span class="hljs-literal">null</span>;<br>	<span class="hljs-keyword">public</span> Material material &#123;  <br>		<span class="hljs-keyword">get</span> &#123;<br>			edgeDetectMaterial = CheckShaderAndCreateMaterial(edgeDetectShader, edgeDetectMaterial);<br>			<span class="hljs-keyword">return</span> edgeDetectMaterial;<br>		&#125;  <br>	&#125;<br><br>	[<span class="hljs-meta">Range(0.0f, 1.0f)</span>]<br>	<span class="hljs-keyword">public</span> <span class="hljs-built_in">float</span> edgesOnly = <span class="hljs-number">0.0f</span>;<br><br>	<span class="hljs-keyword">public</span> Color edgeColor = Color.black;<br>	<br>	<span class="hljs-keyword">public</span> Color backgroundColor = Color.white;<br><br>	<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">OnRenderImage</span> (<span class="hljs-params">RenderTexture src, RenderTexture dest</span>)</span> &#123;<br>		<span class="hljs-keyword">if</span> (material != <span class="hljs-literal">null</span>) &#123;<br>			material.SetFloat(<span class="hljs-string">&quot;_EdgeOnly&quot;</span>, edgesOnly);<br>			material.SetColor(<span class="hljs-string">&quot;_EdgeColor&quot;</span>, edgeColor);<br>			material.SetColor(<span class="hljs-string">&quot;_BackgroundColor&quot;</span>, backgroundColor);<br><br>			Graphics.Blit(src, dest, material);<br>		&#125; <span class="hljs-keyword">else</span> &#123;<br>			Graphics.Blit(src, dest);<br>		&#125;<br>	&#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+<p>当 edgesOnly 值为 0 时，边缘将会叠加在原渲染图像上；当 edgesOnly 值为 1 时，则会只显示边缘，不显示原渲染图像。其中，背景颜色由 backgroundColor 指定，边缘颜色由 edgeColor 指定。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><code class="hljs shaderlab">Shader &quot;Custom/Chapter12/Chapter12-EdgeDetection&quot;<br>&#123;<br>    Properties<br>    &#123;<br>        _MainTex (&quot;Base (RGB)&quot;, 2D) = &quot;white&quot; &#123;&#125;<br>        _EdgeOnly (&quot;Edge Only&quot;, Float) = 1.0<br>        _EdgeColor (&quot;Edge Color&quot;, Color) = (0, 0, 0, 1)<br>        _BackgroundColor (&quot;Background Color&quot;, Color) = (1, 1, 1, 1)<br>    &#125;<br>    SubShader<br>    &#123;<br>        Pass &#123;<br>            ZTest Always Cull Off ZWrite Off<br><br>            CGPROGRAM<br>            #pragma vertex vert<br>            #pragma fragment fragSobel<br>            #include &quot;UnityCG.cginc&quot;<br><br>            sampler2D _MainTex;<br>            half4 _MainTex_TexelSize;<br>            fixed _EdgeOnly;<br>            fixed4 _EdgeColor;<br>            fixed4 _BackgroundColor;<br><br>            struct v2f &#123;<br>                float4 pos : SV_POSITION;<br>                half2 uv[9] : TEXCOORD0; <br>            &#125;;<br><br>            fixed luminance(fixed4 color) &#123;<br>                return 0.2125 * color.r + 0.7154 * color.g + 0.0721 * color.b;<br>            &#125;<br><br>            half Sobel(v2f i) &#123;<br>                const half Gx[9] = &#123;-1, -2, -1 ,0, 0, 0, 1, 2, 1&#125;;<br>                const half Gy[9] = &#123;-1, 0, 1, -2, 0, 2, -1, 0, 1&#125;;<br>                half texColor;<br>                half edgeX = 0;<br>                half edgeY = 0;<br>                for(int it = 0; it &lt; 9; it++)&#123;<br>                    texColor = luminance(tex2D(_MainTex, i.uv[it]));<br>                    edgeX += texColor * Gx[it];<br>                    edgeY += texColor * Gy[it];<br>                &#125;<br>                half edge = 1 - abs(edgeX) - abs(edgeY);<br>                return edge;<br>            &#125;<br><br>            v2f vert(appdata_img v) &#123;<br>                v2f o;<br>                o.pos = UnityObjectToClipPos(v.vertex);<br>                half2 uv = v.texcoord;<br><br>                o.uv[0] = uv + _MainTex_TexelSize.xy * half2(-1, -1);<br>                o.uv[1] = uv + _MainTex_TexelSize.xy * half2(0, -1);<br>                o.uv[2] = uv + _MainTex_TexelSize.xy * half2(1, -1);<br>                o.uv[3] = uv + _MainTex_TexelSize.xy * half2(-1, 0);<br>                o.uv[4] = uv + _MainTex_TexelSize.xy * half2(0, 0);<br>                o.uv[5] = uv + _MainTex_TexelSize.xy * half2(1, 0);<br>                o.uv[6] = uv + _MainTex_TexelSize.xy * half2(-1, 1);<br>                o.uv[7] = uv + _MainTex_TexelSize.xy * half2(0, 1);<br>                o.uv[8] = uv + _MainTex_TexelSize.xy * half2(1, 1);<br><br>                return o;<br>            &#125;<br><br>            fixed4 fragSobel(v2f i) : SV_TARGET &#123;<br>                half edge = Sobel(i);<br>                fixed4 withEdgeColor = lerp(_EdgeColor, tex2D(_MainTex, i.uv[4]), edge);<br>                fixed4 onlyEdgeColor = lerp(_EdgeColor, _BackgroundColor, edge);<br>                return lerp(withEdgeColor, onlyEdgeColor, _EdgeOnly);<br>            &#125;<br>            <br>            ENDCG<br>        &#125;<br>    &#125;<br>    FallBack Off<br>&#125;<br><br></code></pre></td></tr></table></figure>
+<p>我们声明了一个变量 _MainTex_TexelSize，xxx_TexelSize 是 Unity 为我们提供的访问 xxx 纹理对应的每个纹素的大小。由于卷积需要对相邻区域内的纹理进行采样，因此我们需要利用 _MainTex_TexelSize 来计算各个相邻区域的纹理坐标。</p>
+<p>我们在 v2f 结构体中定义了一个维数为 9 的纹理数组，对应了使用 Sobel 算子采样时需要的 9 个邻域纹理坐标。通过把计算采样纹理坐标的代码从片元着色器中转移到顶点着色器中，可以减少运算，提高性能。由于从顶点着色器到片元着色器到插值是线性的，因此这样的转移并不会影响纹理坐标的计算结果。</p>
+<p>我们调用 Sobel 函数计算当前像素的梯度值 edge，并利用该值分别计算了背景为原图和纯色下的颜色值，然后利用 _EdgeOnly 在两者之间插值得到最终的像素值。Sobel 函数利用 Sobel 算子对原图进行边缘检测。在 Sobel 函数中，我们定义了水平方向和竖直方向使用的卷积核 $G_x$ 和 $G_y$。接着，我们依次对 9 个像素进行采样，计算它们的亮度值，再与卷积核 $G_x$ 和 $G_y$ 中对应的权重相乘后，叠加到各自的梯度值上。最后，我们从 1 中减去水平方向和竖直方向的梯度值的绝对值，得到 edge。edge 值越小，表明该位置越可能是一个边缘点。至此，边缘检测过程结束。</p>
+<p>需要注意的是，本次实现的边缘检测仅仅利用了屏幕的颜色信息，而在实际应用中，物体的纹理、阴影等信息均会影响边缘检测的结果，使得结果包含许多非预期的描边。为了得到更加准确的边缘信息，我们往往会在屏幕的深度纹理和法线纹理上进行边缘检测。</p>
+<p><img src="/posts_image/Post_Processing/Post_Processing_4.png" srcset="/img/loading.gif" lazyload alt="边缘检测结果" title="边缘检测结果"></p>
+<p><img src="/posts_image/Post_Processing/Post_Processing_5.png" srcset="/img/loading.gif" lazyload alt="只显示边缘的效果" title="只显示边缘的效果"></p>
+<h2 id="高斯模糊">高斯模糊</h2>
+<p>模糊的实现有很多方法，例如均值模糊和中值模糊。均值模糊同样使用了卷积操作，它使用的卷积核中的各个元素值都相等，且相加等于 1，也就是说，卷积后得到的像素值是其邻域内各个像素值的平均值。而中值模糊则是选择邻域内对所有像素排序后的中值替换掉原颜色。一个更高级的模糊方法是高斯模糊。</p>
+<h3 id="高斯滤波">高斯滤波</h3>
+<p>高斯模糊同样利用了卷积计算，它使用的卷积核名为高斯核。高斯核是一个正方形大小的滤波核，其中每个元素的计算都是基于下面的高斯方程：<br>
+$$<br>
+G(x, y) = \frac{1}{2\pi\sigma^2}e^{-\frac{x^2 + y^2}{2\sigma^2}}<br>
+$$</p>
+<p>其中，$\sigma$ 是标准方差（一般取值为 1），$x$ 和 $y$ 分别对应了当前位置到卷积核中心的整数距离。要构建一个高斯核，我们只需要计算高斯核中各个位置对应的高斯值。为了保证滤波后的图像不会变暗，我们需要对高斯核中的权重进行归一化，即让每个权重除以所有权重的和，这样可以保证所有权重的和为 1。因此，高斯函数中 $e$ 前面的系数实际不会对结果有任何影响。下图显示了一个标准方差为 1 的 5 $\times$ 5 大小的高斯核。</p>
+<p><img src="/posts_image/Post_Processing/Post_Processing_6.png" srcset="/img/loading.gif" lazyload alt="标准方差为 1 的高斯核" title="标准方差为 1 的高斯核"></p>
+<p>高斯方程很好地模拟了邻域每个像素对当前处理像素的影响程度——距离越近，影响越大。高斯核的维数越高，模糊程度越大。使用一个 N $\times$ N 的高斯核对图像进行卷积滤波，就需要 N $\times$ N $\times$ W $\times$ H（W 和 H 分别是图像的宽和高）次纹理采样。当 N 的大小不断增加时，采样次数会变得非常巨大。幸运的是，我们可以把这个二维高斯函数拆分为两个一维函数。也就是说，我们可以使用两个一维的高斯核先后对图像进行滤波，它们得到的结果和直接使用二维高斯核是一样的，但采样次数只需要 2 $\times$ N $\times$ W $\times$ H。我们可以进一步观察到，两个一维高斯核中包含了很多重复的权重。对于一个大小为 5 的一维高斯核，我们实际只需要记录 3 个权重值即可。</p>
+<p>我们将使用上述 5 $\times$ 5 的高斯核对原图像进行高斯模糊。我们将先后调用两个 Pass，第一个 Pass 将会使用竖直方向的一维高斯核对图像进行滤波，第二个 Pass 再使用水平方向的一维高斯核对图像进行滤波，得到最终的目标图像。在实现中，我们还将利用图像缩放来进一步提高性能，并通过调整高斯滤波的应用次数来控制模糊程度（次数越多，图像越模糊）。</p>
+<h3 id="实现-2">实现</h3>
+<p>我们首先来编写 GaussianBlur.cs 脚本。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">using</span> UnityEngine;<br><span class="hljs-keyword">using</span> System.Collections;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">GaussianBlur</span> : <span class="hljs-title">PostEffectsBase</span> &#123;<br><br>	<span class="hljs-keyword">public</span> Shader gaussianBlurShader;<br>	<span class="hljs-keyword">private</span> Material gaussianBlurMaterial = <span class="hljs-literal">null</span>;<br><br>	<span class="hljs-keyword">public</span> Material material &#123;  <br>		<span class="hljs-keyword">get</span> &#123;<br>			gaussianBlurMaterial = CheckShaderAndCreateMaterial(gaussianBlurShader, gaussianBlurMaterial);<br>			<span class="hljs-keyword">return</span> gaussianBlurMaterial;<br>		&#125;  <br>	&#125;<br><br>	<span class="hljs-comment">// Blur iterations - larger number means more blur.</span><br>	[<span class="hljs-meta">Range(0, 4)</span>]<br>	<span class="hljs-keyword">public</span> <span class="hljs-built_in">int</span> iterations = <span class="hljs-number">3</span>;<br>	<br>	<span class="hljs-comment">// Blur spread for each iteration - larger value means more blur</span><br>	[<span class="hljs-meta">Range(0.2f, 3.0f)</span>]<br>	<span class="hljs-keyword">public</span> <span class="hljs-built_in">float</span> blurSpread = <span class="hljs-number">0.6f</span>;<br>	<br>	[<span class="hljs-meta">Range(1, 8)</span>]<br>	<span class="hljs-keyword">public</span> <span class="hljs-built_in">int</span> downSample = <span class="hljs-number">2</span>;<br>	<br>	<span class="hljs-comment"><span class="hljs-doctag">///</span> 1st edition: just apply blur</span><br><span class="hljs-comment">//	void OnRenderImage(RenderTexture src, RenderTexture dest) &#123;</span><br><span class="hljs-comment">//		if (material != null) &#123;</span><br><span class="hljs-comment">//			int rtW = src.width;</span><br><span class="hljs-comment">//			int rtH = src.height;</span><br><span class="hljs-comment">//			RenderTexture buffer = RenderTexture.GetTemporary(rtW, rtH, 0);</span><br><span class="hljs-comment">//</span><br><span class="hljs-comment">//			// Render the vertical pass</span><br><span class="hljs-comment">//			Graphics.Blit(src, buffer, material, 0);</span><br><span class="hljs-comment">//			// Render the horizontal pass</span><br><span class="hljs-comment">//			Graphics.Blit(buffer, dest, material, 1);</span><br><span class="hljs-comment">//</span><br><span class="hljs-comment">//			RenderTexture.ReleaseTemporary(buffer);</span><br><span class="hljs-comment">//		&#125; else &#123;</span><br><span class="hljs-comment">//			Graphics.Blit(src, dest);</span><br><span class="hljs-comment">//		&#125;</span><br><span class="hljs-comment">//	&#125; </span><br><br>	<span class="hljs-comment"><span class="hljs-doctag">///</span> 2nd edition: scale the render texture</span><br><span class="hljs-comment">//	void OnRenderImage (RenderTexture src, RenderTexture dest) &#123;</span><br><span class="hljs-comment">//		if (material != null) &#123;</span><br><span class="hljs-comment">//			int rtW = src.width/downSample;</span><br><span class="hljs-comment">//			int rtH = src.height/downSample;</span><br><span class="hljs-comment">//			RenderTexture buffer = RenderTexture.GetTemporary(rtW, rtH, 0);</span><br><span class="hljs-comment">//			buffer.filterMode = FilterMode.Bilinear;</span><br><span class="hljs-comment">//</span><br><span class="hljs-comment">//			// Render the vertical pass</span><br><span class="hljs-comment">//			Graphics.Blit(src, buffer, material, 0);</span><br><span class="hljs-comment">//			// Render the horizontal pass</span><br><span class="hljs-comment">//			Graphics.Blit(buffer, dest, material, 1);</span><br><span class="hljs-comment">//</span><br><span class="hljs-comment">//			RenderTexture.ReleaseTemporary(buffer);</span><br><span class="hljs-comment">//		&#125; else &#123;</span><br><span class="hljs-comment">//			Graphics.Blit(src, dest);</span><br><span class="hljs-comment">//		&#125;</span><br><span class="hljs-comment">//	&#125;</span><br><br>	<span class="hljs-comment"><span class="hljs-doctag">///</span> 3rd edition: use iterations for larger blur</span><br>	<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">OnRenderImage</span> (<span class="hljs-params">RenderTexture src, RenderTexture dest</span>)</span> &#123;<br>		<span class="hljs-keyword">if</span> (material != <span class="hljs-literal">null</span>) &#123;<br>			<span class="hljs-built_in">int</span> rtW = src.width/downSample;<br>			<span class="hljs-built_in">int</span> rtH = src.height/downSample;<br><br>			RenderTexture buffer0 = RenderTexture.GetTemporary(rtW, rtH, <span class="hljs-number">0</span>);<br>			buffer0.filterMode = FilterMode.Bilinear;<br><br>			Graphics.Blit(src, buffer0);<br><br>			<span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; iterations; i++) &#123;<br>				material.SetFloat(<span class="hljs-string">&quot;_BlurSize&quot;</span>, <span class="hljs-number">1.0f</span> + i * blurSpread);<br><br>				RenderTexture buffer1 = RenderTexture.GetTemporary(rtW, rtH, <span class="hljs-number">0</span>);<br><br>				<span class="hljs-comment">// Render the vertical pass</span><br>				Graphics.Blit(buffer0, buffer1, material, <span class="hljs-number">0</span>);<br><br>				RenderTexture.ReleaseTemporary(buffer0);<br>				buffer0 = buffer1;<br>				buffer1 = RenderTexture.GetTemporary(rtW, rtH, <span class="hljs-number">0</span>);<br><br>				<span class="hljs-comment">// Render the horizontal pass</span><br>				Graphics.Blit(buffer0, buffer1, material, <span class="hljs-number">1</span>);<br><br>				RenderTexture.ReleaseTemporary(buffer0);<br>				buffer0 = buffer1;<br>			&#125;<br><br>			Graphics.Blit(buffer0, dest);<br>			RenderTexture.ReleaseTemporary(buffer0);<br>		&#125; <span class="hljs-keyword">else</span> &#123;<br>			Graphics.Blit(src, dest);<br>		&#125;<br>	&#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+<p>blurSpread 和 downSample 都是出于性能的考虑。在高斯核维数不变的情况下，_BlurSize 越大，模糊程度越高，但采样数却不会收到影响，但过大的 _BlurSize 值会造成虚影。而 downSample 越大，需要处理的像素数越少，同时也能进一步提高模糊程度，但过大的 downSample 可能会使图像像素化。</p>
+<p>第一版中，我们利用 RenderTexture.GetTemporary 函数分配了一块与屏幕图像大小相同的缓冲区。这是因为，高斯模糊需要调用两个 Pass，我们需要使用一块中间缓存来存储第一个 Pass 执行完毕后得到的模糊结果。如代码所示，我们首先调用 Graphics.Blit(src, buffer, material, 0)，使用 Shader 中的第一个 Pass（即使用竖直方向的一维高斯核进行滤波）对 src 进行处理，并将结果存储在了 buffer 中。然后，再调用 Graphics.Blit(buffer, dest, material, 1)，使用 Shader 中的第二个 Pass（即使用水平方向的一维高斯核进行滤波）对 buffer 进行处理，返回最终的屏幕图像。最后，我们还需要调用 RenderTexture.ReleaseTemporary 来释放之前分配的缓存。</p>
+<p>第二版中，我们在声明缓冲区的大小时，使用了小于原屏幕分辨率的尺寸，并将该临时渲染纹理的滤波模式设置为双线性。这样，在调用第一个 Pass 时，我们需要处理的像素个数就是原来的几分之一。对图像进行降采样不仅可以减少需要处理的像素的个数，提高性能，而且适当的降采样往往还可以得到更好的模糊效果。尽管 downSample 值越大，性能越好，但过大的 downSample 可能会造成图像像素化。</p>
+<p>最后一个版本中，我们考虑了高斯模糊的迭代次数。上面的代码显示了如何利用两个临时缓存在迭代之间进行交替的过程。在迭代开始前，我们首先定义了第一个缓存 buffer0，并把 src 中的图像缩放后存储到 buffer0 中。在迭代过程中，我们又定义了第二个缓存 buffer1。在执行第一个 Pass 时，输入是 buffer0，输出是 buffer1，完毕后首先把 buffer0 释放，再把结果值 buffer1 存储到 buffer0 中，重新分配 buffer1，然后再调用第二个 Pass，重复上述过程。迭代完成后，buffer0 将存储最终的图像，我们再利用 Graphics.Blit(buffer0, dest) 把上述结果显示到屏幕上，并释放缓存。</p>
+<p>下面，我们来实现 Shader 部分。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><code class="hljs shaderlab">Shader &quot;Custom/Chapter12/Chapter12-GaussianBlur&quot; &#123;<br><br>    Properties &#123;<br>        _MainTex (&quot;Base (RGB)&quot;, 2D) = &quot;white&quot; &#123;&#125;<br>        _BlurSize (&quot;Blur Size&quot;, Float) = 1.0<br>    &#125;<br><br>    SubShader &#123;<br>        CGINCLUDE<br>        #include &quot;UnityCG.cginc&quot;<br><br>        sampler2D _MainTex;<br>        half4 _MainTex_TexelSize;<br>        float _BlurSize;<br><br>        struct v2f &#123;<br>            float4 pos : SV_POSITION;<br>            half2 uv[5] : TEXCOORD0;<br>        &#125;;<br><br>        v2f vertBlurVertical(appdata_img v) &#123;<br>            v2f o;<br>            o.pos = UnityObjectToClipPos(v.vertex);<br>            half2 uv = v.texcoord;<br><br>            o.uv[0] = uv;<br>            o.uv[1] = uv + float2(0.0, _MainTex_TexelSize.y * 1.0) * _BlurSize;<br>            o.uv[2] = uv - float2(0.0, _MainTex_TexelSize.y * 1.0) * _BlurSize;<br>            o.uv[3] = uv + float2(0.0, _MainTex_TexelSize.y * 2.0) * _BlurSize;<br>            o.uv[4] = uv - float2(0.0, _MainTex_TexelSize.y * 2.0) * _BlurSize;<br>            return o;<br>        &#125;<br><br>        v2f vertBlurHorizontal(appdata_img v) &#123;<br>            v2f o;<br>            o.pos = UnityObjectToClipPos(v.vertex);<br>            half2 uv = v.texcoord;<br><br>            o.uv[0] = uv;<br>            o.uv[1] = uv + float2(0.0, _MainTex_TexelSize.x * 1.0) * _BlurSize;<br>            o.uv[2] = uv - float2(0.0, _MainTex_TexelSize.x * 1.0) * _BlurSize;<br>            o.uv[3] = uv + float2(0.0, _MainTex_TexelSize.x * 2.0) * _BlurSize;<br>            o.uv[4] = uv - float2(0.0, _MainTex_TexelSize.x * 2.0) * _BlurSize;<br>            return o;<br>        &#125;<br><br>        fixed4 fragBlur(v2f i) : SV_Target &#123;<br>            float weight[3] = &#123;0.4026, 0.2442, 0.0545&#125;;<br>            fixed3 sum = tex2D(_MainTex, i.uv[0]).rgb * weight[0];<br><br>            for(int it = 1; it &lt; 3; it++) &#123;<br>                sum += tex2D(_MainTex, i.uv[it]).rgb * weight[it];<br>                sum += tex2D(_MainTex, i.uv[2 * it]).rgb * weight[it];<br>            &#125;<br>            return fixed4(sum, 1.0);<br>        &#125;<br><br><br>        ENDCG<br><br>        ZTest Always Cull Off ZWrite Off<br><br>        Pass &#123;<br>            Name &quot;GAUSSIAN_BLUR_VERTICAL&quot;<br><br>            CGPROGRAM<br><br>            #pragma vertex vertBlurVertical<br>            #pragma fragment fragBlur<br><br>            ENDCG<br>        &#125;<br><br>        Pass &#123;<br>            Name &quot;GAUSSIAN_BLUR_HORIZONTAL&quot;<br><br>            CGPROGRAM<br><br>            #pragma vertex vertBlurHorizontal<br>            #pragma fragment fragBlur<br><br>            ENDCG<br>        &#125;<br>    &#125;<br><br>    FallBack Off<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>我们在 SubShader 块中用 CGINCLUDE 和 ENDCG 语义来定义一系列代码，这些代码不需要包含在任何 Pass 语义块中，在使用时，我们只需要在 Pass 中直接指定需要使用的顶点着色器和片元着色器函数名即可。CGINCLUDE 类似于 C++ 中头文件的功能。由于高斯模糊需要定义两个 Pass，但它们使用的片元着色器代码是完全相同的，使用 CGINCLUDE 可以避免我们编写两个完全一样的 frag 函数。</p>
+<p>我们利用了 5 $\times$ 5 大小的高斯核对原图像进行高斯模糊，而一个 5 $\times$ 5 的二维高斯核可以拆分成两个大小为 5 的一维高斯核，因此我们只需要计算 5 个纹理坐标即可。为此，我们在 v2f 结构体中定义了一个 5 维的纹理坐标数组。数组的第一个坐标存储了当前的采样纹理，而剩余的四个坐标则是高斯模糊中对邻域采样时使用的纹理坐标。我们还和属性 _BlurSize 相乘来控制采样距离。在高斯核维数不变的情况下，_BlurSize 越大，模糊程度越高，但采样数却不会受到影响。但过大的 _BlurSize 值会造成虚影，这可能并不是我们希望的。通过把计算采样纹理坐标的代码从片元着色器中转移到顶点着色器中，可以减少运算，提高性能。由于从顶点着色器到片元着色器的插值是线性的，因此这样的转移并不会影响纹理坐标的计算结果。</p>
+<p>一个 5 $\times$ 5 的二维高斯核可以拆分成两个大小为 5 的一维高斯核，并且由于它的对称性，我们只需要记录 3 个高斯权重，也就是代码中的 weight 变量。我们首先声明了各个邻域像素对应的权重 weight，然后将结果值 sum 初始化为当前的像素值乘以它的权重值。根据对称性，我们进行了两次迭代，每次迭代包含了两次纹理采样，并把像素值和权重相乘后的结果叠加到 sum 中。最后，函数返回滤波结果 sum。</p>
+<p>我们为两个 Pass 使用了 NAME 语义定义了它们的名字。这是因为，高斯模糊是非常常见的图像处理操作，很多屏幕特效都是建立在它的基础上的，例如 Bloom 效果。为 Pass 定义名字，可以在其他 Shader 中直接通过它们的名字来使用该 Pass，而不需要再重复编写代码。</p>
+<p><img src="/posts_image/Post_Processing/Post_Processing_7.png" srcset="/img/loading.gif" lazyload alt="高斯模糊后的效果" title="高斯模糊后的效果"></p>
+<h2 id="Bloom-效果">Bloom 效果</h2>
+<p>Bloom 特效是游戏中常见的一种屏幕效果。这种特效可以模拟真实摄像机的一种图像效果，它让画面中较亮的区域“扩散”到周围的区域中，造成一种朦胧的效果。Bloom 的实现原理非常简单：我们首先根据与一个阈值提取出图像中的较亮区域，把它存储在一张渲染纹理中，再利用高斯模糊对这张渲染纹理进行模糊处理，模拟光线扩散的效果，最后再将其和原图像进行混合，得到最终的效果。</p>
+<p>我们首先来编写 Bloom.cs 脚本。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">using</span> UnityEngine;<br><span class="hljs-keyword">using</span> System.Collections;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">Bloom</span> : <span class="hljs-title">PostEffectsBase</span> &#123;<br><br>	<span class="hljs-keyword">public</span> Shader bloomShader;<br>	<span class="hljs-keyword">private</span> Material bloomMaterial = <span class="hljs-literal">null</span>;<br>	<span class="hljs-keyword">public</span> Material material &#123;  <br>		<span class="hljs-keyword">get</span> &#123;<br>			bloomMaterial = CheckShaderAndCreateMaterial(bloomShader, bloomMaterial);<br>			<span class="hljs-keyword">return</span> bloomMaterial;<br>		&#125;  <br>	&#125;<br><br>	<span class="hljs-comment">// Blur iterations - larger number means more blur.</span><br>	[<span class="hljs-meta">Range(0, 4)</span>]<br>	<span class="hljs-keyword">public</span> <span class="hljs-built_in">int</span> iterations = <span class="hljs-number">3</span>;<br>	<br>	<span class="hljs-comment">// Blur spread for each iteration - larger value means more blur</span><br>	[<span class="hljs-meta">Range(0.2f, 3.0f)</span>]<br>	<span class="hljs-keyword">public</span> <span class="hljs-built_in">float</span> blurSpread = <span class="hljs-number">0.6f</span>;<br><br>	[<span class="hljs-meta">Range(1, 8)</span>]<br>	<span class="hljs-keyword">public</span> <span class="hljs-built_in">int</span> downSample = <span class="hljs-number">2</span>;<br><br>	[<span class="hljs-meta">Range(0.0f, 4.0f)</span>]<br>	<span class="hljs-keyword">public</span> <span class="hljs-built_in">float</span> luminanceThreshold = <span class="hljs-number">0.6f</span>;<br><br>	<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">OnRenderImage</span> (<span class="hljs-params">RenderTexture src, RenderTexture dest</span>)</span> &#123;<br>		<span class="hljs-keyword">if</span> (material != <span class="hljs-literal">null</span>) &#123;<br>			material.SetFloat(<span class="hljs-string">&quot;_LuminanceThreshold&quot;</span>, luminanceThreshold);<br><br>			<span class="hljs-built_in">int</span> rtW = src.width/downSample;<br>			<span class="hljs-built_in">int</span> rtH = src.height/downSample;<br>			<br>			RenderTexture buffer0 = RenderTexture.GetTemporary(rtW, rtH, <span class="hljs-number">0</span>);<br>			buffer0.filterMode = FilterMode.Bilinear;<br>			<br>			Graphics.Blit(src, buffer0, material, <span class="hljs-number">0</span>);<br>			<br>			<span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; iterations; i++) &#123;<br>				material.SetFloat(<span class="hljs-string">&quot;_BlurSize&quot;</span>, <span class="hljs-number">1.0f</span> + i * blurSpread);<br>				<br>				RenderTexture buffer1 = RenderTexture.GetTemporary(rtW, rtH, <span class="hljs-number">0</span>);<br>				<br>				<span class="hljs-comment">// Render the vertical pass</span><br>				Graphics.Blit(buffer0, buffer1, material, <span class="hljs-number">1</span>);<br>				<br>				RenderTexture.ReleaseTemporary(buffer0);<br>				buffer0 = buffer1;<br>				buffer1 = RenderTexture.GetTemporary(rtW, rtH, <span class="hljs-number">0</span>);<br>				<br>				<span class="hljs-comment">// Render the horizontal pass</span><br>				Graphics.Blit(buffer0, buffer1, material, <span class="hljs-number">2</span>);<br>				<br>				RenderTexture.ReleaseTemporary(buffer0);<br>				buffer0 = buffer1;<br>			&#125;<br><br>			material.SetTexture (<span class="hljs-string">&quot;_Bloom&quot;</span>, buffer0);  <br>			Graphics.Blit (src, dest, material, <span class="hljs-number">3</span>);  <br><br>			RenderTexture.ReleaseTemporary(buffer0);<br>		&#125; <span class="hljs-keyword">else</span> &#123;<br>			Graphics.Blit(src, dest);<br>		&#125;<br>	&#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+<p>由于 Bloom 效果是建立在高斯模糊的基础上的，因此脚本中提供的参数和高斯模糊中的几乎完全一样，我们只增加了一个新的参数 luminanceThreshold 来控制提取较亮区域时使用的阈值大小；尽管在绝大多数情况下，图像的亮度不会超过 1，但如果我们开启了 HDR，硬件会允许我们把颜色值存储在一个更高精度范围的缓冲中，此时像素的亮度值可能会超过 1。因此，在这里我们把 luminanceThreshold 的值规定在 [0, 4] 范围内。</p>
+<p>Bloom 效果需要 3 个步骤：首先，提取图像中较亮的区域，因此，我们没有直接对 src 进行降采样，而是通过调用 Graphics.Blit(src, buffer0, material, 0) 来使用 Shader 中的第一个 Pass 提取图像中较亮区域，提取到的较亮区域将存储在 buffer0 中。然后，我们进行高斯模糊迭代处理，这些 Pass 对应了 Shader 的第二个和第三个 Pass。模糊后的较亮区域将会存储在 buffer0 中，此时，我们再把 buffer0 传递给材质中的 _Bloom 纹理属性，并调用 Graphics.Blit(src, dest, material, 3) 使用 Shader 中的第四个 Pass 来进行最后的混合，将结果存储在目标渲染纹理 dest 中。最后，释放临时缓存。</p>
+<p>下面我们来实现 Shader 的部分。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><code class="hljs shaderlab">Shader &quot;Custom/Chapter12/Chapter12-Bloom&quot; &#123;<br><br>    Properties &#123;<br>        _MainTex (&quot;Base (RGB)&quot;, 2D) = &quot;white&quot; &#123;&#125;<br>        _Bloom (&quot;Bloom (RGB)&quot;, 2D) = &quot;black&quot; &#123;&#125;<br>        _LuminanceThreshold (&quot;Luminance Threshold&quot;, Float) = 0.5<br>        _BlurSize (&quot;Blur Size&quot;, Float) = 1.0<br>    &#125;<br><br>    SubShader &#123;<br>        CGINCLUDE<br>        #include &quot;UnityCG.cginc&quot;<br><br>        sampler2D _MainTex;<br>        half4 _MainTex_TexelSize;<br>        sampler2D _Bloom;<br>        float _LuminanceThreshold;<br>        float _BlurSize;<br><br>        struct v2f &#123;<br>            float4 pos : SV_POSITION;<br>            half2 uv : TEXCOORD0;<br>        &#125;;<br><br>        v2f vertExtractBright (appdata_img v) &#123;<br>            v2f o;<br>            o.pos = UnityObjectToClipPos(v.vertex);<br>            o.uv = v.texcoord;<br>            return o;<br>        &#125;<br><br>        fixed luminance (fixed4 color) &#123;<br>            return 0.2125 * color.r + 0.7154 * color.g + 0.0721 * color.b;<br>        &#125;<br><br>        fixed4 fragExtractBright (v2f i) : SV_Target &#123;<br>            fixed4 c = tex2D(_MainTex, i.uv);<br>            fixed val = clamp(luminance(c) - _LuminanceThreshold, 0.0, 1.0);<br>            return c * val;<br>        &#125;<br><br>        struct v2fBloom &#123;<br>            float4 pos : SV_POSITION;<br>            half4 uv : TEXCOORD0;<br>        &#125;;<br><br>        v2fBloom vertBloom (appdata_img v) &#123;<br>            v2fBloom o;<br>            o.pos = UnityObjectToClipPos(v.vertex);<br>            o.uv.xy = v.texcoord;<br>            o.uv.zw = v.texcoord;<br><br>            #if UNITY_UV_STARTS_AT_TOP<br>            if(_MainTex_TexelSize.y &lt; 0.0)<br>                o.uv.w = 1.0 - o.uv.w;<br>            #endif<br><br>            return o;<br>        &#125;<br><br>        fixed4 fragBloom (v2fBloom i) : SV_TARGET &#123;<br>            return tex2D(_MainTex, i.uv.xy) + tex2D(_Bloom, i.uv.zw);<br>        &#125;<br><br>        ENDCG<br><br>        ZTest Always Cull Off ZWrite Off<br><br>        Pass &#123;<br><br>            CGPROGRAM<br>            #pragma vertex vertExtractBright<br>            #pragma fragment fragExtractBright<br>            ENDCG<br>        &#125;<br><br>        UsePass &quot;Custom/Chapter12/Chapter12-GaussianBlur/GAUSSIAN_BLUR_VERTICAL&quot;<br>        UsePass &quot;Custom/Chapter12/Chapter12-GaussianBlur/GAUSSIAN_BLUR_HORIZONTAL&quot;<br><br>        Pass &#123;<br>            CGPROGRAM<br>            #pragma vertex vertBloom<br>            #pragma fragment fragBloom<br>            ENDCG<br>        &#125;<br>    &#125;<br><br>    FallBack Off<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>这里使用的顶点着色器与之前的有所不同，我们定义了两个纹理坐标，并存储在同一个类型为 half4 的变量 uv 中。它的 xy 分量对应了 _MainTex，即原图像的纹理坐标。而它的 zw 分量是 _Bloom，即模糊后的较亮区域的纹理坐标。我们需要对这个纹理坐标进行平台差异化处理。第二个和第三个 Pass 我们直接使用了上面高斯模糊中定义的两个 Pass，这是通过 UsePass 语义指明它们的 Pass 名来实现的。需要注意的是，由于 Unity 内部会把所有 Pass 的 Name 转换成大写字母表示，因此在使用 UsePass 命令时我们必须使用大写形式的名字。</p>
+<p><img src="/posts_image/Post_Processing/Post_Processing_8.png" srcset="/img/loading.gif" lazyload alt="Bloom 效果" title="Bloom 效果"></p>
+<h2 id="运动模糊">运动模糊</h2>
+<p>运动模糊是真实世界中的摄像机的一种效果。如果在摄像机曝光时，拍摄场景发生了变化，就会产生模糊的画面。运动模糊在我们的日常生活中是非常常见的，只要留心观察，就可以发现无论是体育报道还是各个电影里，都有运动模糊的身影。运动模糊效果可以让物体运动看起来更加真实平滑，但在计算机产生的图像中，由于不存在曝光这一物理现象，渲染出来的图像往往都是棱角分明，缺少运动模糊。在一些诸如赛车类型的游戏中，为画面添加运动模糊是一种常见的处理方法。</p>
+<p>运动模糊的实现有多种方法。一种实现方法是利用一块<strong>积累缓存（accumulation buffer）<strong>来混合多张连续的图像。当物体快速移动产生多张图像后，我们取它们之间的平均值作为最后的运动模糊图像。然而，这种暴力的方法对性能的消耗很大，因为想要获取多张帧图像往往意味着我们需要在同一帧里渲染多次场景。另一种应用广泛的方法是创建和使用</strong>速度缓存（velocity buffer）</strong>，这个缓存中存储了各个像素当前的运动速度，然后利用该值来决定模糊的方向和大小。</p>
+<p>在本次实现中，我们将使用类似上述第一种方法来模拟运动模糊的效果。我们不需要在一帧中把场景渲染多次，但需要保存之前的渲染结果，不断把当前的渲染图像叠加到之前的渲染图像中，从而产生一种运动轨迹的视觉效果。这种方法与原始的利用累计缓存的方法相比性能更好，但模糊效果可能会略有影响。</p>
+<p>我们首先来编写 MotionBlur.cs 脚本。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">using</span> UnityEngine;<br><span class="hljs-keyword">using</span> System.Collections;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">MotionBlur</span> : <span class="hljs-title">PostEffectsBase</span> &#123;<br><br>	<span class="hljs-keyword">public</span> Shader motionBlurShader;<br>	<span class="hljs-keyword">private</span> Material motionBlurMaterial = <span class="hljs-literal">null</span>;<br><br>	<span class="hljs-keyword">public</span> Material material &#123;  <br>		<span class="hljs-keyword">get</span> &#123;<br>			motionBlurMaterial = CheckShaderAndCreateMaterial(motionBlurShader, motionBlurMaterial);<br>			<span class="hljs-keyword">return</span> motionBlurMaterial;<br>		&#125;  <br>	&#125;<br><br>	[<span class="hljs-meta">Range(0.0f, 0.9f)</span>]<br>	<span class="hljs-keyword">public</span> <span class="hljs-built_in">float</span> blurAmount = <span class="hljs-number">0.5f</span>;<br>	<br>	<span class="hljs-keyword">private</span> RenderTexture accumulationTexture;<br><br>	<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">OnDisable</span>()</span> &#123;<br>		DestroyImmediate(accumulationTexture);<br>	&#125;<br><br>	<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">OnRenderImage</span> (<span class="hljs-params">RenderTexture src, RenderTexture dest</span>)</span> &#123;<br>		<span class="hljs-keyword">if</span> (material != <span class="hljs-literal">null</span>) &#123;<br>			<span class="hljs-comment">// Create the accumulation texture</span><br>			<span class="hljs-keyword">if</span> (accumulationTexture == <span class="hljs-literal">null</span> || accumulationTexture.width != src.width || accumulationTexture.height != src.height) &#123;<br>				DestroyImmediate(accumulationTexture);<br>				accumulationTexture = <span class="hljs-keyword">new</span> RenderTexture(src.width, src.height, <span class="hljs-number">0</span>);<br>				accumulationTexture.hideFlags = HideFlags.HideAndDontSave;<br>				Graphics.Blit(src, accumulationTexture);<br>			&#125;<br><br>			<span class="hljs-comment">// We are accumulating motion over frames without clear/discard</span><br>			<span class="hljs-comment">// by design, so silence any performance warnings from Unity</span><br>			accumulationTexture.MarkRestoreExpected();<br><br>			material.SetFloat(<span class="hljs-string">&quot;_BlurAmount&quot;</span>, <span class="hljs-number">1.0f</span> - blurAmount);<br><br>			Graphics.Blit (src, accumulationTexture, material);<br>			Graphics.Blit (accumulationTexture, dest);<br>		&#125; <span class="hljs-keyword">else</span> &#123;<br>			Graphics.Blit(src, dest);<br>		&#125;<br>	&#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+<p>blurAmount 的值越大，运动拖尾的效果就越明显，为了防止拖尾效果完全替代当前帧的渲染结果，我们把它的值截取在 0.0~0.9 范围内。我们在脚本不运行时，即调用 OnDisable 函数时，立即销毁 accumulationTexture。这是因为，我们希望在下一次开始应用运动模糊时重新叠加图像。在确认材质可用后，我们首先判断用于混合图像的 accumulationTexture 是否满足条件。我们不仅判断它是否为空，还判断它是否与当前的屏幕分辨率相等，如果不满足，就说明我们需要重新创建一个适合于当前分辨率的 accumulationTexture 变量。创建完毕后，由于我们会自己控制该变量的销毁，因此可以把它的 hideFlags 设置为 HideFlags.HideAndDontSave，这意味着这个变量不会显示在 Hierarchy 中，也不会保存到场景中。然后，我们使用当前的帧图像初始化 accumulationTexture（使用 Graphics.Blit(src, accumulationTexture) 代码）。</p>
+<p>当得到了有效的 accumulationTexture 变量后，我们调用了 accumulationTexture.MarkRestoreExpected 函数来表明我们需要进行一个渲染纹理的恢复操作。**恢复操作（restore operation）**发生在渲染到纹理而该纹理又没有被提前清空或销毁的情况下。在本例中，我们每次调用 OnRenderImage 时都需要把当前的帧图像和 accumulationTexture 中的图像混合，accumulationTexture 纹理不需要提前清空，因为它保存了我们之前的混合结果。然后，我们将参数传递给材质，并调用 Graphics.Blit(src, accumulationTexture, material) 把当前的屏幕图像 src 叠加到 accumulationTexture 中。最后使用 Graphics.Blit(accumulationTexture, dest) 把结果显示到屏幕上。</p>
+<p>下面，我们来实现 Shader 部分。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><code class="hljs shaderlab">Shader &quot;Custom/Chapter12/Chapter12-MotionBlur&quot; &#123;<br><br>    Properties &#123;<br>        _MainTex (&quot;Base (RGB)&quot;, 2D) = &quot;white&quot; &#123;&#125;<br>        _BlurAmount (&quot;Blur Amount&quot;, Float) = 1.0<br>    &#125;<br><br>    SubShader &#123;<br>        CGINCLUDE<br>        #include &quot;UnityCG.cginc&quot;<br><br>        sampler2D _MainTex;<br>        fixed _BlurAmount;<br><br>        struct v2f &#123;<br>            float4 pos : SV_POSITION;<br>            float2 uv : TEXCOORD0;<br>        &#125;;<br><br>        v2f vert(appdata_img v) &#123;<br>            v2f o;<br>            o.pos = UnityObjectToClipPos(v.vertex);<br>            o.uv = v.texcoord;<br>            return o;<br>        &#125;<br><br>        fixed4 fragRGB (v2f i) : SV_Target &#123;<br>            return fixed4(tex2D(_MainTex, i.uv).rgb, _BlurAmount);<br>        &#125;<br><br>        half4 fragA (v2f i) : SV_Target &#123;<br>            return tex2D(_MainTex, i.uv);<br>        &#125;<br><br>        ENDCG<br>        <br>        ZTest Always Cull Off ZWrite Off<br><br>        Pass &#123;<br>            Blend SrcAlpha OneMinusSrcAlpha<br><br>            ColorMask RGB<br><br>            CGPROGRAM<br>            #pragma vertex vert<br>            #pragma fragment fragRGB<br>            ENDCG<br>        &#125;<br><br>        Pass &#123;<br>            Blend One Zero<br>            ColorMask A<br>            CGPROGRAM<br>            #pragma vertex vert<br>            #pragma fragment fragA<br>            ENDCG<br>        &#125;<br>    &#125;<br><br>    FallBack Off<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>RGB 通道版本的片元着色器对当前图像进行采样，并将其 A 通道的值设为 _BlurAmount，以便在后面混合时可以使用它的透明通道进行混合。A 通道版本的代码就更简单了，直接返回采样结果。实际上，这个版本只是为了维护渲染纹理的透明通道值，不让其受到混合时使用的透明度值的影响。然后，我们定义了运动模糊所需的 Pass。在本例中我们需要两个 Pass，一个用于更新渲染纹理的 RGB 通道，第一个用于更新 A 通道。之所以要把 A 通道和 RGB 通道分开，是因为在更新 RGB 时我们需要设置它的 A 通道来混合图像，但又不希望 A 通道的值写入渲染纹理中。</p>
+<p>本次是对运动模糊的一种简单实现。我们混合了连续帧之间的图像，这样得到一张具有模糊拖尾的图像。然而，当物体运动速度过快时，这种方法可能会造成单独的帧图像变得可见。以后我们会学习如何利用深度纹理重建速度来模拟运动的模糊效果。</p>
+<p><img src="/posts_image/Post_Processing/Post_Processing_9.png" srcset="/img/loading.gif" lazyload alt="运动模糊效果" title="运动模糊效果"></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Unity-Shader/" class="category-chain-item">Unity Shader</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Post-Processing/" class="print-no-link">#Post Processing</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>屏幕后处理</div>
+      <div>http://example.com/posts/屏幕后处理/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>祭零小白</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年3月4日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/%E6%B7%B1%E5%BA%A6%E5%92%8C%E6%B3%95%E7%BA%BF%E7%BA%B9%E7%90%86/" title="深度和法线纹理">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">深度和法线纹理</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/%E5%8A%A8%E7%94%BB%E6%95%88%E6%9E%9C/" title="动画效果">
+                        <span class="hidden-mobile">动画效果</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/css/gitalk.css')
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"7bbb87323a0faa8998e9","clientSecret":"adaeef1cc5e02a3327b5a18a608b197148c2d48e","repo":"JiLingXiaoBai.github.io","owner":"JiLingXiaoBai","admin":"JiLingXiaoBai","language":"zh-CN","labels":["Gitalk"],"perPage":10,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":false,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},
+          {
+            id: 'cd4e48f0e801ed0c5976a800e9c72fb3'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

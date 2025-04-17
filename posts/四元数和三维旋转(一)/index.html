@@ -1,0 +1,1211 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/tabIcon.png">
+  <link rel="icon" href="/img/tabIcon.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="祭零小白">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="由于使用欧拉角进行旋转时会存在万向锁的问题，同时，用欧拉角进行插值也不尽方便，而基于四元数的旋转既解决了万向锁的问题，又能非常方便地进行插值。本文将对在学习过程中遇到的四元数的定义、推导、性质、插值等问题进行总结归纳。 复数 我们先来简要讨论一下复数的一些性质以及它与 2D 旋转之间的关系，四元数的很多性质都与复数非常类似，所以理解复数的一些性质对理解四元数非常有帮助。 定义 任意一个复数 $z">
+<meta property="og:type" content="article">
+<meta property="og:title" content="四元数和三维旋转(一)">
+<meta property="og:url" content="http://example.com/posts/%E5%9B%9B%E5%85%83%E6%95%B0%E5%92%8C%E4%B8%89%E7%BB%B4%E6%97%8B%E8%BD%AC(%E4%B8%80)/index.html">
+<meta property="og:site_name" content="小白的笔记本">
+<meta property="og:description" content="由于使用欧拉角进行旋转时会存在万向锁的问题，同时，用欧拉角进行插值也不尽方便，而基于四元数的旋转既解决了万向锁的问题，又能非常方便地进行插值。本文将对在学习过程中遇到的四元数的定义、推导、性质、插值等问题进行总结归纳。 复数 我们先来简要讨论一下复数的一些性质以及它与 2D 旋转之间的关系，四元数的很多性质都与复数非常类似，所以理解复数的一些性质对理解四元数非常有帮助。 定义 任意一个复数 $z">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/posts_image/Quaternion/Quaternion_1.png">
+<meta property="og:image" content="http://example.com/posts_image/Quaternion/Quaternion_2.png">
+<meta property="og:image" content="http://example.com/posts_image/Quaternion/Quaternion_2.png">
+<meta property="og:image" content="http://example.com/posts_image/Quaternion/Quaternion_4.png">
+<meta property="og:image" content="http://example.com/posts_image/Quaternion/Quaternion_5.png">
+<meta property="og:image" content="http://example.com/posts_image/Quaternion/Quaternion_6.png">
+<meta property="article:published_time" content="2022-07-16T12:57:52.000Z">
+<meta property="article:modified_time" content="2025-04-17T12:55:15.932Z">
+<meta property="article:author" content="祭零小白">
+<meta property="article:tag" content="Math">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/posts_image/Quaternion/Quaternion_1.png">
+  
+  
+  
+  <title>四元数和三维旋转(一) - 小白的笔记本</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null},"gtag":null,"woyaola":null,"cnzz":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="小白的笔记本" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>祭零小白</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/page_background.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="四元数和三维旋转(一)"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-07-16 20:57" pubdate>
+          2022年7月16日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          4.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          38 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">四元数和三维旋转(一)</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    <!-- compatible with older versions-->
+                    本文最后更新于：2025年4月17日 晚上
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>由于使用欧拉角进行旋转时会存在万向锁的问题，同时，用欧拉角进行插值也不尽方便，而基于四元数的旋转既解决了万向锁的问题，又能非常方便地进行插值。本文将对在学习过程中遇到的四元数的定义、推导、性质、插值等问题进行总结归纳。</p>
+<h2 id="复数">复数</h2>
+<p>我们先来简要讨论一下复数的一些性质以及它与 2D 旋转之间的关系，四元数的很多性质都与复数非常类似，所以理解复数的一些性质对理解四元数非常有帮助。</p>
+<h3 id="定义">定义</h3>
+<p>任意一个复数 $z \in \mathbb{C}$ 都可以表示为 $z = a + bi$ 的形式，其中 $a,b \in \mathbb{R}$ 而且 $i^2 = -1$。我们将 $a$ 称为复数 $z$ 的实部，表示为 $a = Re(z)$，$b$ 称为复数 $z$ 的虚部，表示为 $b = Im(z)$。</p>
+<p>因为 $z = a + bi$ 其实就是对于 ${1, i}$ 这个<strong>基</strong>（Basis）的<strong>线性组合</strong>（Linear Combination），我们也可以用向量来表示一个复数：<br>
+$$<br>
+z = \begin{bmatrix}<br>
+a\<br>
+b\<br>
+\end{bmatrix}<br>
+$$</p>
+<p>因为这个向量有两个元素，我们可以使用复平面上的一个点来表示一个复数。复平面的横坐标代表它的实部，纵坐标代表它的虚部：</p>
+<p><img src="/posts_image/Quaternion/Quaternion_1.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<h3 id="复数的加减法">复数的加减法</h3>
+<p>如果我们有两个复数 $z_{1} = a + bi$，$z_{2} = c + di$，它们的和就是分量相加的结果：<br>
+$$<br>
+z_{1} + z_{2} = (a + c) + (b + d)i<br>
+$$<br>
+同理，如果要对它们相减，直接将分量相减就可以了。<br>
+$$<br>
+z_{1} - z_{2} = (a - c) + (b - d)i<br>
+$$</p>
+<h3 id="复数的乘法">复数的乘法</h3>
+<p>如果有两个复数 $z_{1} = a + bi$，$z_{2} = c + di$，我们可以使用分配律来计算它们的乘积<br>
+$$<br>
+\begin{aligned}<br>
+z_{1}z_{2} &amp;= (a + bi)(c + di)\<br>
+&amp;= ac + adi + bci + bdi^2\<br>
+&amp;= ac - bd + adi +bci\<br>
+&amp;= a\textcolor{red}{c} - b\textcolor{blue}{d} +\<br>
+&amp;\quad(b\textcolor{red}{c} + a\textcolor{blue}{d})i<br>
+\end{aligned}<br>
+$$<br>
+如果仔细观察可以发现，复数相乘的结果其实也是一个矩阵与向量相乘的结果，也就是说：<br>
+$$<br>
+\begin{aligned}<br>
+z_{1}z_{2} &amp;= a\textcolor{red}{c} - b\textcolor{blue}{d} +\<br>
+&amp;\quad(b\textcolor{red}{c} + a\textcolor{blue}{d})i\<br>
+&amp;=<br>
+\begin{bmatrix}<br>
+a&amp;-b\<br>
+b&amp;a\<br>
+\end{bmatrix}<br>
+\begin{bmatrix}<br>
+\textcolor{red}{c}\<br>
+\textcolor{blue}{d}\<br>
+\end{bmatrix}<br>
+\end{aligned}<br>
+$$</p>
+<p>右侧的 $\begin{bmatrix}c\ d \end{bmatrix}$ 是用向量的形式来表示的 $z_{2}$，而左侧的 $\begin{bmatrix} a&amp;-b\ b&amp;a\ \end{bmatrix}$ 则是 $z_{1}$ 的矩阵形式。我们可以发现，复数相乘这个运算，其实是与 $\begin{bmatrix} a&amp;-b\ b&amp;a\ \end{bmatrix}$ 则是 $z_{1}$ 这个矩阵所代表的<strong>变换</strong>是等价的。</p>
+<p>那么在矩阵形式下，复数与复数的相乘也可以表示为矩阵的相乘，如果我们有两个复数 $z_{1} = a + bi$，$z_{2} = c + di$，那么与 $z_{1}z_{2}$ 所代表的变换则可以表示为</p>
+<p>$$<br>
+\begin{aligned}<br>
+z_{1}z_{2} &amp;=<br>
+\begin{bmatrix}<br>
+a&amp;-b\<br>
+b&amp;a\<br>
+\end{bmatrix}<br>
+\begin{bmatrix}<br>
+c&amp;-d\<br>
+d&amp;c\<br>
+\end{bmatrix}\<br>
+&amp;=<br>
+\begin{bmatrix}<br>
+ac - bd&amp;-(bc + ad)\<br>
+bc + ad&amp;ac - bd\<br>
+\end{bmatrix}<br>
+\end{aligned}<br>
+$$</p>
+<p>复数的相乘满足交换律，即 $z_{1}z_{2}$ 与 $z_{2}z_{1}$ 是等价的</p>
+<p>$$<br>
+\begin{aligned}<br>
+z_{2}z_{1} &amp;=<br>
+\begin{bmatrix}<br>
+c&amp;-d\<br>
+d&amp;c\<br>
+\end{bmatrix}<br>
+\begin{bmatrix}<br>
+a&amp;-b\<br>
+b&amp;a\<br>
+\end{bmatrix}\<br>
+&amp;=<br>
+\begin{bmatrix}<br>
+ac - bd&amp;-(bc + ad)\<br>
+bc + ad&amp;ac - bd\<br>
+\end{bmatrix} = z_{1}z_{2}<br>
+\end{aligned}<br>
+$$</p>
+<p>除此之外，我们来看一下一些特殊的矩阵形式：<br>
+$$<br>
+1 = \begin{bmatrix}<br>
+1&amp;0\<br>
+0&amp;1\<br>
+\end{bmatrix}<br>
+= I<br>
+\quad(a = 1, b = 0)<br>
+$$<br>
+$$<br>
+i = \begin{bmatrix}<br>
+0&amp;-1\<br>
+1&amp;0\<br>
+\end{bmatrix}<br>
+\quad(a = 0, b = 1)<br>
+$$</p>
+<p>实数单位 1 与矩阵单位矩阵是等价的，而虚数单位 $i$ 则等价于 $\begin{bmatrix} 0&amp;-1\ 1&amp;0\ \end{bmatrix}$，如果我们尝试对它进行平方，可以发现：</p>
+<p>$$<br>
+i^2 = i \cdot i =<br>
+\begin{bmatrix}<br>
+0&amp;-1\<br>
+1&amp;0\<br>
+\end{bmatrix}<br>
+\begin{bmatrix}<br>
+0&amp;-1\<br>
+1&amp;0\<br>
+\end{bmatrix}<br>
+= \begin{bmatrix}<br>
+-1&amp;0\<br>
+0&amp;-1\<br>
+\end{bmatrix} = -I = -1<br>
+$$</p>
+<p>即便实在矩阵形式下，$i^2$ 与 -1 其实也是等价的，这进一步展示了复数与这一矩阵形式的关联。</p>
+<h3 id="复数的模长与共轭">复数的模长与共轭</h3>
+<p>复数 $z = a + bi$ 的<strong>模长</strong>（Magnitude）定义为<br>
+$$<br>
+\lVert z \rVert = \sqrt{a^2 + b^2}<br>
+$$</p>
+<p>复数 $z = a + bi$ 的<strong>共轭</strong>（Conjugate）定义为</p>
+<p>$$<br>
+\bar{z} = a - bi<br>
+$$</p>
+<p>如果尝试计算 $z\bar{z}$，我们就会发现</p>
+<p>$$<br>
+\begin{aligned}<br>
+z\bar{z} &amp;= (a + bi)(a - bi)\<br>
+&amp;= a^2 - abi + abi + b^2\<br>
+&amp;= a^2 + b^2 = {\lVert z \rVert}^2<br>
+\end{aligned}<br>
+$$</p>
+<p>所以，一个复数的模长又可以通过下面的方式计算</p>
+<p>$$<br>
+\lVert z \rVert = \sqrt{z\bar{z}}<br>
+$$</p>
+<h3 id="复数与二维旋转">复数与二维旋转</h3>
+<p>注意观察复数 $z$ 的矩阵形式 $\begin{bmatrix} a&amp;-b\ b&amp;a\ \end{bmatrix}$，我们可以把它变换为下述形式：</p>
+<p>$$<br>
+\begin{bmatrix} a&amp;-b\ b&amp;a\ \end{bmatrix} = \sqrt{a^2 + b^2}<br>
+\begin{bmatrix}<br>
+\frac{a}{\sqrt{a^2 + b^2}}&amp;\frac{-b}{\sqrt{a^2 + b^2}}\<br>
+\frac{b}{\sqrt{a^2 + b^2}}&amp;\frac{a}{\sqrt{a^2 + b^2}}\<br>
+\end{bmatrix}<br>
+$$</p>
+<p><img src="/posts_image/Quaternion/Quaternion_2.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p>可以看到，$\lVert z \rVert$ 正是复数 $z$ 与坐标轴所形成的三角形的斜边长，而 $a$，$b$ 分别为三角形的两个直角边．如果将斜边与实数轴正方向的夹角记为 $\theta$ 的话，按照三角函数的定义可以得出 $\frac{a}{\sqrt{a^2 + b^2}} = \cos(\theta)$ 且 $\frac{b}{\sqrt{a^2 + b^2}} = \sin(\theta)$,这个角度 $\theta$ 其实就是 $atan2(b, a)$。知道了这些，原矩阵就可以变形为</p>
+<p>$$<br>
+\begin{aligned}<br>
+\begin{bmatrix} a&amp;-b\ b&amp;a\ \end{bmatrix} &amp;= \sqrt{a^2 + b^2}<br>
+\begin{bmatrix}<br>
+\cos(\theta)&amp;-\sin(\theta)\<br>
+\sin(\theta)&amp;\cos(\theta)\<br>
+\end{bmatrix}\<br>
+&amp;= \lVert z \rVert<br>
+\begin{bmatrix}<br>
+\cos(\theta)&amp;-\sin(\theta)\<br>
+\sin(\theta)&amp;\cos(\theta)\<br>
+\end{bmatrix}\<br>
+&amp;= \lVert z \rVert \cdot I<br>
+\begin{bmatrix}<br>
+\cos(\theta)&amp;-\sin(\theta)\<br>
+\sin(\theta)&amp;\cos(\theta)\<br>
+\end{bmatrix}\<br>
+&amp;= \begin{bmatrix}<br>
+\lVert z \rVert&amp;0\<br>
+0&amp;\lVert z \rVert\<br>
+\end{bmatrix}<br>
+\begin{bmatrix}<br>
+\cos(\theta)&amp;-\sin(\theta)\<br>
+\sin(\theta)&amp;\cos(\theta)\<br>
+\end{bmatrix}\<br>
+\end{aligned}<br>
+$$</p>
+<p>其中，左边的 $\begin{bmatrix}\lVert z \rVert&amp;0\ 0&amp;\lVert z \rVert\ \end{bmatrix}$ 是缩放矩阵，而右边的 $\begin{bmatrix}\cos(\theta)&amp;-\sin(\theta)\ \sin(\theta)&amp;\cos(\theta)\ \end{bmatrix}$ 是 2D 旋转矩阵。</p>
+<p>让我们看看这个矩阵对两个基 $\begin{bmatrix}1\ 0 \end{bmatrix}$ 和 $\begin{bmatrix}0\ 1 \end{bmatrix}$ 的变换效果，首先是 $\begin{bmatrix}1\ 0 \end{bmatrix}$:</p>
+<p>$$<br>
+\begin{aligned}<br>
+\begin{bmatrix}<br>
+a&amp;-b\<br>
+b&amp;a\<br>
+\end{bmatrix}<br>
+\begin{bmatrix}<br>
+1\<br>
+0\<br>
+\end{bmatrix}<br>
+&amp;= \begin{bmatrix}<br>
+\lVert z \rVert&amp;0\<br>
+0&amp;\lVert z \rVert\<br>
+\end{bmatrix}<br>
+\begin{bmatrix}<br>
+\cos(\theta)&amp;-\sin(\theta)\<br>
+\sin(\theta)&amp;\cos(\theta)\<br>
+\end{bmatrix}<br>
+\begin{bmatrix}<br>
+1\<br>
+0\<br>
+\end{bmatrix}\<br>
+&amp;= \begin{bmatrix}<br>
+\lVert z \rVert&amp;0\<br>
+0&amp;\lVert z \rVert\<br>
+\end{bmatrix}<br>
+\begin{bmatrix}<br>
+\cos(\theta)\<br>
+\sin(\theta)\<br>
+\end{bmatrix}<br>
+\end{aligned}<br>
+$$</p>
+<p>第一步首先将 $\begin{bmatrix}1\ 0 \end{bmatrix}$ 变换到了 $\begin{bmatrix}\cos(\theta)\ \sin(\theta) \end{bmatrix}$ 的位置，也就是逆时针旋转了 $\theta$ 度，接下来<br>
+$$<br>
+\begin{bmatrix}<br>
+\lVert z \rVert&amp;0\<br>
+0&amp;\lVert z \rVert\<br>
+\end{bmatrix}<br>
+\begin{bmatrix}<br>
+\cos(\theta)\<br>
+\sin(\theta)\<br>
+\end{bmatrix} =<br>
+\begin{bmatrix}<br>
+\lVert z \rVert\cos(\theta)\<br>
+\lVert z \rVert\sin(\theta)\<br>
+\end{bmatrix}<br>
+$$<br>
+缩放矩阵将 $\begin{bmatrix}\cos(\theta)\ \sin(\theta)\ \end{bmatrix}$ 缩放了 $\lVert z \rVert$ 倍，变为 $\begin{bmatrix}\lVert z \rVert\cos(\theta)\ \lVert z \rVert\sin(\theta)\ \end{bmatrix}$。总的来说，就是对 $\begin{bmatrix}1\ 0 \end{bmatrix}$ 旋转了 $\theta$ 度，并缩放了 $\lVert z \rVert$ 倍。</p>
+<p>接下来是 $\begin{bmatrix}0\ 1 \end{bmatrix}$：</p>
+<p>$$<br>
+\begin{aligned}<br>
+\begin{bmatrix}<br>
+a&amp;-b\<br>
+b&amp;a\<br>
+\end{bmatrix}<br>
+\begin{bmatrix}<br>
+0\<br>
+1\<br>
+\end{bmatrix}<br>
+&amp;= \begin{bmatrix}<br>
+\lVert z \rVert&amp;0\<br>
+0&amp;\lVert z \rVert\<br>
+\end{bmatrix}<br>
+\begin{bmatrix}<br>
+\cos(\theta)&amp;-\sin(\theta)\<br>
+\sin(\theta)&amp;\cos(\theta)\<br>
+\end{bmatrix}<br>
+\begin{bmatrix}<br>
+0\<br>
+1\<br>
+\end{bmatrix}\<br>
+&amp;= \begin{bmatrix}<br>
+\lVert z \rVert&amp;0\<br>
+0&amp;\lVert z \rVert\<br>
+\end{bmatrix}<br>
+\begin{bmatrix}<br>
+-\sin(\theta)\<br>
+\cos(\theta)\<br>
+\end{bmatrix}<br>
+\end{aligned}<br>
+$$</p>
+<p>这里，第一步将 $\begin{bmatrix}0\ 1 \end{bmatrix}$ 变换到了 $\begin{bmatrix}-\sin(\theta)\ \cos(\theta) \end{bmatrix}$ 的位置，这同样是逆时针旋转了 $\theta$ 度，见下图：</p>
+<p><img src="/posts_image/Quaternion/Quaternion_2.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p>第二步变换同样会将 $\begin{bmatrix}-\sin(\theta)\ \cos(\theta) \end{bmatrix}$ 缩放为 $\begin{bmatrix}-\lVert z \rVert\sin(\theta)\ \lVert z \rVert\cos(\theta) \end{bmatrix}$。这样等于是将整个坐标系逆时针旋转了 $\theta$ 度，并缩放了 $\lVert z \rVert$ 倍。</p>
+<p>换句话说，复数相乘的几何意义就是<strong>旋转与缩放变换的复合</strong>。如果有一个复数 $z = a + bi$，那么 $z$ 与任意一个复数 $c$ 相乘都会将 $c$ 逆时针旋转 $\theta = atan2(b, a)$ 度，并将其缩放 $\lVert z \rVert = \sqrt{a^2 + b^2}$ 倍。</p>
+<p>如果复数的模长为 1，那么它的几何意义就只有旋转。</p>
+<p>$$<br>
+z = \begin{bmatrix}<br>
+\cos(\theta)&amp;-\sin(\theta)\<br>
+\sin(\theta)&amp;\cos(\theta)\<br>
+\end{bmatrix}<br>
+$$</p>
+<p>如果我们想让 2D 空间中任意一个向量 $\vec{v}$ 旋转 $\theta$ 度，那么我们就可以使用这个矩阵对 $\vec{v}$ 进行变换：</p>
+<div class="note note-primary">
+            <p><strong>Theorem 1：2D 旋转公式（矩阵型）</strong><br>$$<br>\vec{v’} = \begin{bmatrix}<br>\cos(\theta)&amp;-\sin(\theta)\<br>\sin(\theta)&amp;\cos(\theta)\<br>\end{bmatrix}<br>\vec{v}<br>$$</p>
+          </div>
+<p>其实 $\begin{bmatrix}\cos(\theta)&amp;-\sin(\theta)\ \sin(\theta)&amp;\cos(\theta)\ \end{bmatrix}$ 这个旋转矩阵如果写成复数形式的话就是 $\cos(\theta) + i\sin(\theta)$</p>
+<p>如果我们将向量 $\vec{v} = \begin{bmatrix} x\ y\ \end{bmatrix}$ 看作是一个复数 $v = x + yi$，其中实部为 $x$，虚部为 $y$。那么我们可以构造一个复数 $z = \cos(\theta) + i\sin(\theta)$，并将它与 $v$ 相乘来进行旋转，旋转 $\theta$ 度之后的向量 $v’$ 可以用等价的复数乘法来表示：</p>
+<div class="note note-primary">
+            <p><strong>Theorem 2：2D 旋转公式（复数积型）</strong><br>$$<br>\begin{aligned}<br>v’ &amp;= zv\<br>&amp;= (\cos(\theta) + i\sin(\theta)) v<br>\end{aligned}<br>$$</p>
+          </div>
+<h3 id="复数的极坐标型">复数的极坐标型</h3>
+<p>$\cos(\theta) + i\sin(\theta)$ 还可以进行下一步的变形，根据欧拉公式（Euler’s Formula），<br>
+$$<br>
+\cos(\theta) + i\sin(\theta) = e^{i\theta}<br>
+$$</p>
+<div class="note note-success">
+            <p><strong>欧拉公式的证明：</strong></p><p>令 $f(\theta) = \frac{\cos(\theta) + i\sin(\theta)}{e^{i\theta}} = e^{-i\theta}(\cos(\theta) + i\sin(\theta))$，对实数 $\theta$，对 $f(\theta)$ 求导，得到 $f’(\theta) = e^{-i\theta}(i\cos(\theta) - \sin(\theta)) - ie^{-i\theta}(\cos(\theta) + i\sin(\theta)) = 0$，因此 $f(\theta)$ 是常数。又因为 $f(0) = 1$，所以 $f(\theta) \equiv 1$。欧拉公式得证。</p>
+          </div>
+<p>有了这个等式，我们就能将复数表示为<br>
+$$<br>
+\begin{aligned}<br>
+z &amp;= \lVert z \rVert<br>
+\begin{bmatrix}<br>
+\cos(\theta)&amp;-\sin(\theta)\<br>
+\sin(\theta)&amp;\cos(\theta)\<br>
+\end{bmatrix}<br>
+&amp;= \lVert z \rVert (\cos(\theta) + i\sin(\theta))<br>
+&amp;= \lVert z \rVert e^{i\theta}<br>
+\end{aligned}<br>
+$$</p>
+<p>如果我们定义 $r = \lVert z \rVert$，我们就得到了复数的极坐标形式：<br>
+$$<br>
+z = re^{i\theta}<br>
+$$</p>
+<p>现在复数的定义就与实部与虚部的两个分量 $a$，$b$ 无关了，我们可以使用一个缩放因子 $r$ 和旋转角度 $\theta$ 的形式来定义任意一个复数，而且它旋转与缩放的性质仍然存在。如果我们想对 2D 空间中的向量 $\vec{v} = \begin{bmatrix} x\ y\ \end{bmatrix}$ 进行旋转并缩放，我们可以类似地将这个向量看作是一个复数 $v = x + yi$，那么，经过旋转 $\theta$ 度，缩放 $r$ 倍之后的向量 $v’$ 就可以这样计算：<br>
+$$<br>
+v’ = re^{i\theta}v<br>
+$$<br>
+如果仅需要旋转 $\theta$ 度的话，可以令缩放因子 $r = 1$，那么变换后的结果就是</p>
+<div class="note note-primary">
+            <p><strong>Theorem 3：2D 旋转公式（指数型）</strong><br>$$<br>v’ = e^{i\theta}v<br>$$</p>
+          </div>
+<h3 id="复数的几种表示形式总结">复数的几种表示形式总结</h3>
+<ul>
+<li>代数形式一：$z = a + bi$</li>
+<li>代数形式二：$z = r(\cos(\theta) + i\sin(\theta))$</li>
+<li>向量形式：$z = \begin{bmatrix}a\ b\ \end{bmatrix}$</li>
+<li>矩阵形式一：$\begin{bmatrix} a&amp;-b\ b&amp;a\ \end{bmatrix}$</li>
+<li>矩阵形式二：$\begin{bmatrix}\lVert z \rVert&amp;0\ 0&amp;\lVert z \rVert\ \end{bmatrix} \begin{bmatrix}\cos(\theta)&amp;-\sin(\theta)\ \sin(\theta)&amp;\cos(\theta)\ \end{bmatrix}\$</li>
+<li>极坐标形式：$z = re^{i\theta}$</li>
+</ul>
+<p>这几种形式完全等价</p>
+<h3 id="旋转的复合">旋转的复合</h3>
+<p>如果我们有两个代表 2D 旋转的单位复数 $z_{1} = \cos(\theta) + i\sin(\theta)$，$z_{2} = \cos(\phi) + i\sin(\phi)$ 以及一个向量 $v = x + yi$，我们可以先对 $v$ 进行 $z_{1}$ 的旋转<br>
+$$<br>
+v’ = z_{1}v<br>
+$$<br>
+在此基础上，我们对 $v’$ 进行 $z_{2}$ 的旋转<br>
+$$<br>
+\begin{aligned}<br>
+v’’ &amp;= z_{2}(z_{1}v)\<br>
+&amp;= (z_{2}z_{1})v<br>
+\end{aligned}<br>
+$$<br>
+如果我们将这两次旋转所作出的等效变换称为 $z_{net}$，那么<br>
+$$<br>
+\begin{aligned}<br>
+v’’ &amp;= (z_{2}z_{1})v = z_{net}v\<br>
+z_{net} &amp;= z_{2}z_{1}<br>
+\end{aligned}<br>
+$$</p>
+<p>因为复数的相乘遵守交换律，所以<br>
+$$<br>
+z_{net} = z_{2}z_{1} = z_{1}z_{2}<br>
+$$<br>
+如果尝试计算一下 $z_{net}$，会发现<br>
+$$<br>
+\begin{aligned}<br>
+z_{net} &amp;= (\cos(\theta) + i\sin(\theta))(\cos(\phi) + i\sin(\phi))\<br>
+&amp;= \cos(\theta)\cos(\phi) + i(\cos(\theta)\sin(\phi)) + i(\sin(\theta)\cos(\phi)) - \sin(\theta)\sin(\phi)\<br>
+&amp;= (\cos(\theta)\cos(\phi) - \sin(\theta)\sin(\phi)) + (\cos(\theta)\sin(\phi) + \sin(\theta)\cos(\phi))i<br>
+\end{aligned}<br>
+$$</p>
+<p>这个式子可以利用三角恒等式化简为：<br>
+$$<br>
+\begin{aligned}<br>
+z_{net} &amp;= (\cos(\theta) + i\sin(\theta))(\cos(\phi) + i\sin(\phi))\<br>
+&amp;= \cos(\theta + \phi) + i\sin(\theta + \phi)<br>
+\end{aligned}<br>
+$$</p>
+<p>所以，当我们对两个 2D 旋转进行复合时，所得到的变换 $z_{net}$ 仍是一个旋转，而且与施加的次序无关。这个等效变换的旋转角是 $z_{1} 与 $z_{2} 旋转角之和。</p>
+<h2 id="轴角式旋转">轴角式旋转</h2>
+<p>假设我们有一个经过原点的（如果旋转轴不经过原点我们可以先将旋转轴平移到原点，进行旋转，再平移回原处）旋转轴 $\vec{u} = (x,y,z)^T$，我们希望将一个向量 $\vec{v}$，沿着这个旋转轴旋转 $\theta$ 度，变换到 $\vec{v’}$</p>
+<p><img src="/posts_image/Quaternion/Quaternion_4.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p>我们使用右手坐标系统，并且将使用右手定则来定义旋转的正方向。你可以将右手拇指指向旋转轴 $\vec{u}$ 的正方向，这时其他四个手指弯曲的方向即为旋转的正方向。在上图中即为逆时针方向。</p>
+<p>为了消除旋转轴 $\vec{u}$ 模长这个多余的自由度，我们可以规定 $\vec{u}$ 的模长为 1，即 $\vec{u}$ 是一个单位向量。规定 $\vec{u}$ 为单位向量后能为我们带来很多便利，这也是数学和物理中对方向定义的惯例。如果 $\vec{u}$ 不是一个单位向量，我们可以通过下面的公式将它转化为一个单位向量<br>
+$$<br>
+\hat{u} = \frac{\vec{u}}{\lVert \vec{u} \rVert}<br>
+$$</p>
+<h3 id="旋转的分解">旋转的分解</h3>
+<p>我们可以将 $\vec{v}$ 分解为<strong>平行</strong>于旋转轴 $\vec{u}$ 以及<strong>正交</strong>于 $\vec{u}$ 的两个分量，$\vec{v_{\parallel}}$ 和 $\vec{v_{\perp}}$，即<br>
+$$<br>
+\vec{v} = \vec{v_{\parallel}} + \vec{v_{\perp}}<br>
+$$<br>
+我们可以分别旋转这两个分量，再将它们旋转的结果相加获得旋转后的向量<br>
+$$<br>
+\vec{v’} = \vec{v_{\parallel}‘} + \vec{v_{\perp}’}<br>
+$$<br>
+下面是分解的示意图：</p>
+<p><img src="/posts_image/Quaternion/Quaternion_5.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p>可以看到，$\vec{v_{\parallel}}$ 其实就是 $\vec{v}$ 在 $\vec{u}$ 上的正交投影，根据正交投影公式，我们可以得出：</p>
+<p>$$<br>
+\begin{aligned}<br>
+\vec{v_{\parallel}} &amp;= proj_{u}(\vec{v})\<br>
+&amp;= \frac{\vec{u}\cdot\vec{v}}{\vec{u}\cdot\vec{u}}\vec{u}\<br>
+&amp;= \frac{\vec{u}\cdot\vec{v}}{\lVert \vec{u} \rVert ^2}\vec{u}\<br>
+&amp;= (\vec{u}\cdot\vec{v})\vec{u}<br>
+\end{aligned}<br>
+$$</p>
+<p>因为 $\vec{v} = \vec{v_{\parallel}} + \vec{v_{\perp}}$，我们可以得到<br>
+$$<br>
+\begin{aligned}<br>
+\vec{v_{\perp}} &amp;= \vec{v} - \vec{v_{\parallel}}\<br>
+&amp;= \vec{v} - (\vec{u}\cdot\vec{v})\vec{u}<br>
+\end{aligned}<br>
+$$</p>
+<h3 id="vec-v-parallel-的旋转">$\vec{v_{\parallel}}$ 的旋转</h3>
+<p>从之前的图示中可以看到，$\vec{v_{\parallel}}$ 其实没有被旋转，仍然与旋转轴 $\vec{u}$ 重合，所以</p>
+<div class="note note-primary">
+            <p><strong>Theorem 4：3D 旋转公式（向量型，平行情况）</strong><br>当 $\vec{v_{\parallel}}$ 平行于旋转轴 $\vec{u}$ 时，旋转 $\theta$ 角度之后的 $\vec{v_{\parallel}‘}$ 为：<br>$$<br>\vec{v_{\parallel}’} = \vec{v_{\parallel}}<br>$$</p>
+          </div>
+<h3 id="vec-v-perp-的旋转">$\vec{v_{\perp}}$ 的旋转</h3>
+<p>接下来，我们需要处理正交于 $\vec{u}$ 的 $\vec{v_{\perp}}$。因为这两个向量是正交的，这个旋转可以看作是平面内的一个旋转。因为旋转不改变 $\vec{v_{\perp}}$ 的长度，所以路径是一个园。下面是这个旋转的示意图，右侧的为俯视图：</p>
+<p><img src="/posts_image/Quaternion/Quaternion_6.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p>现在，3D 的旋转就被我们转化为了 2D 平面上的旋转，由于在这个平面上我们只有一个向量 $\vec{v_{\perp}}$，用它来表示一个旋转是不够的，我们还需构造一个同时正交于 $\vec{u}$ 和 $\vec{v_{\perp}}$ 的向量 $\vec{w}$，这个可以通过叉乘来获得<br>
+$$<br>
+\vec{w} = \vec{u}\times\vec{v_{\perp}}<br>
+$$</p>
+<p>注意叉乘的顺序，因为我们使用的是右手坐标系统，按右手定则这个新的向量 $\vec{w}$ 指向 $\vec{v_{\perp}}$ 逆时针旋转 $\pi / 2$ 后的方向，并且和 $\vec{v_{\perp}}$ 一样也处于正交于 $\vec{u}$ 的平面内，因为 $\lVert\vec{u}\rVert = 1$，我们可以发现：<br>
+$$<br>
+\begin{aligned}<br>
+\lVert\vec{w}\rVert &amp;= \lVert\vec{u}\times\vec{v_{\perp}}\rVert\<br>
+&amp;= \lVert\vec{u}\rVert\cdot\lVert\vec{v_{\perp}}\rVert\cdot\sin(\pi/2)\<br>
+&amp;= \lVert\vec{v_{\perp}}\rVert<br>
+\end{aligned}<br>
+$$<br>
+$\vec{w}$ 和 $\vec{v_{\perp}}$ 的模长相同，且 $\vec{w}$ 也位于圆上，我们可以将 $\vec{w}$ 和 $\vec{v_{\perp}}$ 作为平面内的两个坐标轴，我们现在可以把 $\vec{v_{\perp}‘}$ 投影到 $\vec{w}$ 和 $\vec{v_{\perp}}$ 上，将其分解为 $\vec{v_{v}’}$ 和 $\vec{v_{w}'}$，利用三角形的知识我们可以得到：</p>
+<p>$$<br>
+\begin{aligned}<br>
+\vec{v_{\perp}‘} &amp;= \vec{v_{v}’} + \vec{v_{w}'}\<br>
+&amp;= \cos(\theta)\vec{v_{\perp}} + \sin(\theta)\vec{w}\<br>
+&amp;= \cos(\theta)\vec{v_{\perp}} + \sin(\theta)(\vec{u}\times\vec{v_{\perp}})<br>
+\end{aligned}<br>
+$$</p>
+<div class="note note-primary">
+            <p><strong>Theorem 5：3D 旋转公式（向量型，正交情况）</strong><br>当 $\vec{v_{\perp}}$ 正交于旋转轴 $\vec{u}$ 时，旋转 $\theta$ 角度之后的 $\vec{v_{\perp}‘}$ 为：<br>$$<br>\vec{v_{\perp}’} = \cos(\theta)\vec{v_{\perp}} + \sin(\theta)(\vec{u}\times\vec{v_{\perp}})<br>$$</p>
+          </div>
+<h3 id="vec-v-的旋转">$\vec{v}$ 的旋转</h3>
+<p>将上面两个结果组合可以获得：<br>
+$$<br>
+\begin{aligned}<br>
+\vec{v’} &amp;= \vec{v_{\parallel}‘} + \vec{v_{\perp}’}\<br>
+&amp;= \vec{v_{\parallel}} + \cos(\theta)\vec{v_{\perp}} + \sin(\theta)(\vec{u}\times\vec{v_{\perp}})<br>
+\end{aligned}<br>
+$$</p>
+<p>因为叉乘遵守分配律，<br>
+$$<br>
+\begin{aligned}<br>
+\vec{u}\times\vec{v_{\perp}} &amp;= \vec{u}\times(\vec{v} - \vec{v_{\parallel}})\<br>
+&amp;= \vec{u}\times\vec{v} - \vec{u}\times\vec{v_{\parallel}}\<br>
+&amp;= \vec{u}\times\vec{v}\quad (\vec{u} 平行于 \vec{v_{\parallel}}，所以 \vec{u}\times\vec{v_{\parallel}} = \vec{0})<br>
+\end{aligned}<br>
+$$</p>
+<p>最后，将 $\vec{v_{\parallel}} = (\vec{u}\cdot\vec{v})\vec{u}$ 和 $\vec{v_{\perp}} = \vec{v} - (\vec{u}\cdot\vec{v})\vec{u}$ 代入<br>
+$$<br>
+\begin{aligned}<br>
+\vec{v’} &amp;= (\vec{u}\cdot\vec{v})\vec{u} + \cos(\theta)(\vec{v} - (\vec{u}\cdot\vec{v})\vec{u}) + \sin(\theta)(\vec{u}\times\vec{v})\<br>
+&amp;= \cos(\theta)\vec{v} + (1 - \cos(\theta))(\vec{u}\cdot\vec{v})\vec{u} + \sin(\theta)(\vec{u}\times\vec{v})<br>
+\end{aligned}<br>
+$$<br>
+这样我们就得到了一般形式的旋转公式：</p>
+<div class="note note-primary">
+            <p><strong>Theorem 6：3D 旋转公式（向量型，一般情况）</strong><br>3D 空间中任意一个 $\vec{v}$ 沿着单位向量 $\vec{u}$ 旋转 $\theta$ 角度之后的 $\vec{v_{\perp}‘}$ 为：<br>$$<br>\vec{v’} = \cos(\theta)\vec{v} + (1 - \cos(\theta))(\vec{u}\cdot\vec{v})\vec{u} + \sin(\theta)(\vec{u}\times\vec{v})<br>$$</p>
+          </div>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Computer-Graphics/" class="category-chain-item">Computer Graphics</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Math/" class="print-no-link">#Math</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>四元数和三维旋转(一)</div>
+      <div>http://example.com/posts/四元数和三维旋转(一)/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>祭零小白</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年7月16日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/%E5%9B%9B%E5%85%83%E6%95%B0%E5%92%8C%E4%B8%89%E7%BB%B4%E6%97%8B%E8%BD%AC(%E4%BA%8C)/" title="四元数和三维旋转(二)">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">四元数和三维旋转(二)</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%9F%BA%E7%A1%80-%E4%BB%8B%E7%BB%8D/" title="计算机图形学基础-介绍">
+                        <span class="hidden-mobile">计算机图形学基础-介绍</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/css/gitalk.css')
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"7bbb87323a0faa8998e9","clientSecret":"adaeef1cc5e02a3327b5a18a608b197148c2d48e","repo":"JiLingXiaoBai.github.io","owner":"JiLingXiaoBai","admin":"JiLingXiaoBai","language":"zh-CN","labels":["Gitalk"],"perPage":10,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":false,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},
+          {
+            id: 'cc5216139dec391937c040ae440af5ab'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

@@ -1,0 +1,844 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/tabIcon.png">
+  <link rel="icon" href="/img/tabIcon.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="祭零小白">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="图形领域（Graphics Areas）  建模（Modeling） 渲染（Rendering） 动画（Animation） 用户交互（User interaction） 虚拟现实（Virtual reality） 可视化（Visualization） 图像处理（Image processing） 三维扫描（Three-dimensional scanning） 计算摄影（Computationa">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机图形学基础-介绍">
+<meta property="og:url" content="http://example.com/posts/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%9F%BA%E7%A1%80-%E4%BB%8B%E7%BB%8D/index.html">
+<meta property="og:site_name" content="小白的笔记本">
+<meta property="og:description" content="图形领域（Graphics Areas）  建模（Modeling） 渲染（Rendering） 动画（Animation） 用户交互（User interaction） 虚拟现实（Virtual reality） 可视化（Visualization） 图像处理（Image processing） 三维扫描（Three-dimensional scanning） 计算摄影（Computationa">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-07-05T13:06:23.000Z">
+<meta property="article:modified_time" content="2025-04-17T12:55:15.936Z">
+<meta property="article:author" content="祭零小白">
+<meta property="article:tag" content="Fundamental of Computer Graphics">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>计算机图形学基础-介绍 - 小白的笔记本</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null},"gtag":null,"woyaola":null,"cnzz":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="小白的笔记本" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>祭零小白</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/page_background.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="计算机图形学基础-介绍"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-07-05 21:06" pubdate>
+          2022年7月5日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          17 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">计算机图形学基础-介绍</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    <!-- compatible with older versions-->
+                    本文最后更新于：2025年4月17日 晚上
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="图形领域（Graphics-Areas）">图形领域（Graphics Areas）</h2>
+<ul>
+<li>建模（Modeling）</li>
+<li>渲染（Rendering）</li>
+<li>动画（Animation）</li>
+<li>用户交互（User interaction）</li>
+<li>虚拟现实（Virtual reality）</li>
+<li>可视化（Visualization）</li>
+<li>图像处理（Image processing）</li>
+<li>三维扫描（Three-dimensional scanning）</li>
+<li>计算摄影（Computational photography）</li>
+</ul>
+<h2 id="主要应用（Major-Applications）">主要应用（Major Applications）</h2>
+<ul>
+<li>电子游戏（Video games）</li>
+<li>动画（Cartoons）</li>
+<li>视觉效果（Visual effects）</li>
+<li>动画电影（Animated films）</li>
+<li>CAD/CAM（Computer-aided design/Computer-aided manufacturing）</li>
+<li>仿真（Simulation）</li>
+<li>医学成像（Medical imaging）</li>
+<li>信息可视化（Information visualization）</li>
+</ul>
+<h2 id="图形API（Graphics-APIs）">图形API（Graphics APIs）</h2>
+<p>每个图形程序都需要能够使用两个相关的API：一个用于视觉输出的图形API和一个用于从用户那里获得输入的用户界面API</p>
+<ol>
+<li>第一种是集成的方法，以Java为例，其中图形和用户界面工具箱时集成的、可移植的软件包，是完全标准化的并作为语言的一部分得到支持。</li>
+<li>第二种是以Direct3D和OpenGL为代表的，其中的绘图命令是与语言相联系的软件库的一部分，而用户界面软件则是一个独立的实体。</li>
+</ol>
+<h2 id="图形管线（Graphics-Pipeline）">图形管线（Graphics Pipeline）</h2>
+<p>将三维顶点位置映射到二维屏幕位置，并对三角形着色，使它们看起来很真实，并以适当的前后顺序出现。现在几乎都是用 Z-buffer 来解决绘制三角形的前后顺序问题。几何操作几乎完全在4D的齐次坐标空间中完成。</p>
+<h2 id="数值问题（Numerical-Issues）">数值问题（Numerical Issues）</h2>
+<p>实数有三个特殊值</p>
+<ul>
+<li><strong>无限大（$\infty$）</strong> 有效数字，比其他所有有效数字都大</li>
+<li><strong>负无穷大（$-\infty$）</strong> 有效数字，比其他所有有效数字都小</li>
+<li><strong>不是一个数字（$NaN$）</strong> 无效的数字，是由具有未定义结果的操作引起的，如零除以零。</li>
+</ul>
+<p>对于任何正实数 a：</p>
+<p>$+a/(+\infty) = +0$<br>
+$-a/(+\infty ) = -0$<br>
+$+a/(-\infty ) = -0$<br>
+$-a/(-\infty ) = +0$<br>
+$\infty+\infty = +\infty$<br>
+$\infty-\infty = NaN$<br>
+$\infty\times\infty = \infty$<br>
+$\infty/\infty = NaN$<br>
+$\infty/a = \infty$<br>
+$\infty/0 = \infty$<br>
+$0/0 = NaN$</p>
+<p>涉及无限值的布尔表达式规则如下：</p>
+<ol>
+<li>所有有限的有效数字都小于 $\infty$</li>
+<li>所有有限的有效数字都大于 $-\infty$</li>
+<li>$-\infty$ 小于 $\infty$</li>
+</ol>
+<p>涉及有 $NaN$ 值的表达式的规则很简单：</p>
+<ol>
+<li>任何包括 $NaN$ 的算术表达式的结果都是 $NaN$</li>
+<li>任何涉及 $NaN$ 的布尔表达式都是假的</li>
+</ol>
+<p>对于任何正实数 a，以下涉及除以零值的规则都成立：</p>
+<p>$+a/+0 = +\infty$<br>
+$-a/+0 = -\infty$</p>
+<h2 id="效率（Efficiency）">效率（Efficiency）</h2>
+<ol>
+<li>尽可能以最直接的方式编写代码。根据需要即时计算中间结果，而不是存储它们。</li>
+<li>在优化模式下进行编译</li>
+<li>使用现有的任何分析工具寻找关键的效率瓶颈问题</li>
+<li>检查数据结构，寻找提高定位数据的方法。尽量使数据单元大小和目标架构上的缓存/页面大小相匹配。</li>
+<li>如果分析发现了数字计算的瓶颈，检查编译器生成的汇编代码是否有遗漏的效率问题。重写源代码来解决发现的任何问题。</li>
+</ol>
+<h2 id="设计和编码图形程序（Designing-and-Coding-Graphics-Programs）">设计和编码图形程序（Designing and Coding Graphics Programs）</h2>
+<h3 id="类的设计">类的设计</h3>
+<p>应该为几何实体（如向量和矩阵）以及图形实体（如RGB颜色和图像）编写尽可能干净又高效的类或程序。</p>
+<ul>
+<li><strong>vector2</strong> 一个存储 x 和 y 分量的二维向量类。应该将分量存储在一个二维数组中，这样就可以支持索引操作。还应编写向量加法、向量减法、点积、叉积、标量乘法和标量除法的操作程序。</li>
+<li><strong>vector3</strong> 类似于 vector2 的三维向量类。</li>
+<li><strong>hvector</strong> 具有四个分量的齐次向量。</li>
+<li><strong>rgb</strong> 一个 RGB 颜色存储三个分量。还应编写 RGB 加法、RGB 减法、RGB 乘法，标量乘法和标量除法的操作程序。</li>
+<li><strong>transform</strong> 一个用于变换的 4 $\times$ 4 矩阵。还应编写一个矩阵乘法和成员函数，以应用于位置、方向和表面法向量的变换。</li>
+<li><strong>image</strong> 一个具有输出操作的 RGB 像素的二维阵列。</li>
+</ul>
+<h3 id="Float-VS-Double">Float VS Double</h3>
+<p>现代架构表明，减少内存的使用和保持连贯的内存访问是效率的关键。所以建议使用单精度数据，然而，为了避免数字问题（Numerical Issues），建议使用双精度算术。这种权衡取决于程序，但在你的类中有一个默认的定义。</p>
+<h3 id="调试图形程序">调试图形程序</h3>
+<h4 id="科学方法">科学方法</h4>
+<p>创建一个图像并观察它的问题所在。然后，我们对导致问题的原因提出一个假设，并对其进行测试。我们有时会觉得这种方法很好用，因为不需要发现一个错误的值或者真正确定概念性错误。我们只是通过实验轻松定位到问题的位置。</p>
+<h4 id="将图像作为调试的输出">将图像作为调试的输出</h4>
+<p>在许多情况下，从图形程序中获得调试信息的最简单渠道是输出图像本身。如果你想知道某个变量在每个像素上的部分计算值，你可以临时修改你的程序，把这个值直接复制到输出图像上，而跳过通常要进行的其他计算。例如，如果你怀疑某个特定的值有时超出了它的有效范围，让你的程序在发生这种情况的地方写上鲜红色的像素。其他常见的技巧包括用明显的颜色画出表面的背面（当它们不应该是可见的），用物体的ID号给图像着色，或者用像素的计算量来着色。</p>
+<h4 id="使用调试器">使用调试器</h4>
+<p>仍然有一些情况，特别是当科学方法似乎已经导致了矛盾的时候，这时没有什么可以替代观察到底发生了什么。麻烦的是，图形程序往往涉及同一代码的许多许多执行（例如，每个像素一次，或每个三角形一次），这使得从一开始就在调试器中步步深入完全不现实。而且最困难的错误通常只发生在复杂的输入上。</p>
+<p>一个有用的方法是为这个错误 “设置一个陷阱（trap）”。首先，确保你的程序是确定性的–在一个单线程中运行，并确保所有的随机数都是由固定的种子计算出来的。然后，找出表现出错误的像素或三角形，并在你怀疑不正确的代码前添加一条语句，只对可疑情况执行。</p>
+<p>如果你设置一个断点，你就可以在你感兴趣的像素被计算出来之前进入调试器。有些调试器有一个 “条件断点 “的功能，可以在不修改代码的情况下达到同样的效果。</p>
+<p>在程序崩溃的情况下，传统的调试器对于确定崩溃的地方很有用。然后，你应该在程序中开始回溯，使用断言（asserts）和重新编译，以找到程序出错的地方。这些断言（asserts）应该留在程序中，以备将来可能添加的错误。这又意味着避免了传统的一步到位的过程，因为那不会在你的程序中加入有价值的断言（asserts）。</p>
+<h4 id="为调试进行数据可视化">为调试进行数据可视化</h4>
+<p>通常情况下，我们很难理解程序在做什么，因为它在最后出错之前计算了很多中间结果。这种情况类似于测量大量数据的科学实验，有一个解决办法是相同的：为自己制作好的图表和插图来理解数据的含义。例如，在光线追踪器中，你可能会写代码将光线树可视化，这样你就可以看到哪些路径对一个像素的贡献，或者在一个图像重采样程序中，你可能会做一些图来显示所有从输入中提取样本的点。花费时间编写代码来可视化你的程序的内部状态，在优化它的时候，也可以通过更好地理解它的行为来得到回报。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Computer-Graphics/" class="category-chain-item">Computer Graphics</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Fundamental-of-Computer-Graphics/" class="print-no-link">#Fundamental of Computer Graphics</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>计算机图形学基础-介绍</div>
+      <div>http://example.com/posts/计算机图形学基础-介绍/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>祭零小白</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年7月5日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/%E5%9B%9B%E5%85%83%E6%95%B0%E5%92%8C%E4%B8%89%E7%BB%B4%E6%97%8B%E8%BD%AC(%E4%B8%80)/" title="四元数和三维旋转(一)">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">四元数和三维旋转(一)</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/%E4%BD%BF%E7%94%A8%E5%99%AA%E5%A3%B0/" title="使用噪声">
+                        <span class="hidden-mobile">使用噪声</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/css/gitalk.css')
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"7bbb87323a0faa8998e9","clientSecret":"adaeef1cc5e02a3327b5a18a608b197148c2d48e","repo":"JiLingXiaoBai.github.io","owner":"JiLingXiaoBai","admin":"JiLingXiaoBai","language":"zh-CN","labels":["Gitalk"],"perPage":10,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":false,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},
+          {
+            id: 'f1321e05d5ed7fc67c8afd5c18aa755f'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

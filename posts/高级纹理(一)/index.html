@@ -1,0 +1,816 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/tabIcon.png">
+  <link rel="icon" href="/img/tabIcon.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="祭零小白">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="立方体纹理 在图形学中，**立方体纹理（Cubemap）是环境映射（Environment Mapping）**的一种实现方法。环境映射可以模拟物体周围的环境，而使用了环境映射的物体可以看起来像镀了层金属一样反射出周围的环境。 立方体纹理一共包含了 6 张图像，这些图像对应了一个立方体的 6 个面，立方体纹理的名称也由此而来。立方体的每个面表示沿着世界空间下的轴向（上、下、左、右、前、后）观察所得">
+<meta property="og:type" content="article">
+<meta property="og:title" content="高级纹理(一)">
+<meta property="og:url" content="http://example.com/posts/%E9%AB%98%E7%BA%A7%E7%BA%B9%E7%90%86(%E4%B8%80)/index.html">
+<meta property="og:site_name" content="小白的笔记本">
+<meta property="og:description" content="立方体纹理 在图形学中，**立方体纹理（Cubemap）是环境映射（Environment Mapping）**的一种实现方法。环境映射可以模拟物体周围的环境，而使用了环境映射的物体可以看起来像镀了层金属一样反射出周围的环境。 立方体纹理一共包含了 6 张图像，这些图像对应了一个立方体的 6 个面，立方体纹理的名称也由此而来。立方体的每个面表示沿着世界空间下的轴向（上、下、左、右、前、后）观察所得">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/posts_image/Advanced_Texture/Advanced_Texture_1.png">
+<meta property="og:image" content="http://example.com/posts_image/Advanced_Texture/Advanced_Texture_2.png">
+<meta property="og:image" content="http://example.com/posts_image/Advanced_Texture/Advanced_Texture_3.png">
+<meta property="og:image" content="http://example.com/posts_image/Advanced_Texture/Advanced_Texture_4.png">
+<meta property="og:image" content="http://example.com/posts_image/Advanced_Texture/Advanced_Texture_5.png">
+<meta property="og:image" content="http://example.com/posts_image/Advanced_Texture/Advanced_Texture_6.png">
+<meta property="og:image" content="http://example.com/posts_image/Advanced_Texture/Advanced_Texture_7.png">
+<meta property="og:image" content="http://example.com/posts_image/Advanced_Texture/Advanced_Texture_8.png">
+<meta property="og:image" content="http://example.com/posts_image/Advanced_Texture/Advanced_Texture_9.png">
+<meta property="og:image" content="http://example.com/posts_image/Advanced_Texture/Advanced_Texture_10.png">
+<meta property="article:published_time" content="2022-02-23T06:43:23.000Z">
+<meta property="article:modified_time" content="2025-04-17T12:55:15.937Z">
+<meta property="article:author" content="祭零小白">
+<meta property="article:tag" content="Texture">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/posts_image/Advanced_Texture/Advanced_Texture_1.png">
+  
+  
+  
+  <title>高级纹理(一) - 小白的笔记本</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null},"gtag":null,"woyaola":null,"cnzz":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="小白的笔记本" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>祭零小白</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/page_background.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="高级纹理(一)"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-02-23 14:43" pubdate>
+          2022年2月23日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          3.8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          32 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">高级纹理(一)</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    <!-- compatible with older versions-->
+                    本文最后更新于：2025年4月17日 晚上
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="立方体纹理">立方体纹理</h2>
+<p>在图形学中，**立方体纹理（Cubemap）<strong>是</strong>环境映射（Environment Mapping）**的一种实现方法。环境映射可以模拟物体周围的环境，而使用了环境映射的物体可以看起来像镀了层金属一样反射出周围的环境。</p>
+<p>立方体纹理一共包含了 6 张图像，这些图像对应了一个立方体的 6 个面，立方体纹理的名称也由此而来。立方体的每个面表示沿着世界空间下的轴向（上、下、左、右、前、后）观察所得的图像。对立方体纹理采样需要提供一个三维的纹理坐标，这个三维纹理坐标表示了在世界空间下的 3D 方向。这个方向矢量从立方体的中心出发，当它向外部延伸时就会和立方体的 6 个纹理之一发生相交，而采样得到的结果就是由该交点计算而来的。下图给出了使用方向矢量对立方体纹理采样的过程。</p>
+<p><img src="/posts_image/Advanced_Texture/Advanced_Texture_1.png" srcset="/img/loading.gif" lazyload alt="对立方体纹理的采样" title="对立方体纹理的采样"></p>
+<p>立方体纹理的好处在于实现简单快速，得到的效果也比较好，但是它也有一些缺点，例如当场景中引入了新的物体、光源，或者物体发生移动时，我们就需要重新生成立方体纹理。除此之外，立方体纹理也仅可以反射环境，但不能反射使用了该立方体纹理的物体本身。这是因为立方体纹理不能模拟多次反射的结果，例如两个金属球互相反射的情况（Unity 引入的全局光照系统允许实现这样的自反射效果）。由于这样的原因，想要得到令人信服的渲染结果，应该尽量对凸面体而不要对凹面体使用立方体纹理（因为凹面体会反射自身）。</p>
+<p>立方体纹理在实时渲染中有很多应用，最常见的是用于天空盒子（Skybox）以及环境映射。</p>
+<h3 id="天空盒子">天空盒子</h3>
+<p>**天空盒子（Skybox）**是游戏中用于模拟背景的一种方法。当我们在场景中使用了天空盒子时，整个场景就被包围在一个立方体内。这个立方体的每个面使用的技术就是立方体纹理映射技术。</p>
+<p><img src="/posts_image/Advanced_Texture/Advanced_Texture_2.png" srcset="/img/loading.gif" lazyload alt="天空盒子材质" title="天空盒子材质"></p>
+<p>为了让天空盒子正常渲染，我们还需要把这 6 张纹理的 <strong>Wrap Mode</strong> 设置为 <strong>Clamp</strong>，以防在接缝处出现不匹配的现象。上面的材质中，除了 6 张纹理属性外还有 3 个属性：<strong>Tint Color</strong>，用于控制该材质的整体颜色；<strong>Exposure</strong>，用于调整天空盒子的亮度；<strong>Rotation</strong>，用于调整天空盒子沿 +y 轴方向的旋转角度。</p>
+<p><img src="/posts_image/Advanced_Texture/Advanced_Texture_3.png" srcset="/img/loading.gif" lazyload alt="为场景使用自定义的天空盒子" title="为场景使用自定义的天空盒子"></p>
+<p><img src="/posts_image/Advanced_Texture/Advanced_Texture_4.png" srcset="/img/loading.gif" lazyload alt="使用了天空盒子的场景" title="使用了天空盒子的场景"></p>
+<p>在 Unity 中，天空盒子是在所有不透明物体之后渲染的，而其背后使用的网格是一个立方体或一个细分后的球体。</p>
+<h3 id="创建用于环境映射的立方体纹理">创建用于环境映射的立方体纹理</h3>
+<p>除了天空盒子，立方体纹理最常见的用处是用于环境映射。通过这种方法，我们可以模拟出金属质感的材质。</p>
+<p>在 Unity 中，创建用于环境映射的立方体纹理的方法有三种：第一种方法是直接由一些特殊布局的纹理创建；第二种方法是手动创建一个 Cubemap 资源，再把 6 张图赋给它；第三种方法是由脚本生成。</p>
+<p>如果使用第一种方法，我们需要提供一张具有特殊布局的纹理，例如类似立方体展开图的交叉布局、全景布局等。然后，我们只需要把该纹理的 <strong>Texture Type</strong> 设置为 <strong>Cubemap</strong> 即可，Unity 会为我们做好剩下的事情。在基于物理的渲染中，我们通常会使用一张 HDR 图像来生成高质量的 Cubemap。</p>
+<p>第二种方法是 Unity 5 之前的版本中使用的方法。我们首先需要在项目资源中创建一个 Cubemap，然后把 6 张纹理拖拽到它的面板中。官方推荐使用第一种方法创建立方体纹理，这是因为第一种方法可以对纹理数据进行压缩，而且可以支持边缘修正、光滑反射（glossy reflection）和 HDR 等功能。</p>
+<p>前面两种方法都需要我们提前准备好立方体纹理的图像，它们得到的立方体纹理往往是被场景中的物体所共用的。但在理想情况下，我们希望根据物体在场景中位置的不同，生成它们各自不同的立方体纹理。这时，我们就可以在 Unity 中使用脚本来创建。这是通过利用 Unity 提供的 <strong>Camera.RenderToCubemap</strong> 函数来实现的。Camera.RenderToCubemap 函数可以把从任意位置观察到的场景图像存储到 6 张图中，从而创建出该位置上对应的立方体纹理。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">using</span> UnityEngine;<br><span class="hljs-keyword">using</span> UnityEditor;<br><span class="hljs-keyword">using</span> System.Collections;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">RenderCubemapWizard</span> : <span class="hljs-title">ScriptableWizard</span> &#123;<br>	<br>	<span class="hljs-keyword">public</span> Transform renderFromPosition;<br>	<span class="hljs-keyword">public</span> Cubemap cubemap;<br>	<br>	<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">OnWizardUpdate</span> ()</span> &#123;<br>		helpString = <span class="hljs-string">&quot;Select transform to render from and cubemap to render into&quot;</span>;<br>		isValid = (renderFromPosition != <span class="hljs-literal">null</span>) &amp;&amp; (cubemap != <span class="hljs-literal">null</span>);<br>	&#125;<br>	<br>	<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">OnWizardCreate</span> ()</span> &#123;<br>		<span class="hljs-comment">// create temporary camera for rendering</span><br>		GameObject go = <span class="hljs-keyword">new</span> GameObject( <span class="hljs-string">&quot;CubemapCamera&quot;</span>);<br>		go.AddComponent&lt;Camera&gt;();<br>		<span class="hljs-comment">// place it on the object</span><br>		go.transform.position = renderFromPosition.position;<br>		<span class="hljs-comment">// render into cubemap		</span><br>		go.GetComponent&lt;Camera&gt;().RenderToCubemap(cubemap);<br>		<br>		<span class="hljs-comment">// destroy temporary camera</span><br>		DestroyImmediate( go );<br>	&#125;<br>	<br>	[<span class="hljs-meta">MenuItem(<span class="hljs-string">&quot;GameObject/Render into Cubemap&quot;</span>)</span>]<br>	<span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">RenderCubemap</span> ()</span> &#123;<br>		ScriptableWizard.DisplayWizard&lt;RenderCubemapWizard&gt;(<br>			<span class="hljs-string">&quot;Render cubemap&quot;</span>, <span class="hljs-string">&quot;Render!&quot;</span>);<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>在上面的代码中，我们在 renderFromPosition（由用户指定）位置处动态创建一个摄像机，并调用 Camera.RenderToCubemap 函数把从当前位置观察到的图像渲染到用户指定的立方体纹理 cubemap 中，完成后再销毁临时摄像机。由于该代码需要添加菜单栏条目，因此我们需要把它放在 Editor 文件夹下才能正确执行。</p>
+<p><img src="/posts_image/Advanced_Texture/Advanced_Texture_5.png" srcset="/img/loading.gif" lazyload alt="使用脚本创建立方体纹理" title="使用脚本创建立方体纹理"></p>
+<p><img src="/posts_image/Advanced_Texture/Advanced_Texture_6.png" srcset="/img/loading.gif" lazyload alt="使用脚本渲染立方体纹理" title="使用脚本渲染立方体纹理"></p>
+<p>需要注意的是，我们需要为 Cubemap 设置大小，即上图中的 <strong>Face size</strong> 选项。Face size 值越大，渲染出来的立方体纹理分辨率越大，效果可能更好，但需要占用的内存也越大，这可以由面板最下方显示的内存大小得到。</p>
+<p>准备好了需要的立方体纹理后，我们就可以对物体使用环境映射技术。而环境映射最常见的应用就是反射和折射。</p>
+<h3 id="反射">反射</h3>
+<p>使用了反射效果的物体通常看起来就像镀了层金属。想要模拟反射效果很简单，我们只需要通过入射光线的方向和表面法线方向来计算反射方向，再利用反射方向对立方体纹理采样即可。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br></pre></td><td class="code"><pre><code class="hljs shaderlab">// Upgrade NOTE: replaced &#x27;_Object2World&#x27; with &#x27;unity_ObjectToWorld&#x27;<br><br>Shader &quot;Custom/Chapter10/Chapter10-Reflection&quot;<br>&#123;<br>    Properties &#123;<br>        _Color (&quot;Color Tint&quot;, Color) = (1, 1, 1, 1)<br>        _ReflectColor (&quot;Reflection Color&quot;, Color) = (1, 1, 1, 1)<br>        _ReflectAmount (&quot;Reflection Amount&quot;, Range(0, 1)) = 1<br>        _Cubemap (&quot;Reflection Cubemap&quot;, Cube) = &quot;_Skybox&quot; &#123;&#125;<br>    &#125;<br><br>    SubShader &#123;<br>        Tags &#123; &quot;RenderType&quot;=&quot;Opaque&quot; &quot;Queue&quot;=&quot;Geometry&quot; &#125;<br><br>        Pass &#123;<br><br>            Tags &#123; &quot;LightMode&quot;=&quot;ForwardBase&quot; &#125;<br>            <br>            CGPROGRAM<br>            #pragma multi_compile_fwdbase<br>            #pragma vertex vert<br>            #pragma fragment frag<br><br>            #include &quot;Lighting.cginc&quot;<br>			#include &quot;AutoLight.cginc&quot;<br><br>            fixed4 _Color;<br>            fixed4 _ReflectColor;<br>            float _ReflectAmount;<br>            samplerCUBE _Cubemap;<br><br>            struct a2v &#123;<br>                float4 vertex : POSITION;<br>                float3 normal : NORMAL;<br>            &#125;;<br><br>            struct v2f &#123;<br>                float4 pos : SV_POSITION;<br>                float3 worldPos : TEXCOORD0;<br>                float3 worldNormal : TEXCOORD1;<br>                float3 worldViewDir : TEXCOORD2;<br>                float3 worldRefl : TEXCOORD3;<br>                SHADOW_COORDS(4)<br>            &#125;;<br><br><br>            v2f vert(a2v v) &#123;<br>                v2f o;<br>                o.pos = UnityObjectToClipPos(v.vertex);<br>                o.worldNormal = UnityObjectToWorldNormal(v.normal);<br>                o.worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;<br>                o.worldViewDir = UnityWorldSpaceViewDir(o.worldPos);<br>                o.worldRefl = reflect(-o.worldViewDir, o.worldNormal);<br>                <br>                TRANSFER_SHADOW(o);<br>                return o;<br>            &#125;<br><br>            fixed4 frag(v2f i) : SV_TARGET &#123;<br>                fixed3 worldNormal = normalize(i.worldNormal);<br>                fixed3 worldLightDir = normalize(UnityWorldSpaceLightDir(i.worldPos));<br>                fixed3 worldViewDir = normalize(i.worldViewDir);<br><br>                fixed3 ambient = UNITY_LIGHTMODEL_AMBIENT.xyz;<br><br>                fixed3 diffuse = _LightColor0.rgb * _Color.rgb * max(0,dot(worldNormal,worldLightDir));<br><br>                fixed3 reflection = texCUBE(_Cubemap, i.worldRefl).rgb * _ReflectColor.rgb;<br><br>                UNITY_LIGHT_ATTENUATION(atten, i, i.worldPos);<br><br>                fixed3 color = ambient + lerp(diffuse, reflection, _ReflectAmount) * atten;<br><br>                return fixed4(color, 1.0);<br>            &#125;<br><br>            <br><br>            ENDCG<br>        &#125;<br><br>    &#125;<br><br>    FallBack &quot;Reflective/VertexLit&quot;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+<p>_ReflectColor 用于控制反射颜色，_ReflectAmount 用于控制这个材质的反射程度，而 _Cubemap 就是用于模拟反射的环境映射纹理。使用 CG 中的 <strong>reflect</strong> 函数来计算顶点处的反射方向。物体反射到摄像机中的光线方向，可以由光路可逆的原则来求得。也就是说，我们可以计算视角方向关于顶点法线的反射方向来求得入射光线的方向。</p>
+<p>对立方体纹理的采样需要使用 CG 的 <strong>texCUBE</strong> 函数。注意到，在上面的计算中，我们在采样时并没有对 i.worldRefl 进行归一化操作。这是因为，用于采样的参数仅仅是作为方向变量传递给 texCUBE 函数的，因此我们没有必要进行一次归一化的操作。然后，我们使用 _ReflectAmount 来混合漫反射颜色和反射颜色，并和环境光照相加后返回。</p>
+<p>在上面的计算中，我们选择在顶点着色器中计算反射方向。当然，我们也可以选择在片元着色器中计算，这样得到的效果更加细腻。但是，对于绝大多数人来说这种差别往往是可以忽略不计的，因此出于性能方面的考虑，我们选择在顶点着色器中计算反射方向。</p>
+<p><img src="/posts_image/Advanced_Texture/Advanced_Texture_7.png" srcset="/img/loading.gif" lazyload alt="反射效果" title="反射效果"></p>
+<h3 id="折射">折射</h3>
+<p>当光线从一种介质（例如空气）斜射入另一种介质（例如玻璃）时，传播方向一般会发生改变。当给定入射角时，我们可以使用**斯涅尔定律（Snell’s Law）**来计算反射角。当光从介质 1 沿着和表面法线夹角为 $\theta _1$ 的方向斜射入介质 2 时，我们可以使用如下公式计算折射光线和法线的夹角 $\theta _2$ ：</p>
+<p>$$<br>
+\eta _1\sin\theta _1 = \eta _2\sin\theta _2<br>
+$$</p>
+<p>其中，$\eta _1$ 和 $\eta _2$ 分别是两个介质的<strong>折射率（index of refraction）</strong>。折射率是一项重要的物理常数，例如真空的折射率是 1，而玻璃的折射率一般是 1.5。下图给出了这些变量之间的关系。</p>
+<p><img src="/posts_image/Advanced_Texture/Advanced_Texture_8.png" srcset="/img/loading.gif" lazyload alt="斯涅尔定律" title="斯涅尔定律"></p>
+<p>通常来说，当得到折射方向后我们就会直接使用它来对立方体纹理进行采样，但是这是不符合物理规律的。对一个透明物体来说，一种更准确的模拟方法需要计算两次折射——一次是当光线进入它的内部时，而另一次则是从它内部射出时。但是，想要在实时渲染中模拟出第二次折射方向是比较复杂的，而且仅仅模拟一次得到的效果在视觉上看起来“也挺像那么回事的”。正如我们之前提到的——图形学第一准则“如果它看起来是对的，那么它就是对的”。因此，在实时渲染中我们通常仅模拟第一次折射。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br></pre></td><td class="code"><pre><code class="hljs shaderlab">// Upgrade NOTE: replaced &#x27;_Object2World&#x27; with &#x27;unity_ObjectToWorld&#x27;<br><br>Shader &quot;Custom/Chapter10/Chapter10-Refraction&quot;<br>&#123;<br>    Properties &#123;<br>        _Color (&quot;Color Tint&quot;, Color) = (1, 1, 1, 1)<br>        _RefractColor (&quot;Refraction Color&quot;, Color) = (1, 1, 1, 1)<br>        _RefractAmount (&quot;Refraction Amount&quot;, Range(0, 1)) = 1<br>        _RefractRatio (&quot;Refraction Ratio&quot;, Range(0.1, 1)) = 0.5<br>        _Cubemap (&quot;Refraction Cubemap&quot;, Cube) = &quot;_Skybox&quot; &#123;&#125;<br>    &#125;<br><br>    SubShader &#123;<br>        Tags &#123; &quot;RenderType&quot; = &quot;Opaque&quot; &quot;Queue&quot; = &quot;Geometry&quot; &#125;<br><br>        Pass &#123;<br>            Tags &#123; &quot;LightMode&quot;=&quot;ForwardBase&quot; &#125;<br><br>            CGPROGRAM<br>            <br>            #pragma multi_compile_fwdbase<br><br>            #pragma vertex vert<br>            #pragma fragment frag<br><br>            #include &quot;Lighting.cginc&quot;<br>            #include &quot;AutoLight.cginc&quot;<br><br>            fixed4 _Color;<br>            fixed4 _RefractColor;<br>            float _RefractAmount;<br>            fixed _RefractRatio;<br>            samplerCUBE _Cubemap;<br><br>            struct a2v &#123;<br>                float4 vertex : POSITION;<br>                float3 normal : NORMAL;<br>            &#125;;<br><br>            struct v2f &#123;<br>                float4 pos : SV_POSITION;<br>                float3 worldPos : TEXCOORD0;<br>                fixed3 worldNormal : TEXCOORD1;<br>                fixed3 worldViewDir : TEXCOORD2;<br>                fixed3 worldRefr : TEXCOORD3;<br>                SHADOW_COORDS(4)<br><br>            &#125;;<br><br>            v2f vert(a2v v) &#123;<br>                v2f o;<br>                o.pos = UnityObjectToClipPos(v.vertex);<br>                o.worldNormal = UnityObjectToWorldNormal(v.normal);<br>                o.worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;<br>                o.worldViewDir = UnityWorldSpaceViewDir(o.worldPos);<br><br>                o.worldRefr = refract(-normalize(o.worldViewDir), normalize(o.worldNormal), _RefractRatio);<br><br>                TRANSFER_SHADOW(o);<br>                return o;<br>            &#125;<br><br>            fixed4 frag(v2f i) : SV_TARGET &#123;<br>                fixed3 worldNormal = normalize(i.worldNormal);<br>                fixed3 worldLightDir = normalize(UnityWorldSpaceLightDir(i.worldPos));<br>                fixed3 worldViewDir = normalize(i.worldViewDir);<br><br>                fixed3 ambient = UNITY_LIGHTMODEL_AMBIENT.xyz;<br>                fixed3 diffuse = _LightColor0.rgb * _Color.rgb * max(0, dot(worldNormal, worldLightDir));<br><br>                fixed3 refraction = texCUBE(_Cubemap, i.worldRefr).xyz * _RefractColor.rgb;<br><br>                UNITY_LIGHT_ATTENUATION(atten, i, i.worldPos);<br><br>                fixed3 color = ambient + lerp(diffuse, refraction, _RefractAmount) * atten;<br><br>                return fixed4(color, 1.0);<br>            &#125;<br><br>            ENDCG<br>        &#125;<br>    &#125;<br><br>    Fallback &quot;Reflective/VertexLit&quot;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+<p>我们使用 _RefractRatio 得到不同介质的透射比来计算折射方向，其他属性和控制反射时使用的属性类似。我们使用了 CG 的 <strong>refract</strong> 函数来计算折射方向。它的第一个参数即为入射光线的方向，它必须是归一化后的矢量；第二个参数是表面法线，法线方向同样需要是归一化后的；第三个参数是入射光线所在介质的折射率和折射光线所在介质的折射率之间的比值，例如如果是光从空气射到玻璃表面，那么这个参数应该是空气的折射率和玻璃的折射率之间的比值，即 1/1.5。它的返回值就是计算而得的折射方向，它的模则等于入射光线的模。</p>
+<p>同样，我们也没有对 i.worldRefr 进行归一化操作，因为对立方体纹理的采样只需要提供方向即可。最后，我们使用 _RefractAmount 来混合漫反射颜色和折射颜色，并和环境光照相加后返回。</p>
+<p><img src="/posts_image/Advanced_Texture/Advanced_Texture_9.png" srcset="/img/loading.gif" lazyload alt="折射效果" title="折射效果"></p>
+<h3 id="菲涅耳反射">菲涅耳反射</h3>
+<p>在实时渲染中，我们经常会使用**菲涅耳反射（Fresnel reflection）**来根据视角方向控制反射程度。通俗地讲，菲涅耳反射描述了一种光学现象，即当光线照射到物体表面上时，一部分发生反射，一部分进入物体内部，发生折射或散射。被反射的光和入射光之间存在一定的比率关系，这个比率关系可以通过菲涅耳等式进行计算。真实世界的菲涅耳等式是非常复杂的，但在实时渲染中，我们通常会用一些近似公式来计算。其中一个著名的近似公式就是 <strong>Schlick 菲涅耳近似等式</strong>：<br>
+$$<br>
+F_{Schlick}(v, n) = F_0 + (1 - F_0)(1 - v \cdot n)^5<br>
+$$</p>
+<p>其中，$F_0$ 是一个反射系数，用于控制菲涅耳反射的强度，$v$ 是视角方向，$n$ 是表面法线。另一个应用比较广泛的等式是 <strong>Empricial 菲涅耳近似等式</strong>：<br>
+$$<br>
+F_{Empricial}(v, n) = \max(0, \min(1, bias + scale \times (1 - v \cdot n)^{power}))<br>
+$$</p>
+<p>其中，$bias$、$scale$ 和 $power$ 是控制项。</p>
+<p>使用上面的菲涅耳近似等式，我们可以在边界处模拟反射光强和折射光强/漫反射光强之间的变化。在许多车漆、水面等材质的渲染中，我们会经常使用菲涅耳反射来模拟更加真实的反射效果。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><code class="hljs shaderlab">// Upgrade NOTE: replaced &#x27;_Object2World&#x27; with &#x27;unity_ObjectToWorld&#x27;<br><br>Shader &quot;Custom/Chapter10/Chapter10-Fresnel&quot;<br>&#123;<br>    Properties<br>    &#123;<br>        _Color (&quot;Color Tint&quot;, Color) = (1, 1, 1, 1)<br>        _FresnelScale (&quot;Fresnel Scale&quot;, Range(0, 1)) = 0.5<br>        _Cubemap (&quot;Reflection Cubemap&quot;, Cube) = &quot;_Skybox&quot; &#123;&#125;<br>        <br>    &#125;<br><br>    SubShader<br>    &#123;<br>        Tags &#123; &quot;RenderType&quot;=&quot;Opaque&quot; &quot;Queue&quot;=&quot;Geometry&quot; &#125;<br><br>        Pass &#123;<br>            Tags &#123; &quot;LightMode&quot;=&quot;ForwardBase&quot; &#125;<br><br>            CGPROGRAM<br><br>            #pragma multi_compile_fwdbase<br>            #pragma vertex vert<br>            #pragma fragment frag<br><br>            #include &quot;Lighting.cginc&quot;<br>            #include &quot;AutoLight.cginc&quot;<br><br>            fixed4 _Color;<br>            fixed _FresnelScale;<br>            samplerCUBE _Cubemap;<br><br>            struct a2v &#123;<br>                float4 vertex : POSITION;<br>                float3 normal : NORMAL;<br>            &#125;;<br><br>            struct v2f &#123;<br>                float4 pos : SV_POSITION;<br>                float3 worldPos : TEXCOORD0;<br>                fixed3 worldNormal : TEXCOORD1;<br>                fixed3 worldViewDir : TEXCOORD2;<br>                fixed3 worldRefl : TEXCOORD3;<br>                SHADOW_COORDS(4)<br>            &#125;;<br><br>            v2f vert(a2v v) &#123;<br>                v2f o;<br>                o.pos = UnityObjectToClipPos(v.vertex);<br>                o.worldNormal = UnityObjectToWorldNormal(v.normal);<br>                o.worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;<br>                o.worldViewDir = UnityWorldSpaceViewDir(o.worldPos);<br>                o.worldRefl = reflect(-o.worldViewDir, o.worldNormal);<br>                TRANSFER_SHADOW(o);<br>                return o;<br>            &#125;<br><br>            fixed4 frag(v2f i) : SV_TARGET &#123;<br>                fixed3 worldNormal = normalize(i.worldNormal);<br>                fixed3 worldLightDir = normalize(UnityWorldSpaceLightDir(i.worldPos));<br>                fixed3 worldViewDir = normalize(i.worldViewDir);<br><br>                fixed3 ambient = UNITY_LIGHTMODEL_AMBIENT.xyz;<br>                UNITY_LIGHT_ATTENUATION(atten, i, i.worldPos);<br>                fixed3 reflection = texCUBE(_Cubemap, i.worldRefl).rgb;<br><br>                fixed fresnel = _FresnelScale + (1 - _FresnelScale) * pow(1 - dot(worldViewDir, worldNormal), 5);<br>                fixed3 diffuse = _LightColor0.rgb * _Color.rgb * max(0, dot(worldNormal, worldLightDir));<br>                fixed3 color = ambient + lerp(diffuse, reflection, saturate(fresnel)) * atten;<br>                return fixed4(color, 1.0);<br>            &#125;<br><br>            ENDCG<br>        &#125;<br>    &#125;<br>    FallBack &quot;Reflective/VertexLit&quot;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+<p>在上面的代码中，我们使用 Schlick 菲涅耳近似等式来计算 fresnel 变量，并使用它来混合漫反射光照和反射光照。一些实现也会直接把 fresnel 和反射光照相乘后叠加到漫反射光照上，模拟边缘光照的效果。</p>
+<p><img src="/posts_image/Advanced_Texture/Advanced_Texture_10.png" srcset="/img/loading.gif" lazyload alt="菲涅耳反射效果" title="菲涅耳反射效果"></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Unity-Shader/" class="category-chain-item">Unity Shader</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Texture/" class="print-no-link">#Texture</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>高级纹理(一)</div>
+      <div>http://example.com/posts/高级纹理(一)/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>祭零小白</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年2月23日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/%E9%AB%98%E7%BA%A7%E7%BA%B9%E7%90%86(%E4%BA%8C)/" title="高级纹理(二)">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">高级纹理(二)</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/%E6%8F%92%E5%80%BC%E5%87%BD%E6%95%B0/" title="插值函数">
+                        <span class="hidden-mobile">插值函数</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/css/gitalk.css')
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"7bbb87323a0faa8998e9","clientSecret":"adaeef1cc5e02a3327b5a18a608b197148c2d48e","repo":"JiLingXiaoBai.github.io","owner":"JiLingXiaoBai","admin":"JiLingXiaoBai","language":"zh-CN","labels":["Gitalk"],"perPage":10,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":false,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},
+          {
+            id: 'b67d49506684cf548cc76623fa6e3960'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

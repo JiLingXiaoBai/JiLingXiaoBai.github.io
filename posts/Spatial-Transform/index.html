@@ -1,0 +1,897 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/tabIcon.png">
+  <link rel="icon" href="/img/tabIcon.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="祭零小白">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="坐标空间的变换 在渲染流水线中，我们往往需要把一个点或者方向矢量从一个坐标空间转换到另一个坐标空间，这个过程的是怎么实现的？ 我们要想定义一个坐标空间，必须指明其原点位置和三个坐标轴的方向。而这些数值实际上是相对于另一个坐标空间的。也就是说坐标空间会形成一个层次结构——每个坐标空间都是另一个坐标空间的子空间，反过来说，每个空间都有一个父坐标空间。对坐标空间的变换实际上就是在父空间和子空间之间对点和">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spatial Transform">
+<meta property="og:url" content="http://example.com/posts/Spatial-Transform/index.html">
+<meta property="og:site_name" content="小白的笔记本">
+<meta property="og:description" content="坐标空间的变换 在渲染流水线中，我们往往需要把一个点或者方向矢量从一个坐标空间转换到另一个坐标空间，这个过程的是怎么实现的？ 我们要想定义一个坐标空间，必须指明其原点位置和三个坐标轴的方向。而这些数值实际上是相对于另一个坐标空间的。也就是说坐标空间会形成一个层次结构——每个坐标空间都是另一个坐标空间的子空间，反过来说，每个空间都有一个父坐标空间。对坐标空间的变换实际上就是在父空间和子空间之间对点和">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/posts_image/Spatial_Transform/Spatial_Transform_1.png">
+<meta property="og:image" content="http://example.com/posts_image/Spatial_Transform/Spatial_Transform_2.png">
+<meta property="og:image" content="http://example.com/posts_image/Spatial_Transform/Spatial_Transform_3.png">
+<meta property="article:published_time" content="2021-12-26T11:08:56.000Z">
+<meta property="article:modified_time" content="2025-04-17T12:55:15.931Z">
+<meta property="article:author" content="祭零小白">
+<meta property="article:tag" content="Math">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/posts_image/Spatial_Transform/Spatial_Transform_1.png">
+  
+  
+  
+  <title>Spatial Transform - 小白的笔记本</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null},"gtag":null,"woyaola":null,"cnzz":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="小白的笔记本" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>祭零小白</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/page_background.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Spatial Transform"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2021-12-26 19:08" pubdate>
+          2021年12月26日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          2.5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          22 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Spatial Transform</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    <!-- compatible with older versions-->
+                    本文最后更新于：2025年4月17日 晚上
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="坐标空间的变换">坐标空间的变换</h2>
+<p>在渲染流水线中，我们往往需要把一个点或者方向矢量从一个坐标空间转换到另一个坐标空间，这个过程的是怎么实现的？<br>
+我们要想定义一个坐标空间，必须指明其原点位置和三个坐标轴的方向。而这些数值实际上是相对于另一个坐标空间的。也就是说坐标空间会形成一个层次结构——每个坐标空间都是另一个坐标空间的子空间，反过来说，每个空间都有一个父坐标空间。对坐标空间的变换实际上就是在父空间和子空间之间对点和矢量进行变换。<br>
+假设现在有父坐标空间<strong>P</strong>以及一个子坐标空间<strong>C</strong>，我们现在已知父坐标空间中子坐标空间的原点位置以及三个单位坐标轴。我们会有两种需求，一种需求是把子坐标空间下表示的点或矢量<strong>A</strong><sub><i>c</i></sub>转换到父坐标空间下的表示<strong>A</strong><sub><i>p</i></sub>，另一种需求是反过来，即把父坐标空间下表示的点或矢量<strong>B</strong><sub><i>p</i></sub>转换到子坐标空间下的表示<strong>B</strong><sub><i>c</i></sub>。我们可以用下面的公式来表示这两种需求：</p>
+<p>$$<br>
+A_p = M_{c \rightarrow p}A_c<br>
+$$<br>
+$$<br>
+B_c = M_{p \rightarrow c}B_p<br>
+$$</p>
+<p>其中，<b>M</b><sub><i>c-&gt;p</i></sub>表示的是从子坐标空间变换到父坐标空间的变换矩阵，<b>M</b><sub><i>p-&gt;c</i></sub>表示的是从父坐标空间变换到子坐标空间的变换矩阵，他俩互为逆矩阵。</p>
+<p>下面我们就来讲解如何求出从子坐标空间到父坐标空间的变换矩阵<b>M</b><sub><i>c-&gt;p</i></sub>。</p>
+<p>现在，我们已知子坐标空间<strong>C</strong>的3个坐标轴在父坐标空间<strong>P</strong>下的表示为：<b>x</b><sub><i>c</i></sub>、<b>y</b><sub><i>c</i></sub>、<b>z</b><sub><i>c</i></sub>，以及其原点位置<b>O</b><sub><i>c</i></sub>。当给定一个子坐标空间中的一个点<b>A</b><sub><i>c</i></sub> = (a,b,c)，我们可以用下面四个步骤来确定其在父坐标空间下的位置<b>A</b><sub><i>p</i></sub>：</p>
+<p><strong>1. 从坐标空间的原点开始</strong><br>
+我们已经知道了子坐标空间的原点位置$O_c$。</p>
+<p><strong>2. 向 x 轴方向移动 a 个单位</strong><br>
+我们已经知道了x轴的矢量表示，因此可以得到<br>
+$$<br>
+O_c + ax_c<br>
+$$</p>
+<p><strong>3. 向 y 轴方向移动 b 个单位</strong><br>
+同样的道理，这一步就是：<br>
+$$<br>
+O_c + ax_c + by_c<br>
+$$</p>
+<p><strong>4. 向 z 轴方向移动 c 个单位</strong><br>
+最后就可以得到<br>
+$$<br>
+O_c + ax_c + by_c + cz_c<br>
+$$</p>
+<p>那么，</p>
+<p>$$<br>
+\begin{aligned}<br>
+A_p<br>
+&amp;= O_c + ax_c + by_c + cz_c\<br>
+&amp;= (x_{O_c}, y_{O_c}, z_{O_c}) + a(x_{x_c}, y_{x_c}, z_{x_c}) + b(x_{y_c}, y_{y_c}, z_{y_c}) + c(x_{z_c}, y_{z_c}, z_{z_c})\<br>
+&amp;= (x_{O_c}, y_{O_c}, z_{O_c}) +<br>
+\begin{bmatrix}<br>
+x_{x_c}&amp;x_{y_c}&amp;x_{z_c}\<br>
+y_{x_c}&amp;y_{y_c}&amp;y_{z_c}\<br>
+z_{x_c}&amp;z_{y_c}&amp;z_{z_c}\<br>
+\end{bmatrix}<br>
+\begin{bmatrix}a\b\c\\end{bmatrix}\<br>
+&amp;= (x_{O_c}, y_{O_c}, z_{O_c}) +<br>
+\begin{bmatrix}<br>
+|&amp;|&amp;|\<br>
+x_c&amp;y_c&amp;z_c\<br>
+|&amp;|&amp;|\<br>
+\end{bmatrix}<br>
+\begin{bmatrix}a\b\c\\end{bmatrix}\<br>
+&amp;= O_c + \begin{bmatrix}x_c&amp;y_c&amp;z_c\\end{bmatrix}\begin{bmatrix}a\b\c\\end{bmatrix}<br>
+\end{aligned}<br>
+$$</p>
+<p>由于3 $\times$ 3的矩阵无法表示平移变换，我们把上面的式子扩展到齐次坐标空间中，得<br>
+$$<br>
+\begin{aligned}<br>
+A_p<br>
+&amp;= (x_{O_c}, y_{O_c}, z_{O_c}, 1) +<br>
+\begin{bmatrix}<br>
+|&amp;|&amp;|&amp;0\<br>
+x_c&amp;y_c&amp;z_c&amp;0\<br>
+|&amp;|&amp;|&amp;0\<br>
+0&amp;0&amp;0&amp;1\<br>
+\end{bmatrix}<br>
+\begin{bmatrix}a\b\c\1\\end{bmatrix}\<br>
+&amp;=\begin{bmatrix}<br>
+1&amp;0&amp;0&amp;x_{O_c}\<br>
+0&amp;1&amp;0&amp;y_{O_c}\<br>
+0&amp;0&amp;1&amp;z_{O_c}\<br>
+0&amp;0&amp;0&amp;1\<br>
+\end{bmatrix}<br>
+\begin{bmatrix}<br>
+|&amp;|&amp;|&amp;0\<br>
+x_c&amp;y_c&amp;z_c&amp;0\<br>
+|&amp;|&amp;|&amp;0\<br>
+0&amp;0&amp;0&amp;1\<br>
+\end{bmatrix}<br>
+\begin{bmatrix}a\b\c\1\\end{bmatrix}\<br>
+&amp;= \begin{bmatrix}<br>
+|&amp;|&amp;|&amp;x_{O_c}\<br>
+x_c&amp;y_c&amp;z_c&amp;y_{O_c}\<br>
+|&amp;|&amp;|&amp;z_{O_c}\<br>
+0&amp;0&amp;0&amp;1\<br>
+\end{bmatrix}<br>
+\begin{bmatrix}a\b\c\1\\end{bmatrix}\<br>
+\end{aligned}<br>
+$$</p>
+<p>所以，显而易见<br>
+$$<br>
+M_{c \rightarrow p} =<br>
+\begin{bmatrix}<br>
+|&amp;|&amp;|&amp;x_{O_c}\<br>
+x_c&amp;y_c&amp;z_c&amp;y_{O_c}\<br>
+|&amp;|&amp;|&amp;z_{O_c}\<br>
+0&amp;0&amp;0&amp;1\<br>
+\end{bmatrix}<br>
+$$</p>
+<p>可以看出来，变换矩阵<b>M</b><sub><i>c-&gt;p</i></sub>实际上可以通过坐标空间<strong>C</strong>在坐标空间<strong>P</strong>中的原点和坐标轴的矢量表示来构建出来：把3个坐标轴依次放入矩阵的前三列，把原点矢量放到最后一列，再用0和1填充最后一行即可。</p>
+<p>我们可以利用反向思维，从这个变换矩阵反推来获取子坐标空间的原点和坐标轴方向。例如，当我们已知从模型空间到世界空间的一个4 $\times$ 4的变换矩阵，可以提取它的第一列再进行归一化后（为了消除缩放的影响）来得到模型空间的x轴在世界空间下的单位矢量表示。同样的方法可以提取y轴和z轴。我们可以从另一个角度来理解这个提取过程。因为矩阵<b>M</b><sub><i>c-&gt;p</i></sub>可以把一个方向矢量从坐标空间<strong>C</strong>变换到坐标空间<strong>P</strong>中，那么，只需要用它来变换坐标空间<strong>C</strong>中的x轴(1,0,0,0),即使用矩阵乘法<br>
+$$<br>
+M_{c \rightarrow p}<br>
+\begin{bmatrix}<br>
+1&amp;0&amp;0&amp;0<br>
+\end{bmatrix}^T<br>
+$$<br>
+得到的结果正是<b>M</b><sub><i>c-&gt;p</i></sub>的第一列。</p>
+<p>对矢量的坐标空间变换可以使用3 $\times$ 3的矩阵来表示，因为我们不需要表示平移变换，在Shader中，我们常常会看到截取变换矩阵的前3行前3列来对法线方向、光照方向来进行空间变换，这正是原因所在。</p>
+<p>由于<b>M</b><sub><i>c-&gt;p</i></sub>和<b>M</b><sub><i>p-&gt;c</i></sub>互为逆矩阵，我们可以通过求<b>M</b><sub><i>c-&gt;p</i></sub>的逆矩阵的方式来求出<b>M</b><sub><i>p-&gt;c</i></sub>，但当<b>M</b><sub><i>c-&gt;p</i></sub>是一个正交矩阵时，<b>M</b><sub><i>c-&gt;p</i></sub>的逆矩阵就等于它的转置矩阵，也就是说，<br>
+$$<br>
+\begin{aligned}<br>
+M_{p \rightarrow c} &amp;=<br>
+\begin{bmatrix}<br>
+|&amp;|&amp;|\<br>
+x_p&amp;y_p&amp;z_p\<br>
+|&amp;|&amp;|\<br>
+\end{bmatrix}<br>
+= M_{c \rightarrow p}^{-1} = M_{c \rightarrow p}^T\<br>
+&amp;=<br>
+\begin{bmatrix}<br>
+-&amp;x_c&amp;-\<br>
+-&amp;y_c&amp;-\<br>
+-&amp;z_c&amp;-\<br>
+\end{bmatrix}<br>
+\end{aligned}<br>
+$$<br>
+现在，我们不仅可以根据变换矩阵<b>M</b><sub><i>c-&gt;p</i></sub>反推出子坐标空间的坐标轴方向在父坐标空间中的表示<b>x</b><sub><i>c</i></sub>、<b>y</b><sub><i>c</i></sub>和<b>z</b><sub><i>c</i></sub>，还可以反推出父坐标空间的坐标轴方向在子坐标空间中的表示<b>x</b><sub><i>p</i></sub>、<b>y</b><sub><i>p</i></sub>和<b>z</b><sub><i>p</i></sub></p>
+<h2 id="顶点的坐标空间变换过程">顶点的坐标空间变换过程</h2>
+<p><img src="/posts_image/Spatial_Transform/Spatial_Transform_1.png" srcset="/img/loading.gif" lazyload alt="顶点的坐标空间变换过程" title="顶点的坐标空间变换过程"></p>
+<h2 id="法线变换">法线变换</h2>
+<p><strong>法线(normal)</strong>，也被称为<strong>法矢量(normal vector)</strong>。在上面我们已经看到如何使用变换矩阵来变换一个顶点或一个方向矢量，但法线是需要我们特殊处理的一种方向矢量。在游戏中，模型的一个顶点往往会携带额外的信息，而顶点法线就是其中一种信息。当我们变换一个模型的时候，不仅需要变换它的顶点，还需要变换顶点法线，以便在后续处理(如片元着色器)中计算光照等。</p>
+<p>一般来说，点和绝大部分方向矢量都可以使用同一个4 $\times$ 4或3 $\times$ 3的变换矩阵<b>M</b><sub><i>A-&gt;B</i></sub>把其从坐标空间<strong>A</strong>变换到坐标空间<strong>B</strong>中。但在变换法线的时候，如果使用同一个变换矩阵，可能就无法确保维持法线的垂直性。下面就来了解一下为什么会出现这样的问题。</p>
+<p>我们先来了解一下另一种方向矢量——<strong>切线(tangent)</strong>，也被称为<strong>切矢量(tangent vector)</strong>。与法线类似，切线往往也是模型顶点携带的一种信息。它通常与纹理空间对齐，且与法线方向垂直。<br>
+<img src="/posts_image/Spatial_Transform/Spatial_Transform_2.png" srcset="/img/loading.gif" lazyload alt="顶点的切线和法线" title="顶点的切线和法线"></p>
+<p>由于切线是由两个顶点之间的差值计算得到的，因此我们可以直接使用用于变换顶点的变换矩阵来变换切线。假设，我们使用3 $\times$ 3的变换矩阵<b>M</b><sub><i>A-&gt;B</i></sub>来变换顶点(注意，这里涉及的变换矩阵都是3 $\times$ 3的矩阵，不考虑平移变换。这是因为切线和法线都是方向矢量，不会受平移的影响)，可以由下面的式子直接得到变换后的切线：<br>
+$$<br>
+T_B = M_{A \rightarrow B}T_A<br>
+$$<br>
+其中<b>T</b><sub><i>A</i></sub>和<b>T</b><sub><i>B</i></sub>分别表示在坐标空间<strong>A</strong>和坐标空间<strong>B</strong>下的切线方向。但如果直接使用<b>M</b><sub><i>A-&gt;B</i></sub>来变换法线，得到的新的法线方向可能就不会与表面垂直了。<br>
+<img src="/posts_image/Spatial_Transform/Spatial_Transform_3.png" srcset="/img/loading.gif" lazyload alt="进行非统一缩放变换法线会出现错误" title="进行非统一缩放变换法线会出现错误"></p>
+<p>我们可以由数学约束条件来推出正确变换法线的矩阵。我们知道同一个顶点的切线<b>T</b><sub><i>A</i></sub>和法线<b>N</b><sub><i>A</i></sub>必须满足垂直条件，即 $T_A \cdot N_A = 0$。给定变换矩阵<b>M</b><sub><i>A-&gt;B</i></sub>，我们已经知道 $T_B = M_{A \rightarrow B}T_A$。我们现在想要找到一个矩阵<strong>G</strong>来变换法线<b>N</b><sub><i>A</i></sub>，使得变换后的法线仍然与切线垂直。即<br>
+$$<br>
+T_B \cdot N_B = (M_{A \rightarrow B}T_A) \cdot (GN_A) = 0<br>
+$$</p>
+<p>对上式进行一些推导后可得<br>
+$$<br>
+(M_{A \rightarrow B}T_A) \cdot (GN_A) = (M_{A \rightarrow B}T_A)^T(GN_A) = T_A^TM_{A \rightarrow B}^TGN_A = T_A^T(M_{A \rightarrow B}^TG)N_A = 0<br>
+$$</p>
+<p>由于 $T_A \cdot N_A = 0$，因此如果$M_{A \rightarrow B}^TG = I$，那么上式即可成立。也就是说，如果 $G = (M_{A \rightarrow B}^T)^{-1} = (M_{A \rightarrow B}^{-1})^T$，即使用原变换矩阵的逆转置矩阵来变换法线就可以得到正确的结果。</p>
+<p>值得注意的是，如果变换矩阵<b>M</b><sub><i>A-&gt;B</i></sub>是正交矩阵，那么 $M_{A \rightarrow B}^{-1} = M_{A \rightarrow B}^T$，因此$(M_{A \rightarrow B}^T)^{-1} = M_{A \rightarrow B}$，也就是说我们可以使用用于变换顶点的变换矩阵来直接变换法线。如果变换只包括旋转变换，那么这个变换矩阵就是正交矩阵。而如果变换只包含旋转和统一缩放，而不包含非统一缩放，我们利用统一缩放系数<em>k</em>来得到变换矩阵<b>M</b><sub><i>A-&gt;B</i></sub>的逆转置矩阵<br>
+$(M_{A \rightarrow B}^T)^{-1} = \frac {1} {k} M_{A \rightarrow B}$。这样就可以避免计算逆矩阵的过程。如果变换中包含了非统一变换，那么我们就必须要求解逆矩阵来得到变换法线的矩阵。</p>
+<h2 id="参考">参考</h2>
+<p>《Unity Shader入门精要》</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Unity-Shader/" class="category-chain-item">Unity Shader</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Math/" class="print-no-link">#Math</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Spatial Transform</div>
+      <div>http://example.com/posts/Spatial-Transform/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>祭零小白</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2021年12月26日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/Clip-Space/" title="Clip Space">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Clip Space</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/css/gitalk.css')
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"7bbb87323a0faa8998e9","clientSecret":"adaeef1cc5e02a3327b5a18a608b197148c2d48e","repo":"JiLingXiaoBai.github.io","owner":"JiLingXiaoBai","admin":"JiLingXiaoBai","language":"zh-CN","labels":["Gitalk"],"perPage":10,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":false,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},
+          {
+            id: 'b192adbe95a48af0ad6d1461693016a6'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

@@ -1,0 +1,800 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/tabIcon.png">
+  <link rel="icon" href="/img/tabIcon.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="祭零小白">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="渲染纹理 在之前的学习中，一个摄像机的渲染结果会输出到颜色缓冲中，并显示到我们的屏幕上。现代的 GPU 允许我们把整个三维场景渲染到一个中间缓冲中，即渲染目标纹理（Render Target Texture，RTT），而不是传统的帧缓冲或后备缓冲（back buffer）。与之相关的是多重渲染目标（Multiple Render Target，MRT），这种技术指的是 GPU 允许我们把场景同时渲">
+<meta property="og:type" content="article">
+<meta property="og:title" content="高级纹理(二)">
+<meta property="og:url" content="http://example.com/posts/%E9%AB%98%E7%BA%A7%E7%BA%B9%E7%90%86(%E4%BA%8C)/index.html">
+<meta property="og:site_name" content="小白的笔记本">
+<meta property="og:description" content="渲染纹理 在之前的学习中，一个摄像机的渲染结果会输出到颜色缓冲中，并显示到我们的屏幕上。现代的 GPU 允许我们把整个三维场景渲染到一个中间缓冲中，即渲染目标纹理（Render Target Texture，RTT），而不是传统的帧缓冲或后备缓冲（back buffer）。与之相关的是多重渲染目标（Multiple Render Target，MRT），这种技术指的是 GPU 允许我们把场景同时渲">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/posts_image/Advanced_Texture/Advanced_Texture_11.png">
+<meta property="og:image" content="http://example.com/posts_image/Advanced_Texture/Advanced_Texture_12.png">
+<meta property="og:image" content="http://example.com/posts_image/Advanced_Texture/Advanced_Texture_13.png">
+<meta property="og:image" content="http://example.com/posts_image/Advanced_Texture/Advanced_Texture_14.png">
+<meta property="og:image" content="http://example.com/posts_image/Advanced_Texture/Advanced_Texture_15.png">
+<meta property="og:image" content="http://example.com/posts_image/Advanced_Texture/Advanced_Texture_16.png">
+<meta property="og:image" content="http://example.com/posts_image/Advanced_Texture/Advanced_Texture_17.png">
+<meta property="article:published_time" content="2022-02-23T12:36:28.000Z">
+<meta property="article:modified_time" content="2025-04-17T12:55:15.937Z">
+<meta property="article:author" content="祭零小白">
+<meta property="article:tag" content="Texture">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/posts_image/Advanced_Texture/Advanced_Texture_11.png">
+  
+  
+  
+  <title>高级纹理(二) - 小白的笔记本</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null},"gtag":null,"woyaola":null,"cnzz":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="小白的笔记本" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>祭零小白</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/page_background.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="高级纹理(二)"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-02-23 20:36" pubdate>
+          2022年2月23日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          4.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          39 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">高级纹理(二)</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    <!-- compatible with older versions-->
+                    本文最后更新于：2025年4月17日 晚上
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="渲染纹理">渲染纹理</h2>
+<p>在之前的学习中，一个摄像机的渲染结果会输出到颜色缓冲中，并显示到我们的屏幕上。现代的 GPU 允许我们把整个三维场景渲染到一个中间缓冲中，即<strong>渲染目标纹理（Render Target Texture，RTT）</strong>，而不是传统的帧缓冲或后备缓冲（back buffer）。与之相关的是<strong>多重渲染目标（Multiple Render Target，MRT）</strong>，这种技术指的是 GPU 允许我们把场景同时渲染到多个渲染目标纹理中，而不再需要为每个渲染目标纹理单独渲染完整的场景。延迟渲染就是使用多重渲染目标的一个应用。</p>
+<p>Unity 为渲染目标纹理定义了一种专门的纹理类型——<strong>渲染纹理（Render Texture）</strong>。在 Unity 中使用渲染纹理通常有两种方式：一种方式是在 Project 目录下创建一个渲染纹理，然后把某个摄像机的渲染目标设置成该渲染纹理，这样一来该摄像机的渲染结果就会实时更新到渲染纹理中，而不会显示在屏幕上。使用这种方法，我么还可以选择渲染纹理的分辨率、滤波模式等纹理属性。另一种方式是在屏幕后处理时使用 GrabPass 命令或 OnRenderImage 函数来获取当前屏幕图像，Unity 会把这个屏幕图像放到一张和屏幕分辨率等同的渲染纹理中，下面我们可以在自定义的 Pass 中把它们当成普通纹理来处理，从而实现各种屏幕特效。</p>
+<h3 id="镜子效果">镜子效果</h3>
+<p>在 Project 视图下创建一个渲染纹理（右键单击 Create -&gt; Render Texture），名为 MirrorTexture，它使用的纹理设置如下图：</p>
+<p><img src="/posts_image/Advanced_Texture/Advanced_Texture_11.png" srcset="/img/loading.gif" lazyload alt="渲染纹理使用的纹理设置" title="渲染纹理使用的纹理设置"></p>
+<p>为了得到从镜子出发观察到的场景图像，我们还需要创建一个摄像机，并调整它的位置、裁剪平面、视角等，使得它的显示图像是我们希望的镜子图像。由于这个摄像机不需要直接显示在屏幕上，而是用于渲染纹理，我们把创建的 MirrorTexture 拖拽到该摄像机的 Target Texture 上。下图显示了摄像机面板的设置。</p>
+<p><img src="/posts_image/Advanced_Texture/Advanced_Texture_12.png" srcset="/img/loading.gif" lazyload alt="摄像机 Target Texture 设置" title="摄像机 Target Texture 设置"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><code class="hljs shaderlab">Shader &quot;Custom/Chapter10/Chapter10-Mirror&quot;<br>&#123;<br>    Properties &#123;<br>		_MainTex (&quot;Main Tex&quot;, 2D) = &quot;white&quot; &#123;&#125;<br>	&#125;<br>	SubShader &#123;<br>		Tags &#123; &quot;RenderType&quot;=&quot;Opaque&quot; &quot;Queue&quot;=&quot;Geometry&quot;&#125;<br>		<br>		Pass &#123;<br>			CGPROGRAM<br>			<br>			#pragma vertex vert<br>			#pragma fragment frag<br>			<br>			sampler2D _MainTex;<br>			<br>			struct a2v &#123;<br>				float4 vertex : POSITION;<br>				float3 texcoord : TEXCOORD0;<br>			&#125;;<br>			<br>			struct v2f &#123;<br>				float4 pos : SV_POSITION;<br>				float2 uv : TEXCOORD0;<br>			&#125;;<br>			<br>			v2f vert(a2v v) &#123;<br>				v2f o;<br>				o.pos = UnityObjectToClipPos(v.vertex);<br>				<br>				o.uv = v.texcoord;<br>				// Mirror needs to filp x<br>				o.uv.x = 1 - o.uv.x;<br>				<br>				return o;<br>			&#125;<br>			<br>			fixed4 frag(v2f i) : SV_Target &#123;<br>				return tex2D(_MainTex, i.uv);<br>			&#125;<br>			<br>			ENDCG<br>		&#125;<br>	&#125; <br> 	FallBack Off<br>&#125;<br><br></code></pre></td></tr></table></figure>
+<p>镜子实现的原理很简单，它使用一个渲染纹理作为输入属性，并把该渲染纹理在水平方向上翻转后直接显示到物体上即可。在上面的代码中，我们翻转了 x 分量的纹理坐标。这是因为镜子里显示的图像都是左右相反的。</p>
+<p>在上面的实现中，我们把渲染纹理的分辨率大小设置为 256 $\times$ 256。有时，这样的分辨率会使图像模糊不清，此时我们可以使用更高的分辨率或更多的抗锯齿采样等。但需要注意的是，更高的分辨率会影响带宽和性能，我们应当尽量使用较小的分辨率。</p>
+<p><img src="/posts_image/Advanced_Texture/Advanced_Texture_13.png" srcset="/img/loading.gif" lazyload alt="镜子效果" title="镜子效果"></p>
+<h3 id="玻璃效果">玻璃效果</h3>
+<p>在 Unity 中，我们还可以在 Unity Shader 中使用一种特殊的 Pass 来完成获取屏幕图像的目的，这就是 GrabPass。当我们在 Shader 中定义了一个 GrabPass 后，Unity 会把当前屏幕的图像绘制在一张纹理中，以便我们在后续的 Pass 中访问它。我们通常会使用 GrabPass 来实现诸如玻璃等透明材质的模拟，与使用简单的透明混合不同，使用 GrabPass 可以让我们对该物体后面的图像进行更复杂的处理，例如使用法线来模拟折射效果，而不再是简单的和原屏幕颜色进行混合。</p>
+<p>需要注意的是，在使用 GrabPass 时，我们需要额外<strong>小心物体的渲染队列设置</strong>。GrabPass 通常用于渲染透明物体，尽管代码里并不包含混合指令，但我们往往仍然需要把物体的渲染队列设置成透明队列（即&quot;Queue&quot;=“Transparent”）。这样才能保证当渲染物体时，所有的不透明物体都已经被绘制在屏幕上，从而获取正确的屏幕图像。</p>
+<p>我们首先使用一张法线纹理来修改模型的法线信息，然后使用反射方法，通过一个 Cubemap 来模拟玻璃的反射，而在模拟折射时，则使用 GrabPass 获取玻璃后面的屏幕图像，并使用切线空间下的法线对屏幕纹理坐标偏移后，再对屏幕图像进行采样来模拟近似的折射效果。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br></pre></td><td class="code"><pre><code class="hljs shaderlab">// Upgrade NOTE: replaced &#x27;_Object2World&#x27; with &#x27;unity_ObjectToWorld&#x27;<br><br>Shader &quot;Custom/Chapter10/Chapter10-GlassRefraction&quot;<br>&#123;<br>    Properties<br>    &#123;<br>        _MainTex (&quot;Main Tex&quot;, 2D) = &quot;white&quot; &#123;&#125;<br>        _BumpMap (&quot;Normal Map&quot;, 2D) = &quot;bump&quot; &#123;&#125;<br>        _Cubemap (&quot;Environment Cubemap&quot;, Cube) = &quot;_Skybox&quot; &#123;&#125;<br>        _Distortion (&quot;Distortion&quot;, Range(0, 100)) = 10<br>        _RefractAmount (&quot;Refract Amount&quot;, Range(0.0, 1.0)) = 1.0<br>    &#125;<br>    SubShader<br>    &#123;<br>        //We must be transparent, so other objects are drawn before this one.<br>        Tags &#123; &quot;Queue&quot;=&quot;Transparent&quot; &quot;RenderType&quot;=&quot;Opaque&quot; &#125;<br><br>        //This pass grabs the screen behind the object into a texture.<br>        //We can access the result in the next pass as _RefractionTex<br>        GrabPass &#123; &quot;_RefractionTex&quot; &#125; <br><br>        Pass &#123;<br>            CGPROGRAM<br><br>            #pragma vertex vert<br>            #pragma fragment frag<br><br>            #include &quot;UnityCG.cginc&quot;<br><br>            sampler2D _MainTex;<br>            float4 _MainTex_ST;<br>            sampler2D _BumpMap;<br>            float4 _BumpMap_ST;<br>            samplerCUBE _Cubemap;<br>            float _Distortion;<br>            fixed _RefractAmount;<br>            sampler2D _RefractionTex;<br>            float4 _RefractionTex_TexelSize;<br><br>            struct a2v &#123;<br>                float4 vertex : POSITION;<br>                float3 normal : NORMAL;<br>                float4 tangent : TANGENT;<br>                float4 texcoord : TEXCOORD0;<br>            &#125;;<br>            <br>            struct v2f &#123;<br>                float4 pos : SV_POSITION;<br>                float4 scrPos : TEXCOORD0;<br>                float4 uv : TEXCOORD1;<br>                float4 TtoW0 : TEXCOORD2;  <br>                float4 TtoW1 : TEXCOORD3;  <br>                float4 TtoW2 : TEXCOORD4;<br>            &#125;;<br><br>            v2f vert(a2v v) &#123;<br>                v2f o;<br>                o.pos = UnityObjectToClipPos(v.vertex);<br>                o.scrPos = ComputeGrabScreenPos(o.pos);<br>                o.uv.xy = TRANSFORM_TEX(v.texcoord, _MainTex);<br>                o.uv.zw = TRANSFORM_TEX(v.texcoord, _BumpMap);<br><br>                float3 worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;<br>                fixed3 worldNormal = UnityObjectToWorldNormal(v.normal);<br>                fixed3 worldTangent = UnityObjectToWorldDir(v.tangent.xyz);<br>                fixed3 worldBinormal = cross(worldNormal, worldTangent) * v.tangent.w;<br><br>                o.TtoW0 =  float4(worldTangent.x, worldBinormal.x, worldNormal.x, worldPos.x);<br>                o.TtoW1 =  float4(worldTangent.y, worldBinormal.y, worldNormal.y, worldPos.y);<br>                o.TtoW2 =  float4(worldTangent.z, worldBinormal.z, worldNormal.z, worldPos.z);<br><br>                return o;<br>            &#125;<br><br>            fixed4 frag(v2f i) : SV_TARGET<br>            &#123;<br>                float3 worldPos = float3(i.TtoW0.w, i.TtoW1.w, i.TtoW2.w);<br>                fixed3 worldViewDir = normalize(UnityWorldSpaceViewDir(worldPos));<br><br>                //Get the normal in tangent space<br>                fixed3 bump = UnpackNormal(tex2D(_BumpMap, i.uv.zw));<br><br>                //Compute the offset in tangent space<br>                float2 offset = bump.xy * _Distortion * _RefractionTex_TexelSize.xy;<br>                i.scrPos.xy = offset + i.scrPos.xy;<br>                fixed3 refrCol = tex2D(_RefractionTex, i.scrPos.xy/i.scrPos.w).rgb;<br><br>                //Convert the normal to world space<br>                bump = normalize(half3(dot(i.TtoW0.xyz, bump), dot(i.TtoW1.xyz, bump), dot(i.TtoW2.xyz, bump)));<br>                fixed3 reflDir = reflect(-worldViewDir, bump);<br>                fixed4 texColor = tex2D(_MainTex, i.uv.xy);<br>                fixed3 reflCol = texCUBE(_Cubemap, reflDir).rgb * texColor.rgb;<br>                fixed3 finalColor = reflCol * (1 - _RefractAmount) + refrCol * _RefractAmount;<br><br>                return fixed4(finalColor, 1);<br><br>            &#125;<br><br>            ENDCG<br>        &#125;<br>    &#125;<br>    FallBack &quot;Diffuse&quot;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+<p>_MainTex 是该玻璃的材质纹理；_BumpMap 是玻璃的法线纹理；_Cubemap 是用于模拟反射的环境纹理；_Distortion 是用于控制模拟折射时图像的扭曲程度；_RefractAmount 用于控制折射程度，当 _RefractAmount 值为 0 时，该玻璃只包含反射效果，当 _RefractAmount 值为 1 时，该玻璃只包括折射效果。</p>
+<p>我们首先在 SubShader 的标签中将渲染队列设置成 Transparent，尽管在后面的 RenderType 被设置为了 Opaque。这两者看似矛盾，但实际服务于不同的需求。把 Queue 设置成 Transparent 可以确保该物体渲染时，其他所有不透明物体都已经渲染到屏幕上了，否则就可能无法正确得到“透过玻璃看到的图像”。而设置 RenderType 则是为了在使用着色器替换（Shader Replacement）时，该物体可以在需要时被正确渲染。这通常发生在我们需要得到摄像机的深度和法线纹理时。</p>
+<p>随后我们通过关键词 GrabPass 定义了一个抓取屏幕图像的 Pass。在这个 Pass 中我们定义了一个字符串，该字符串内部的名称决定了抓取得到的屏幕图像将会被存入哪个纹理中。实际上，我们可以省略声明该字符串，但直接声明纹理名称的方法往往可以得到更高的性能。下面是两种情况的比较。</p>
+<ul>
+<li>直接使用 GrabPass {}，然后在后续的 Pass 中直接使用 _GrabTexture 来访问屏幕图像。但是，当场景中有多个物体都使用了这样的形式来抓取屏幕时，这种方法的性能消耗比较大，因为对于每一个使用它的物体，Unity 都会为它单独进行一次昂贵的屏幕抓取操作。但这种方法可以让每个物体得到不同的屏幕图像，这取决于它们的渲染队列及渲染它们时当前的屏幕缓冲中的颜色。</li>
+<li>使用 GrabPass {“TextureName”}，我们可以在后续的 Pass 中使用 TextureName 来访问屏幕图像。使用这种方法同样可以抓取屏幕，但 Unity 只会在每一帧时为第一个使用名为 TextureName 的纹理的物体执行一次抓取屏幕的操作，而这个纹理同样可以在其他 Pass 中被访问。这种方法更高效，因为不管场景中有多少物体使用了该命令，每一帧中 Unity 都只会执行一次抓取工作，但这也意味着所有物体都会使用同一张屏幕图像。不过，这在大多数情况下已经足够了。</li>
+</ul>
+<p>我们还定义了 _RefractionTex 和 _RefractionTex_TexelSize 变量，这对应了在使用 GrabPass 时指定的纹理名称。_RefractionTex_TexelSize 可以让我们得到该纹理的纹素大小，例如一个大小为 256 $\times$ 512 的纹理，它的纹素大小为(1/256, 1/512)。我们需要在对屏幕图像的采样坐标进行偏移时使用该变量。</p>
+<p>在进行了必要的顶点坐标变换后，我们通过调用内置的 ComputeGrabScreenPos 函数来得到对应被抓取的屏幕图像的采样坐标。我们可以在 UnityCG.cginc 文件中找到它的声明，它的主要代码和 ComputeScreenPos 基本类似，最大的不同是针对平台差异造成的采样坐标问题进行了处理。接着，我们计算了 _MainTex 和 _BumpMap 的采样坐标，并把它们分别存储在一个 float4 类型变量的 xy 和 zw 分量中。由于我们需要在片元着色器中把法线方向从切线方向（由法线纹理采样得到）变换到世界空间下，以便对 Cubemap 进行采样，因此，我们需要在这里计算该顶点对应的从切线空间到世界空间的变换矩阵，并把该矩阵的每一行分别存储在 TtoW0、TtoW1、和 TtoW2 的 xyz 分量中。这里面使用的数学方法就是，得到切线空间下的 3 个坐标轴（xyz 轴分别对应了副切线、切线和法线的方向）在世界空间下的表示，再把它们依次按<strong>列</strong>组成一个变换矩阵即可。TtoW0 等值的 w 轴同样被利用起来，用于存储世界空间下的顶点坐标。</p>
+<p>我们通过 TtoW0 等变量的 w 分量得到世界坐标，并用该值得到该片元对应的视角方向。随后，我们对法线纹理进行采样，得到切线空间下的法线方向。我们使用该值和 _Distortion 属性以及 _RefractionTex_TexelSize 来对屏幕图像的采样坐标进行偏移，模拟折射效果。_Distortion 值越大，偏移量越大，玻璃背后的物体看起来变形程度越大。在这里，我们选择使用切线空间下单法线方向来进行偏移，是因为该空间下的法线可以反应顶点局部空间下的法线方向。随后，我们对 scrPos 透视除法得到真正的屏幕坐标，再使用该坐标对抓取的屏幕图像 _RefractionTex 进行采样，得到模拟的折射颜色。</p>
+<p>之后，我们把法线方向从切线空间变换到了世界空间下（使用变换矩阵的每一行，即 TtoW0、TtoW1 和 TtoW2，分别和法线方向点乘，构成新的法线方向），并据此得到视角方向相对于法线方向的反射方向。随后，使用反射方向对 Cubemap 进行采样，并把结果和主纹理颜色相乘后得到反射颜色。最后我们使用 _RefractAmount 属性对反射和折射颜色进行混合，作为最终的输出颜色。</p>
+<p><img src="/posts_image/Advanced_Texture/Advanced_Texture_14.png" srcset="/img/loading.gif" lazyload alt="玻璃效果" title="玻璃效果"></p>
+<h3 id="渲染纹理-vs-GrabPass">渲染纹理 vs. GrabPass</h3>
+<p>尽管 GrabPass 和 渲染纹理 + 额外摄像机的方式都可以抓取屏幕图像，但它们之间还是有一些不同的。GrabPass 的好处在于实现简单，我们只需要在 Shader 中写几行代码就可以实现抓取屏幕的目的。而要使用渲染纹理的话，我们首先需要创建一个渲染纹理和一个额外的摄像机，再把该摄像机的 Render Target 设置为新建的渲染纹理对象，最后把该渲染纹理传递给相应的 Shader。</p>
+<p>但从效率上来讲，使用渲染纹理的效率往往要好于 GrabPass，尤其在移动设备上。使用渲染纹理我们可以自定义渲染纹理的大小，尽管这种方法需要把部分场景再次渲染一遍，但我们可以通过调整摄像机的渲染层来减少二次渲染时的场景大小，或使用其他方法来控制摄像机是否需要开启。而使用 GrabPass 获取到的图像分辨率和显示屏幕是一致的，这意味着在一些高分辨率的设备上可能会造成严重的带宽影响。而且在移动设备上，GrabPass 虽然不会重新渲染场景，但它往往需要 CPU 直接读取后备缓冲（back buffer）中的数据，破坏了 CPU 和 GPU 之间的并行性，这是比较耗时的，甚至在一些移动设备上这是不支持的。</p>
+<p>Unity 引入了<strong>命令缓冲（Command Buffers）<strong>来允许我们扩展 Unity 的渲染流水线。使用命令缓冲我们也可以得到类似抓屏的效果，它可以在不透明物体渲染后把当前的图像复制到一个临时的渲染目标纹理中，然后在那里进行一些额外的操作，例如模糊等等，最后把图像传递给需要使用它的物体进行处理和显示。除此之外，命令缓冲还允许我们实习很多特殊的效果，我们可以在 Unity 官方手册中的</strong>图像命令缓冲</strong>一文（<a target="_blank" rel="noopener" href="https://docs.unity.cn/cn/2021.2/Manual/GraphicsCommandBuffers.html%EF%BC%89%E4%B8%AD%E6%89%BE%E5%88%B0%E6%9B%B4%E5%A4%9A%E5%86%85%E5%AE%B9%E3%80%82">https://docs.unity.cn/cn/2021.2/Manual/GraphicsCommandBuffers.html）中找到更多内容。</a></p>
+<h2 id="程序纹理">程序纹理</h2>
+<p>**程序纹理（Procedural Texture）**指的是那些由计算机生成的图像，我们通常使用一些特定的算法来创建个性化图案或非常真实的自然元素，例如木头、石子等。使用程序纹理的好处在于我们可以使用各种参数来控制纹理的外观，而这些属性不仅仅是那些颜色属性，甚至可以是完全不同类型的图案属性，这使得我们可以得到更加丰富的动画和视觉效果。</p>
+<h3 id="在-Unity-中实现简单的程序纹理">在 Unity 中实现简单的程序纹理</h3>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">using</span> UnityEngine;<br><span class="hljs-keyword">using</span> System.Collections;<br><span class="hljs-keyword">using</span> System.Collections.Generic;<br><br>[<span class="hljs-meta">ExecuteInEditMode</span>]<br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">ProceduralTextureGeneration</span> : <span class="hljs-title">MonoBehaviour</span> &#123;<br><br>	<span class="hljs-keyword">public</span> Material material = <span class="hljs-literal">null</span>;<br><br>	<span class="hljs-meta">#<span class="hljs-keyword">region</span> Material properties</span><br>	[<span class="hljs-meta">SerializeField, SetProperty(<span class="hljs-string">&quot;textureWidth&quot;</span>)</span>]<br>	<span class="hljs-keyword">private</span> <span class="hljs-built_in">int</span> m_textureWidth = <span class="hljs-number">512</span>;<br>	<span class="hljs-keyword">public</span> <span class="hljs-built_in">int</span> textureWidth &#123;<br>		<span class="hljs-keyword">get</span> &#123;<br>			<span class="hljs-keyword">return</span> m_textureWidth;<br>		&#125;<br>		<span class="hljs-keyword">set</span> &#123;<br>			m_textureWidth = <span class="hljs-keyword">value</span>;<br>			_UpdateMaterial();<br>		&#125;<br>	&#125;<br><br>	[<span class="hljs-meta">SerializeField, SetProperty(<span class="hljs-string">&quot;backgroundColor&quot;</span>)</span>]<br>	<span class="hljs-keyword">private</span> Color m_backgroundColor = Color.white;<br>	<span class="hljs-keyword">public</span> Color backgroundColor &#123;<br>		<span class="hljs-keyword">get</span> &#123;<br>			<span class="hljs-keyword">return</span> m_backgroundColor;<br>		&#125;<br>		<span class="hljs-keyword">set</span> &#123;<br>			m_backgroundColor = <span class="hljs-keyword">value</span>;<br>			_UpdateMaterial();<br>		&#125;<br>	&#125;<br><br>	[<span class="hljs-meta">SerializeField, SetProperty(<span class="hljs-string">&quot;circleColor&quot;</span>)</span>]<br>	<span class="hljs-keyword">private</span> Color m_circleColor = Color.yellow;<br>	<span class="hljs-keyword">public</span> Color circleColor &#123;<br>		<span class="hljs-keyword">get</span> &#123;<br>			<span class="hljs-keyword">return</span> m_circleColor;<br>		&#125;<br>		<span class="hljs-keyword">set</span> &#123;<br>			m_circleColor = <span class="hljs-keyword">value</span>;<br>			_UpdateMaterial();<br>		&#125;<br>	&#125;<br><br>	[<span class="hljs-meta">SerializeField, SetProperty(<span class="hljs-string">&quot;blurFactor&quot;</span>)</span>]<br>	<span class="hljs-keyword">private</span> <span class="hljs-built_in">float</span> m_blurFactor = <span class="hljs-number">2.0f</span>;<br>	<span class="hljs-keyword">public</span> <span class="hljs-built_in">float</span> blurFactor &#123;<br>		<span class="hljs-keyword">get</span> &#123;<br>			<span class="hljs-keyword">return</span> m_blurFactor;<br>		&#125;<br>		<span class="hljs-keyword">set</span> &#123;<br>			m_blurFactor = <span class="hljs-keyword">value</span>;<br>			_UpdateMaterial();<br>		&#125;<br>	&#125;<br>	<span class="hljs-meta">#<span class="hljs-keyword">endregion</span></span><br><br>	<span class="hljs-keyword">private</span> Texture2D m_generatedTexture = <span class="hljs-literal">null</span>;<br><br>	<span class="hljs-comment">// Use this for initialization</span><br>	<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">Start</span> ()</span> &#123;<br>		<span class="hljs-keyword">if</span> (material == <span class="hljs-literal">null</span>) &#123;<br>			Renderer renderer = gameObject.GetComponent&lt;Renderer&gt;();<br>			<span class="hljs-keyword">if</span> (renderer == <span class="hljs-literal">null</span>) &#123;<br>				Debug.LogWarning(<span class="hljs-string">&quot;Cannot find a renderer.&quot;</span>);<br>				<span class="hljs-keyword">return</span>;<br>			&#125;<br><br>			material = renderer.sharedMaterial;<br>		&#125;<br><br>		_UpdateMaterial();<br>	&#125;<br><br>	<span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> _UpdateMaterial() &#123;<br>		<span class="hljs-keyword">if</span> (material != <span class="hljs-literal">null</span>) &#123;<br>			m_generatedTexture = _GenerateProceduralTexture();<br>			material.SetTexture(<span class="hljs-string">&quot;_MainTex&quot;</span>, m_generatedTexture);<br>		&#125;<br>	&#125;<br><br>	<span class="hljs-keyword">private</span> Color _MixColor(Color color0, Color color1, <span class="hljs-built_in">float</span> mixFactor) &#123;<br>		Color mixColor = Color.white;<br>		mixColor.r = Mathf.Lerp(color0.r, color1.r, mixFactor);<br>		mixColor.g = Mathf.Lerp(color0.g, color1.g, mixFactor);<br>		mixColor.b = Mathf.Lerp(color0.b, color1.b, mixFactor);<br>		mixColor.a = Mathf.Lerp(color0.a, color1.a, mixFactor);<br>		<span class="hljs-keyword">return</span> mixColor;<br>	&#125;<br><br>	<span class="hljs-keyword">private</span> Texture2D _GenerateProceduralTexture() &#123;<br>		Texture2D proceduralTexture = <span class="hljs-keyword">new</span> Texture2D(textureWidth, textureWidth);<br><br>		<span class="hljs-comment">// The interval between circles</span><br>		<span class="hljs-built_in">float</span> circleInterval = textureWidth / <span class="hljs-number">4.0f</span>;<br>		<span class="hljs-comment">// The radius of circles</span><br>		<span class="hljs-built_in">float</span> radius = textureWidth / <span class="hljs-number">10.0f</span>;<br>		<span class="hljs-comment">// The blur factor</span><br>		<span class="hljs-built_in">float</span> edgeBlur = <span class="hljs-number">1.0f</span> / blurFactor;<br><br>		<span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> w = <span class="hljs-number">0</span>; w &lt; textureWidth; w++) &#123;<br>			<span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> h = <span class="hljs-number">0</span>; h &lt; textureWidth; h++) &#123;<br>				<span class="hljs-comment">// Initalize the pixel with background color</span><br>				Color pixel = backgroundColor;<br><br>				<span class="hljs-comment">// Draw nine circles one by one</span><br>				<span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">3</span>; i++) &#123;<br>					<span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> j = <span class="hljs-number">0</span>; j &lt; <span class="hljs-number">3</span>; j++) &#123;<br>						<span class="hljs-comment">// Compute the center of current circle</span><br>						Vector2 circleCenter = <span class="hljs-keyword">new</span> Vector2(circleInterval * (i + <span class="hljs-number">1</span>), circleInterval * (j + <span class="hljs-number">1</span>));<br><br>						<span class="hljs-comment">// Compute the distance between the pixel and the center</span><br>						<span class="hljs-built_in">float</span> dist = Vector2.Distance(<span class="hljs-keyword">new</span> Vector2(w, h), circleCenter) - radius;<br><br>						<span class="hljs-comment">// Blur the edge of the circle</span><br>						Color color = _MixColor(circleColor, <span class="hljs-keyword">new</span> Color(pixel.r, pixel.g, pixel.b, <span class="hljs-number">0.0f</span>), Mathf.SmoothStep(<span class="hljs-number">0f</span>, <span class="hljs-number">1.0f</span>, dist * edgeBlur));<br><br>						<span class="hljs-comment">// Mix the current color with the previous color</span><br>						pixel = _MixColor(pixel, color, color.a);<br>					&#125;<br>				&#125;<br><br>				proceduralTexture.SetPixel(w, h, pixel);<br>			&#125;<br>		&#125;<br><br>		proceduralTexture.Apply();<br><br>		<span class="hljs-keyword">return</span> proceduralTexture;<br>	&#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+<p>由于我们生成的纹理是由若干圆点构成的，因此在上面的代码中，我们声明了 4 个纹理属性：纹理的大小，数值通常是 2 的整数幂；纹理的背景颜色；原点的颜色；模糊因子，这个参数是用来模糊边界的。对于每个属性使用了 get/set 方法，为了在面板上修改属性时仍可执行 set 函数，我们使用了一个开源插件 SetProperty（<a target="_blank" rel="noopener" href="https://github.com/LMNRY/SetProperty/blob/master/Scripts/SetPropertyExample.cs%EF%BC%89%E3%80%82%E8%BF%99%E4%BD%BF%E5%BE%97%E6%88%91%E4%BB%AC%E4%BF%AE%E6%94%B9%E4%BA%86%E6%9D%90%E8%B4%A8%E5%B1%9E%E6%80%A7%E6%97%B6%EF%BC%8C%E5%8F%AF%E4%BB%A5%E6%89%A7%E8%A1%8C">https://github.com/LMNRY/SetProperty/blob/master/Scripts/SetPropertyExample.cs）。这使得我们修改了材质属性时，可以执行</a> _UpdateMaterial 函数来使用新的属性重新生成程序纹理。</p>
+<p>代码首先初始化一张二维纹理，并且提前计算了一些生成纹理时需要的变量。然后，使用了一个两层的嵌套循环遍历纹理中的每个像素，并在纹理上依次绘制 9 个圆形。最后调用 Texture2D.Apply 函数来强制把像素值写入纹理中，并返回该程序纹理。</p>
+<p><img src="/posts_image/Advanced_Texture/Advanced_Texture_15.png" srcset="/img/loading.gif" lazyload alt="程序纹理" title="程序纹理"></p>
+<h3 id="Unity-的程序材质">Unity 的程序材质</h3>
+<p>在 Unity 中，有一类专门使用程序纹理的材质，叫做<strong>程序材质（Procedural Materials）</strong>。这类材质和我们之前使用的那些材质本质上是一样的，不同的是，它们使用的纹理不是普通的纹理，而是程序纹理。需要注意的是，程序材质和它使用的程序纹理并不是在 Unity 中创建的，而是使用了一个名为 <strong>Substance Designer</strong> 的软件在 Unity 外部生成的。<strong>Substance Designer</strong> 是一个非常出色的纹理生成工具，很多 3A 的游戏项目都使用了由它生成的材质。这些材质都是以 .sbsar 为后缀的。在 Unity 中需要从官方资源商店或 Package Manager 安装 Substance in Unity 插件，把以 .sbsar 为后缀的文件导入到 Unity 后，Unity 就会生成一个 <strong>程序纹理资源（Procedural Material Asset）</strong>。程序纹理资源可以包含一个或多个程序材质。</p>
+<p><img src="/posts_image/Advanced_Texture/Advanced_Texture_16.png" srcset="/img/loading.gif" lazyload alt="程序纹理资源" title="程序纹理资源"></p>
+<p>我们可以在程序纹理的面板上看到该材质使用的 Unity Shader 及其属性、生成程序纹理使用的纹理属性、材质预览等信息。</p>
+<p><img src="/posts_image/Advanced_Texture/Advanced_Texture_17.png" srcset="/img/loading.gif" lazyload alt="程序纹理资源效果" title="程序纹理资源效果"></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Unity-Shader/" class="category-chain-item">Unity Shader</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Texture/" class="print-no-link">#Texture</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>高级纹理(二)</div>
+      <div>http://example.com/posts/高级纹理(二)/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>祭零小白</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年2月23日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/%E5%8A%A8%E7%94%BB%E6%95%88%E6%9E%9C/" title="动画效果">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">动画效果</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/%E9%AB%98%E7%BA%A7%E7%BA%B9%E7%90%86(%E4%B8%80)/" title="高级纹理(一)">
+                        <span class="hidden-mobile">高级纹理(一)</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/css/gitalk.css')
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"7bbb87323a0faa8998e9","clientSecret":"adaeef1cc5e02a3327b5a18a608b197148c2d48e","repo":"JiLingXiaoBai.github.io","owner":"JiLingXiaoBai","admin":"JiLingXiaoBai","language":"zh-CN","labels":["Gitalk"],"perPage":10,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":false,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},
+          {
+            id: 'fc8fd68950c6f0eb8aefb51389dc41e7'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

@@ -1,0 +1,913 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/tabIcon.png">
+  <link rel="icon" href="/img/tabIcon.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="祭零小白">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="透明效果 在实时渲染中要实现透明效果，通常会在渲染模型时控制它的透明通道(Alpha Channel)。当开启透明混合后，当一个物体被渲染到屏幕上时，每个片元除了颜色值和深度值之外，它还有另一个属性——透明度。当透明度为 1 时，表示该像素是完全不透明的，而当其为 0 时，则表示该像素完全不会显示。 在 Unity 中，我们通常使用两种方法来实现透明效果：第一种是使用透明度测试(Alpha Tes">
+<meta property="og:type" content="article">
+<meta property="og:title" content="透明效果(一)">
+<meta property="og:url" content="http://example.com/posts/%E9%80%8F%E6%98%8E%E6%95%88%E6%9E%9C(%E4%B8%80)/index.html">
+<meta property="og:site_name" content="小白的笔记本">
+<meta property="og:description" content="透明效果 在实时渲染中要实现透明效果，通常会在渲染模型时控制它的透明通道(Alpha Channel)。当开启透明混合后，当一个物体被渲染到屏幕上时，每个片元除了颜色值和深度值之外，它还有另一个属性——透明度。当透明度为 1 时，表示该像素是完全不透明的，而当其为 0 时，则表示该像素完全不会显示。 在 Unity 中，我们通常使用两种方法来实现透明效果：第一种是使用透明度测试(Alpha Tes">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/posts_image/Transparent/Transparent_1.png">
+<meta property="og:image" content="http://example.com/posts_image/Transparent/Transparent_2.png">
+<meta property="og:image" content="http://example.com/posts_image/Transparent/Transparent_3.png">
+<meta property="og:image" content="http://example.com/posts_image/Transparent/Transparent_4.png">
+<meta property="og:image" content="http://example.com/posts_image/Transparent/Transparent_5.png">
+<meta property="og:image" content="http://example.com/posts_image/Transparent/Transparent_6.png">
+<meta property="og:image" content="http://example.com/posts_image/Transparent/Transparent_7.png">
+<meta property="og:image" content="http://example.com/posts_image/Transparent/Transparent_8.png">
+<meta property="og:image" content="http://example.com/posts_image/Transparent/Transparent_9.png">
+<meta property="article:published_time" content="2022-01-25T14:26:13.000Z">
+<meta property="article:modified_time" content="2025-04-17T12:55:15.936Z">
+<meta property="article:author" content="祭零小白">
+<meta property="article:tag" content="Alpha">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/posts_image/Transparent/Transparent_1.png">
+  
+  
+  
+  <title>透明效果(一) - 小白的笔记本</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null},"gtag":null,"woyaola":null,"cnzz":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="小白的笔记本" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>祭零小白</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/page_background.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="透明效果(一)"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-01-25 22:26" pubdate>
+          2022年1月25日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          5.1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          43 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">透明效果(一)</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    <!-- compatible with older versions-->
+                    本文最后更新于：2025年4月17日 晚上
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="透明效果">透明效果</h2>
+<p>在实时渲染中要实现透明效果，通常会在渲染模型时控制它的<strong>透明通道(Alpha Channel)</strong>。当开启透明混合后，当一个物体被渲染到屏幕上时，每个片元除了颜色值和深度值之外，它还有另一个属性——透明度。当透明度为 1 时，表示该像素是完全不透明的，而当其为 0 时，则表示该像素完全不会显示。</p>
+<p>在 Unity 中，我们通常使用两种方法来实现透明效果：第一种是使用<strong>透明度测试(Alpha Test)</strong>，这种方法其实无法得到真正的半透明效果；另一种是<strong>透明度混合(Alpha Blending)</strong>。</p>
+<p>对于不透明(opaque)物体，不考虑它们的渲染顺序也能得到正确的排序效果，这是由于强大的深度缓冲(depth buffer，也被称为 z-buffer)的存在。在实时渲染中，深度缓冲是用于解决可见性(visibility)问题的，它可以决定哪个物体的哪些部分会被渲染在前面，而哪些部分会被其他物体遮挡。它的基本思想是：根据深度缓存中的值来判断该片元距离摄像机的距离，当渲染一个片元时，需要把它的深度值和已经存在于深度缓冲中的值进行比较(如果开启了深度测试)，如果它的值距离摄像机更远，那么说明这个片元不应该被渲染到屏幕上(有物体挡住了它)；否则，这个片元应该覆盖掉此时颜色缓冲中的像素值，并把它的深度值更新到深度缓冲中(如果开启了深度写入)。</p>
+<p>使用深度缓冲，可以让我们不用关心不透明物体的渲染顺序，例如 A 挡住 B，即便我们先渲染 A 再渲染 B，也不用担心 B 会遮盖掉 A，因为在进行深度测试时会判断出 B 距离摄像机更远，也就不会写入到颜色缓冲中。但如果想要实现透明效果，事情就不那么简单了，这是因为，当使用透明度混合时，我们关闭了深度写入(ZWrite)。</p>
+<p>简单来说，透明度测试和透明度混合的基本原理如下。</p>
+<ul>
+<li>
+<p><strong>透明度测试</strong>：它采用一种“霸道极端”的机制，只要一个片元的透明度不满足条件(通常是小于某个阈值)，那么它对应的片元就会被舍弃。被舍弃的片元将不会再进行任何处理，也不会对颜色缓冲产生任何影响；否则，就会按照普通的不透明物体的处理方式来处理它，即进行深度测试、深度写入等。也就是说，透明度测试是不需要关闭深度写入的，它和其他不透明物体最大的不同就是它会根据透明度来舍弃一些片元。虽然简单，但是它产生的效果也很极端，要么完全透明，即看不到，要么完全不透明，就像不透明物体那样。</p>
+</li>
+<li>
+<p><strong>透明度混合</strong>：这种方法可以得到真正的半透明效果。它会使用当前片元的透明度作为混合因子，与已经存储在颜色缓冲中的颜色值进行混合，得到新的颜色。但是，透明度混合需要关闭深度写入，这使得我们要非常小心物体的渲染顺序。需要注意的是，透明度混合只关闭了深度写入，但没有关闭深度测试。这意味着，当使用透明度混合渲染一个片元时，还是会比较它的深度值与当前深度缓冲中的深度值，如果它的深度值距离摄像机更远，那么就不会再进行混合操作。这一点决定了，当一个不透明物体出现在一个透明物体的前面，而我们先渲染了不透明物体，它仍然可以正常地遮挡住透明物体。也就是说，对于透明度混合来说，深度缓冲是只读的。</p>
+</li>
+</ul>
+<h2 id="为什么渲染顺序很重要">为什么渲染顺序很重要</h2>
+<p>使用透明度混合技术时，为什么要关闭深度写入呢？如果不关闭深度写入，一个半透明表面背后的表面本来是可以透过它被我们看到的，但由于深度测试时判断结果是该半透明表面距离摄像机更近，导致后面的表面将会被剔除，我们也就无法透过半透明表面看到后面的物体了。但是，我们由此就破坏了深度缓冲的工作机制，而这是一个<strong>非常非常非常</strong>糟糕的事情，尽管我们不得不这样做。关闭深度写入导致渲染顺序将变得非常重要。</p>
+<p>我们来考虑最简单的情况。假设场景里有两个物体 A 和 B，如下图所示，其中 A 是半透明物体，而 B 是不透明物体。</p>
+<p><img src="/posts_image/Transparent/Transparent_1.png" srcset="/img/loading.gif" lazyload alt="A半透明，B不透明" title="A半透明，B不透明"></p>
+<p>我们来考虑不同的渲染顺序会有什么结果。</p>
+<ul>
+<li>
+<p>第一种情况，我们先渲染 B，再渲染 A。那么由于不透明物体开启了深度测试和深度检验，而此时深度缓冲中没有任何有效数据，因此 B 首先会写入颜色缓冲和深度缓冲。随后我们渲染 A，透明物体仍然会进行深度测试，因此我们发现和 B 相比，A 距离摄像机更近，因此，我们会使用 A 的透明度来和颜色缓冲中的 B 颜色进行混合，得到正确的半透明效果。</p>
+</li>
+<li>
+<p>第二种情况，我们先渲染 A，再渲染 B。渲染 A 时，深度缓冲区中没有任何有效数据，因此 A 直接写入颜色缓冲，但由于对半透明物体关闭了深度写入，因此 A 不会修改深度缓冲。等到渲染 B 时，B 会进行深度测试，它发现深度缓存中还没有数据，那么它就写入颜色缓冲了，结果就是 B 会直接覆盖 A 的颜色。从视觉上来看，B 就出现在了 A 的前面，而这是错误的。</p>
+</li>
+</ul>
+<p>从这个例子可以看出，当关闭了深度写入后，渲染顺序多么重要。由此我们知道，我们应该在不透明物体渲染完之后再渲染半透明物体。如果都是半透明物体，渲染顺序依然重要。还是假设场景里有两个物体 A 和 B，如下图所示，其中 A 和 B 都是半透明物体。</p>
+<p><img src="/posts_image/Transparent/Transparent_2.png" srcset="/img/loading.gif" lazyload alt="A、B都是半透明" title="A、B都是半透明"></p>
+<p>我们还是考虑不同的渲染顺序有什么不同结果。</p>
+<ul>
+<li>
+<p>第一种情况，我们先渲染 B，再渲染 A。那么 B 会正常写入颜色缓冲，然后 A 会和颜色缓冲中的 B 颜色进行混合，得到正确的半透明效果。</p>
+</li>
+<li>
+<p>第二种情况，我们先渲染 A，再渲染 B。那么 A 会先写入颜色缓冲，随后 B 会和颜色缓冲中的 A 进行混合，这样混合结果会完全反过来，看起来就好像 B 在 A 的前面，得到的就是错误的半透明结构。</p>
+</li>
+</ul>
+<p>从这个例子可以看出，半透明物体之间也是要符合一定的渲染顺序的。基于这两点，渲染引擎一般都会先对物体进行排序，再渲染。常用的方法是。</p>
+<ol>
+<li>
+<p>先渲染所有不透明物体，并开启它们的深度测试和深度写入。</p>
+</li>
+<li>
+<p>把半透明物体按他们距离摄像机的远近进行排序，然后按照从后往前的顺序渲染这些半透明物体，并开启它们的深度测试，但关闭深度写入。</p>
+</li>
+</ol>
+<p>但现在问题仍然没有完全解决，在一些情况下，半透明物体的渲染还是会出现问题。这是因为第二步中的渲染顺序仍然含糊不清，若距离摄像机的远近是由距离摄像机的深度值决定的，但深度缓冲中的值都是像素级别的，每个像素都有一个深度值，如果我们现在对单个物体级别进行排序，那么这意味着排序结果是：要么物体 A 全部在 B 前面渲染，要么 A 全部在 B 后面渲染。但如果存在循环重叠的情况，那么使用这种方法就永远无法得到正确的结果。下图给出了 3 个物体循环重叠的情况。</p>
+<p><img src="/posts_image/Transparent/Transparent_3.png" srcset="/img/loading.gif" lazyload alt="三个物体循环重叠" title="三个物体循环重叠"></p>
+<p>在上图中，由于 3 个物体互相重叠，我们不能得到一个正确的排序顺序。这种时候，我们可以选择把物体拆分为两个部分，然后在进行正确的排序。但即便我们通过分割的方法解决了循环覆盖的问题，还是会有其他情况发生，比如下图中的情况。</p>
+<p><img src="/posts_image/Transparent/Transparent_4.png" srcset="/img/loading.gif" lazyload alt="两个物体错位遮挡" title="两个物体错位遮挡"></p>
+<p>这里的问题是：如何进行排序？我们知道，一个物体的网格结构往往占据了空间中的某一块区域，也就是说，这个网格上每一个点的深度值可能都是不一样的。我们无论选择网格中点、最远的点还是最近的点的深度值来作为整个物体的深度值和其他物体进行排序，都会得到错误的结果。我们的排序结果总是 A 在 B 的前面，但实际上 A 有一部分被 B 遮挡了。这也意味着，一旦选定了一种判断方式后，在某些情况下半透明物体之间一定会出现错误的遮挡问题。这种问题的解决方法通常也是分割网格。</p>
+<p>尽管这样做总会出现一些意外情况，但由于上述方法足够有效且容易实现，因此大多数游戏引擎都使用了这种方法。为了减少错误排序的情况，我们可以尽可能让模型是凸面体，并且考虑将复杂模型拆分成可以独立排序的多个子模型等。其实就算排序错误结果有时也不会非常糟糕，如果不想分割网格，可以试着让透明通道更加柔和，使穿插看起来不是那么明显。我们也可以使用开启了深度写入的半透明效果来近似模拟物体的半透明。</p>
+<p>下面我们来看一下 Unity 如何解决排序问题。</p>
+<h2 id="Unity-Shader-的渲染顺序">Unity Shader 的渲染顺序</h2>
+<p>Unity 为了解决渲染顺序的问题提供了**渲染队列(render queue)**这一解决方案。我们可以使用 SubShader 的 Queue 标签来决定我们的模型将归于哪个渲染队列。Unity 在内部使用一系列整数索引来表示每个渲染队列，且索引号越小表示越早被渲染。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">名称</th>
+<th style="text-align:center">队列索引号</th>
+<th style="text-align:left">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Background</td>
+<td style="text-align:center">1000</td>
+<td style="text-align:left">这个渲染队列会在任何其他队列之前被渲染，我们通常使用该队列来渲染那些需要绘制在背景上的物体</td>
+</tr>
+<tr>
+<td style="text-align:center">Geometry</td>
+<td style="text-align:center">2000</td>
+<td style="text-align:left">默认的渲染队列，大多数物体都使用这个队列。不透明物体使用这个队列</td>
+</tr>
+<tr>
+<td style="text-align:center">AlphaTest</td>
+<td style="text-align:center">2450</td>
+<td style="text-align:left">需要透明度测试的物体使用这个队列。在 Unity5 中从 Geometry 队列中被单独分离出来，这是因为在所有不透明物体渲染之后再渲染它们会更加高效</td>
+</tr>
+<tr>
+<td style="text-align:center">Transparent</td>
+<td style="text-align:center">3000</td>
+<td style="text-align:left">这个队列中的物体会在所有 Geometry 和 AlphaTest 物体渲染后，再按<strong>从后往前</strong>的顺序进行渲染。任何使用了透明度混合(例如关闭了深度写入的 Shader)的物体都应该使用该队列</td>
+</tr>
+<tr>
+<td style="text-align:center">Overlay</td>
+<td style="text-align:center">4000</td>
+<td style="text-align:left">该队列用于实现一些叠加效果。任何需要在最后渲染的物体都应该使用该队列</td>
+</tr>
+</tbody>
+</table>
+<p>因此，如果我们想要通过透明度测试实现透明效果，代码中应该包含类似下面的代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs shaderlab">SubShader &#123;<br>    Tags &#123; &quot;Queue&quot; = &quot;AlphaTest&quot; &#125;<br>    Pass &#123;<br>        ...<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>如果我们想要通过透明度混合来实现透明效果，代码中应该包含类似下面的代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs shaderlab">SubShader &#123;<br>    Tags &#123; &quot;Queue&quot; = &quot;Transparent&quot; &#125;<br>    Pass &#123;<br>        ZWrite Off<br>        ...<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>其中，<strong>ZWrite Off</strong>用于关闭深度写入，在这里我们选择把它写在 Pass 中。我们也可以把它写在 SubShader 中，这意味着该 SubShader 下所有 Pass 都会关闭深度写入。</p>
+<h2 id="透明度测试">透明度测试</h2>
+<p><strong>透明度测试</strong>：只要一个片元的透明度不满足条件(通常是小于某个阈值)，那么它对应的片元就会被舍弃。被舍弃的片元将不会再进行任何处理，也不会对颜色缓冲产生任何影响；否则，就会按照普通的不透明的物体的处理方式来处理它。</p>
+<p>通常我们会在片元着色器中使用 clip 函数来进行透明度测试。clip 是 CG 中的一个函数，它的定义如下。</p>
+<p><strong>函数</strong>：void clip(float4 x); void clip(float3 x); void clip(float2 x); void clip(float1 x); void clip(float x);</p>
+<p><strong>参数</strong>：裁剪时使用的标量或矢量条件。</p>
+<p><strong>描述</strong>：如果给定参数的任何一个分量是负数，就会舍弃当前像素的输出颜色。它等同于下面的代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs shaderlab">void clip(float4 x)&#123;<br>    if(any(x &lt; 0))<br>        discard;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>我们将用下面这张图来实现透明度测试。</p>
+<p><img src="/posts_image/Transparent/Transparent_5.png" srcset="/img/loading.gif" lazyload alt="透明度测试用图" title="透明度测试用图"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><code class="hljs shaderlab">// Upgrade NOTE: replaced &#x27;_Object2World&#x27; with &#x27;unity_ObjectToWorld&#x27;<br><br>Shader &quot;Custom/Chapter8/Chapter8-AlphaTest&quot;<br>&#123;<br>    Properties<br>    &#123;<br>        _Color (&quot;Main Tint&quot;, Color) = (1,1,1,1)<br>        _MainTex (&quot;Main Tex&quot;, 2D) = &quot;white&quot; &#123;&#125;<br>        _Cutoff (&quot;Alpha Cutoff&quot;, Range(0, 1)) = 0.5<br>    &#125;<br>    SubShader<br>    &#123;<br>        Tags &#123; &quot;Queue&quot;=&quot;AlphaTest&quot; &quot;IgnoreProhector&quot;=&quot;True&quot; &quot;RenderType&quot;=&quot;TransparentCutout&quot; &#125;<br>        <br>        Pass &#123;<br>            Tags &#123; &quot;LightMode&quot; = &quot;ForwardBase&quot; &#125;<br><br>            CGPROGRAM<br><br>            #pragma vertex vert<br>            #pragma fragment frag<br><br>            #include &quot;Lighting.cginc&quot;<br><br>            fixed4 _Color;<br>            sampler2D _MainTex;<br>            float4 _MainTex_ST;<br>            fixed _Cutoff;<br><br>            struct a2v &#123;<br>                float4 vertex : POSITION;<br>                float3 normal : NORMAL;<br>                float4 texcoord : TEXCOORD0;<br>            &#125;;<br><br>            struct v2f &#123;<br>                float4 pos : SV_POSITION;<br>                float3 worldNormal : TEXCOORD0;<br>                float3 worldPos : TEXCOORD1;<br>                float2 uv : TEXCOORD2;<br>            &#125;;<br><br>            v2f vert(a2v v)&#123;<br>                v2f o;<br>                o.pos = UnityObjectToClipPos(v.vertex);<br>                o.worldNormal = UnityObjectToWorldNormal(v.normal);<br>                o.worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;<br>                o.uv = TRANSFORM_TEX(v.texcoord, _MainTex);<br>                return o;<br>            &#125;<br><br>            fixed4 frag(v2f i) : SV_Target&#123;<br>                fixed3 worldNormal = normalize(i.worldNormal);<br>                fixed3 worldLightDir = normalize(UnityWorldSpaceLightDir(i.worldPos));<br>                fixed4 texColor = tex2D(_MainTex, i.uv);<br><br>                clip(texColor.a - _Cutoff);<br>                //Equal to<br>                //if((texColor.a - _Cutoff) &lt; 0.0)&#123;<br>                //  discard;<br>                //&#125;<br>                fixed3 albedo = texColor.rgb * _Color.rgb;<br>                fixed3 ambient = UNITY_LIGHTMODEL_AMBIENT.xyz * albedo;<br>                fixed3 diffuse = _LightColor0.rgb * albedo * max(0, dot(worldNormal, worldLightDir));<br>                return fixed4(ambient + diffuse, 1.0);<br>            &#125;<br><br>            ENDCG<br>        &#125;<br>    &#125;<br>    FallBack &quot;Transparent/Cutout/VertexLit&quot;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>效果如下图所示：</p>
+<p><img src="/posts_image/Transparent/Transparent_6.png" srcset="/img/loading.gif" lazyload alt="透明度测试效果图1" title="透明度测试效果图1"></p>
+<p>Unity 中透明度测试使用的渲染队列是名为 AlphaTest 的队列，因此我们需要把 Queue 标签设置成 AlphaTest。而 RenderType 标签可以让 Unity 把这个 Shader 归入到提前定义的组(这里就是 TransparentCutout 组)中，以指明该 Shader 是一个使用了透明度测试的 Shader。RenderType 标签通常被用于着色器替换功能。我们还把 IgnoreProjector 设置为 True，这意味着这个 Shader 不会受到投影器(Projectors)的影响。通常，使用了透明度测试的 Shader 都应该在 SubShader 中设置这三个标签。</p>
+<p>前面我们已经提到过 clip 函数的定义，它会判断它的参数，即 texColor.a - _Cutoff 是否为负数，如果是就会舍弃该片元的输出。也就是说，当 texColor.a 小于材质参数 _Cutoff 时，该片元就会产生完全透明的效果。使用 clip 函数等同于先判断参数是否小于零，如果是就使用 discard 指令来显示剔除该片元。材质面板中的 Alpha cutoff 参数用于调整透明度测试时使用的阈值，当纹理像素的透明度小于该值时，对应的片元就会被舍弃。当我们逐渐调大该值时，立方体上的网格会逐渐消失。如下图所示。</p>
+<p><img src="/posts_image/Transparent/Transparent_7.png" srcset="/img/loading.gif" lazyload alt="透明度测试效果图2" title="透明度测试效果图2"></p>
+<p>和之前使用的 Diffuse 和 Specular 不同，这次我们使用内置的 Transparent/Cutout/VertexLit 来作为回调 Shader。这不仅能够保证在我们编写的 SubShader 无法在当前显卡上工作时可以有合适的代替 Shader，还可以保证使用透明度测试的物体可以正确地向其他物体投射阴影。</p>
+<p>从上边的图可以看出，透明度测试得到的透明效果很“极端”——要么完全透明，要么完全不透明，它的效果往往像在一个不透明物体上挖了一个空洞。而且，得到的透明效果往往在边缘处参差不齐，有锯齿，这是因为在边界处纹理的透明度的变化精度问题。为了得到更加柔滑的透明效果，就可以使用透明度混合。</p>
+<h2 id="透明度混合">透明度混合</h2>
+<p><strong>透明度混合</strong>：这种方法可以得到真正的半透明效果。它会使用当前片元的透明度作为混合因子，与已经存储在颜色缓冲中的颜色值进行混合，得到新的颜色。但是，透明度混合需要关闭深度写入，这使得我们要非常小心物体的渲染顺序。</p>
+<p>为了进行混合，我们需要使用 Unity 提供的混合命令——Blend。Blend 是 Unity 提供的设置混合模式的命令。想要实现半透明的效果就需要把当前自身的颜色和已经存在于颜色缓冲中的颜色值进行混合，混合时使用的函数就是由该指令决定的。下表给出了 Blend 命令的语义。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">语义</th>
+<th style="text-align:left">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Blend Off</td>
+<td style="text-align:left">关闭混合</td>
+</tr>
+<tr>
+<td style="text-align:left">Blend SrcFactor DstFactor</td>
+<td style="text-align:left">开启混合，并设置混合因子。源颜色(该片元产生的颜色)会乘以 SrcFactor，而目标颜色(已经存在于颜色缓存的颜色)会乘以 DstFactor，然后把两者相加后在存入颜色缓冲中</td>
+</tr>
+<tr>
+<td style="text-align:left">Blend SrcFactor DstFactor, SrcFactorA DstFactorA</td>
+<td style="text-align:left">和上面几乎一样，只是使用不同的因子来混合透明通道</td>
+</tr>
+<tr>
+<td style="text-align:left">BlendOp BlendOperation</td>
+<td style="text-align:left">并非是把源颜色和目标颜色简单相加后混合，而是使用 BlendOperation 对它们进行其他操作</td>
+</tr>
+</tbody>
+</table>
+<p>我们下面会使用 Blend SrcFactor DstFactor 来进行混合，这个命令在设置混合因子的同时也开启了混合模式。这是因为开启了混合之后，设置片元的透明通道才有意义，而 Unity 在我们使用 Blend 命令的时候就自动帮我们打开了。我们会把源颜色的混合因子 SrcFactor 设为 SrcAlpha，而目标颜色的混合因子 DstFactor 设为 OneMinusSrcAlpha。这意味着，经过混合后新的颜色是：<br>
+$$<br>
+DstColor_{new} = SrcAlpha \times SrcColor + (1 - SrcAlpha) \times DstColor_{old}<br>
+$$<br>
+我们仍然使用透明度测试用的纹理图。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><code class="hljs shaderlab">Shader &quot;Custom/Chapter8/Chapter8-AlphaBlend&quot;<br>&#123;<br>    Properties<br>    &#123;<br>        _Color (&quot;Main Tint&quot;, Color) = (1,1,1,1)<br>        _MainTex (&quot;Main Tex&quot;, 2D) = &quot;white&quot; &#123;&#125;<br>        _AlphaScale (&quot;Alpha Scale&quot;, Range(0, 1)) = 1<br>    &#125;<br>    SubShader<br>    &#123;<br>        Tags &#123; &quot;Queue&quot;=&quot;Transparent&quot; &quot;IgnoreProhector&quot;=&quot;True&quot; &quot;RenderType&quot;=&quot;Transparent&quot; &#125;<br>        <br>        Pass &#123;<br>            Tags &#123; &quot;LightMode&quot; = &quot;ForwardBase&quot; &#125;<br>            ZWrite Off<br>            Blend SrcAlpha OneMinusSrcAlpha<br><br>            CGPROGRAM<br><br>            #pragma vertex vert<br>            #pragma fragment frag<br><br>            #include &quot;Lighting.cginc&quot;<br><br>            fixed4 _Color;<br>            sampler2D _MainTex;<br>            float4 _MainTex_ST;<br>            fixed _AlphaScale;<br><br>            struct a2v &#123;<br>                float4 vertex : POSITION;<br>                float3 normal : NORMAL;<br>                float4 texcoord : TEXCOORD0;<br>            &#125;;<br><br>            struct v2f &#123;<br>                float4 pos : SV_POSITION;<br>                float3 worldNormal : TEXCOORD0;<br>                float3 worldPos : TEXCOORD1;<br>                float2 uv : TEXCOORD2;<br>            &#125;;<br><br>            v2f vert(a2v v)&#123;<br>                v2f o;<br>                o.pos = UnityObjectToClipPos(v.vertex);<br>                o.worldNormal = UnityObjectToWorldNormal(v.normal);<br>                o.worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;<br>                o.uv = TRANSFORM_TEX(v.texcoord, _MainTex);<br>                return o;<br>            &#125;<br><br>            fixed4 frag(v2f i) : SV_Target&#123;<br>                fixed3 worldNormal = normalize(i.worldNormal);<br>                fixed3 worldLightDir = normalize(UnityWorldSpaceLightDir(i.worldPos));<br>                fixed4 texColor = tex2D(_MainTex, i.uv);<br>                fixed3 albedo = texColor.rgb * _Color.rgb;<br>                fixed3 ambient = UNITY_LIGHTMODEL_AMBIENT.xyz * albedo;<br>                fixed3 diffuse = _LightColor0.rgb * albedo * max(0, dot(worldNormal, worldLightDir));<br>                return fixed4(ambient + diffuse, texColor.a * _AlphaScale);<br>            &#125;<br><br>            ENDCG<br>        &#125;<br>    &#125;<br>    FallBack &quot;Transparent/VertexLit&quot;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>效果如下图所示，我们可以调节材质面板上的 Alpha Scale 参数，以控制整体透明度。</p>
+<p><img src="/posts_image/Transparent/Transparent_8.png" srcset="/img/loading.gif" lazyload alt="透明度混合效果图1" title="透明度混合效果图1"></p>
+<p>我们在前面解释了由于关闭深度写入带来的各种问题。当模型本身有复杂的遮挡关系或是包含了复杂的非凸网格的时候，就会有各种各样因为排序错误而产生的错误的透明效果。下图给出了使用上面的 Unity Shader 渲染的有复杂遮挡关系模型的效果。</p>
+<p><img src="/posts_image/Transparent/Transparent_9.png" srcset="/img/loading.gif" lazyload alt="透明度混合效果图2" title="透明度混合效果图2"></p>
+<p>这都是由于我们关闭了深度写入造成的，因为这样我们无法对模型进行像素级别的深度排序。前面我们提到了一种解决方法是分割网格，从而得到一个“质量优等”的网格。但是很多情况下这往往是不切实际的。这时，我们可以想办法重新利用深度写入，让模型可以像半透明物体一样进行淡入淡出。这就是开启深度写入的半透明效果。</p>
+<h2 id="参考">参考</h2>
+<p>《Unity Shader入门精要》</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Unity-Shader/" class="category-chain-item">Unity Shader</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Alpha/" class="print-no-link">#Alpha</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>透明效果(一)</div>
+      <div>http://example.com/posts/透明效果(一)/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>祭零小白</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年1月25日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/%E9%80%8F%E6%98%8E%E6%95%88%E6%9E%9C(%E4%BA%8C)/" title="透明效果(二)">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">透明效果(二)</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/%E5%9F%BA%E7%A1%80%E7%BA%B9%E7%90%86(%E4%BA%8C)/" title="基础纹理(二)">
+                        <span class="hidden-mobile">基础纹理(二)</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/css/gitalk.css')
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"7bbb87323a0faa8998e9","clientSecret":"adaeef1cc5e02a3327b5a18a608b197148c2d48e","repo":"JiLingXiaoBai.github.io","owner":"JiLingXiaoBai","admin":"JiLingXiaoBai","language":"zh-CN","labels":["Gitalk"],"perPage":10,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":false,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},
+          {
+            id: 'a5936dc3a830197aad9d92276033369d'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

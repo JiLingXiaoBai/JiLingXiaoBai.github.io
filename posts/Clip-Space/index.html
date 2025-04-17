@@ -1,0 +1,1115 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/tabIcon.png">
+  <link rel="icon" href="/img/tabIcon.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="祭零小白">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="裁剪空间 顶点从观察空间转换到裁剪空间(clip space，也被称为齐次裁剪空间)所用的矩阵叫做裁剪矩阵(clip matrix)，也被称为投影矩阵(projection matrix)。 裁剪空间的目标是能够方便地对渲染图元进行裁剪：完全位于这块空间内部的图元将会被保留，完全位于这块空间外部的图元将会被剔除，而与这块空间边界相交的图元就会被裁剪。那么，这块空间是如何决定的呢？答案是由**视锥体">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Clip Space">
+<meta property="og:url" content="http://example.com/posts/Clip-Space/index.html">
+<meta property="og:site_name" content="小白的笔记本">
+<meta property="og:description" content="裁剪空间 顶点从观察空间转换到裁剪空间(clip space，也被称为齐次裁剪空间)所用的矩阵叫做裁剪矩阵(clip matrix)，也被称为投影矩阵(projection matrix)。 裁剪空间的目标是能够方便地对渲染图元进行裁剪：完全位于这块空间内部的图元将会被保留，完全位于这块空间外部的图元将会被剔除，而与这块空间边界相交的图元就会被裁剪。那么，这块空间是如何决定的呢？答案是由**视锥体">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/posts_image/Clip_Space/Clip_Space_1.png">
+<meta property="og:image" content="http://example.com/posts_image/Clip_Space/Clip_Space_2.jpeg">
+<meta property="og:image" content="http://example.com/posts_image/Clip_Space/Clip_Space_3.png">
+<meta property="og:image" content="http://example.com/posts_image/Clip_Space/Clip_Space_4.jpeg">
+<meta property="og:image" content="http://example.com/posts_image/Clip_Space/Clip_Space_5.jpeg">
+<meta property="og:image" content="http://example.com/posts_image/Clip_Space/Clip_Space_1_1.png">
+<meta property="og:image" content="http://example.com/posts_image/Clip_Space/Clip_Space_2_1.png">
+<meta property="og:image" content="http://example.com/posts_image/Clip_Space/Clip_Space_2_2.jpeg">
+<meta property="og:image" content="http://example.com/posts_image/Clip_Space/Clip_Space_2_3.png">
+<meta property="og:image" content="http://example.com/posts_image/Clip_Space/Clip_Space_2_4.jpeg">
+<meta property="og:image" content="http://example.com/posts_image/Clip_Space/Clip_Space_2_5.png">
+<meta property="og:image" content="http://example.com/posts_image/Clip_Space/Clip_Space_3_1.png">
+<meta property="article:published_time" content="2022-01-17T02:27:10.000Z">
+<meta property="article:modified_time" content="2025-04-17T12:55:15.930Z">
+<meta property="article:author" content="祭零小白">
+<meta property="article:tag" content="Math">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/posts_image/Clip_Space/Clip_Space_1.png">
+  
+  
+  
+  <title>Clip Space - 小白的笔记本</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null},"gtag":null,"woyaola":null,"cnzz":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="小白的笔记本" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>祭零小白</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/page_background.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Clip Space"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-01-17 10:27" pubdate>
+          2022年1月17日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          5.3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          45 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Clip Space</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    <!-- compatible with older versions-->
+                    本文最后更新于：2025年4月17日 晚上
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="裁剪空间">裁剪空间</h2>
+<p>顶点从观察空间转换到<strong>裁剪空间(clip space，也被称为齐次裁剪空间)<strong>所用的矩阵叫做</strong>裁剪矩阵(clip matrix)</strong>，也被称为投影矩阵(projection matrix)。</p>
+<p>裁剪空间的目标是能够方便地对渲染图元进行裁剪：完全位于这块空间内部的图元将会被保留，完全位于这块空间外部的图元将会被剔除，而与这块空间边界相交的图元就会被裁剪。那么，这块空间是如何决定的呢？答案是由**视锥体(view frustum)**来决定。</p>
+<p>视锥体指的是空间中的一块区域，这块区域决定了摄像机可以看到的空间。视锥体由六个平面包围而成，这些平面也被称为<strong>裁剪平面(clip planes)</strong>。视锥体有两种类型，这涉及两种投影类型：一种是<strong>正交投影(orthographic projection)</strong>，一种是<strong>透视投影(perspective projection)</strong>。下图显示了从同一位置、同一角度渲染同一个场景的两种摄像机的渲染结果。</p>
+<p><img src="/posts_image/Clip_Space/Clip_Space_1.png" srcset="/img/loading.gif" lazyload alt="透视投影和正交投影" title="透视投影和正交投影"></p>
+<p>透视投影模拟了人眼看世界的方式，而正交投影则完全保留了物体的距离和角度。因此，在追求真实感的3D游戏中我们往往会使用透视投影，而在一些2D游戏或渲染小地图等其他HUD元素时，我们会使用正交投影。在透视空间里使用的并不是笛卡尔坐标系，为了描述透视空间，科学家提出了“齐次坐标”的概念：</p>
+<p>即，用 N+1 个数来表示 N 维空间中的点或向量，对于三维空间中的点，通常是使用 (x, y, z, w) 来表示三维空间中的点在齐次坐标空间中的位置。三维空间（笛卡尔坐标系）和齐次坐标系之间可以通过齐次除法进行相互转换，科学家定义的规则是：</p>
+<p><img src="/posts_image/Clip_Space/Clip_Space_2.jpeg" srcset="/img/loading.gif" lazyload alt="齐次除法规则" title="齐次除法规则"></p>
+<p>比如平行线在透视空间中相交于一个点，这个点的齐次坐标可以表示为 (x, y, z, 0)，这里 xyz 为多少并不重要，重要的是 w = 0，因为这使得这个齐次坐标点转换为三维坐标是（x/0, y/0, z/0）= (无穷， 无穷， 无穷) ，因此我们成功描述了这个点。</p>
+<p>在视锥体的6块裁剪平面中，有两块裁剪平面比较特殊，它们分别被称为<strong>近裁剪平面(near clip plane)<strong>和</strong>远裁剪平面(far clip plane)</strong>。它们决定了摄像机可以看到的深度范围。正交投影和透视投影的视锥体如下图所示。</p>
+<p><img src="/posts_image/Clip_Space/Clip_Space_3.png" srcset="/img/loading.gif" lazyload alt="透视投影和正交投影的视锥体" title="透视投影和正交投影的视锥体"></p>
+<p>前面讲到，我们希望根据视锥体围成的区域对图元进行裁剪，但是，如果直接使用视锥体定义的空间来进行裁剪，那么不同的视锥体就需要不同的处理过程，而且对于透视投影的视锥体来说，想要判断一个顶点是否处于一个金字塔内部是比较麻烦的。因此，我们想用一种更加通用、方便和整洁的方式来进行裁剪的工作，这种方式就是通过一个投影矩阵把顶点转换到一个裁剪空间中。在裁剪空间之前，虽然我们使用了齐次坐标来表示点和矢量，但它们的第四个分量都是固定的：点的w分量是1，方向矢量的w分量是0。经过投影矩阵的变换后，我们就会赋予齐次坐标的第四个坐标更加丰富的含义。</p>
+<p>投影矩阵有两个目的。</p>
+<ul>
+<li>首先是为投影做准备。虽然投影矩阵的名称包含了投影二字，但是它并没有进行真正的投影工作，而是在为投影做准备。真正的投影发生在后面的**齐次除法(homogeneous division)**过程中。而经过投影矩阵的变换后，顶点的w分量将会具有特殊的意义。</li>
+</ul>
+<p>投影可以理解为一个空间的降维，例如从四维空间投影到三维空间中。而投影矩阵实际上并不会真的进行这个步骤，它会为真正的投影做准备工作。真正的投影会在屏幕映射时发生，通过齐次除法来得到二维坐标。</p>
+<ul>
+<li>其次是对x、y、z分量进行缩放。我们上面讲过直接使用视锥体的6个裁剪平面来进行裁剪会比较麻烦。而经过投影矩阵的缩放后，我们可以直接使用w分量作为一个范围值，如果x、y、z分量都位于这个范围内，就说明该顶点位于裁剪空间内。</li>
+</ul>
+<p>裁剪空间中的顶点是用齐次坐标表示的，在屏幕映射阶段里要对裁剪空间的顶点进行一个统一的齐次除法操作，来把顶点从齐次坐标系转换到笛卡尔坐标系的归一化设备坐标（Normalized Device Coordinates, NDC）空间里，经过这一步之后，裁剪空间将会变换到一个立方体内。</p>
+<p>OpenGL 和 DirectX 对 NDC 空间的定义有所不同，前者定义 NDC 空间的 xyz 取值范围是 [-1, 1] ，而后者定义 NDC 空间的 xy 取值范围为 [-1, 1]，z 的取值范围为 [0, 1]。而 Unity 选择了 OpenGL 的规范：</p>
+<p><img src="/posts_image/Clip_Space/Clip_Space_4.jpeg" srcset="/img/loading.gif" lazyload alt="齐次除法" title="齐次除法"></p>
+<p>转换之后如果 x,y,z 满足条件：</p>
+<p><img src="/posts_image/Clip_Space/Clip_Space_5.jpeg" srcset="/img/loading.gif" lazyload alt="裁剪条件" title="裁剪条件"></p>
+<p>符合此条件的顶点参与渲染，不符合的则裁剪掉不参与渲染。对于正交摄像机的话，他的裁剪空间是一个长方体，拍摄出来的画面是可以用三维坐标来描述的，不需要齐次坐标来描述，所以正交摄像机的投影矩阵对 w 分量没有进行操作（或者理解为正交摄像机的裁剪空间是 w 恒等于 1 的齐次坐标空间）。</p>
+<p>下面，我们来看一下两种投影类型使用的投影矩阵具体是什么。</p>
+<h4 id="1-正交投影">1. 正交投影</h4>
+<p>视锥体的意义在于定义了场景中的一块三维空间。所有位于这块空间内的物体都将会被渲染，否则就会被剔除或裁剪。我们已经知道视锥体由6个裁剪平面定义，那么这6个裁剪平面又是怎么决定的呢？在Unity中，它们由Camera组件中的参数和Game视图的纵横比共同决定。如下图所示。</p>
+<p><img src="/posts_image/Clip_Space/Clip_Space_1_1.png" srcset="/img/loading.gif" lazyload alt="正交摄像机的参数对正交投影视锥体的影响" title="正交摄像机的参数对正交投影视锥体的影响"></p>
+<p>由图我们可以看出，我们可以通过Camera组件的Size属性来改变视锥体竖直方向上高度的一半，而Clipping Planes中的Near和Far参数可以控制视锥体的近裁剪平面和远裁剪平面距离摄像机的远近。这样我们就可以求出视锥体近裁剪平面和远裁剪平面的高度，也就是：<br>
+$$<br>
+nearClipPlaneHeight = 2 \cdot Size<br>
+$$<br>
+$$<br>
+farClipPlaneHeight = NearClipPlaneHeight<br>
+$$<br>
+我们可以通过摄像机的纵横比得倒横向的信息。在Unity中，一个摄像机的纵横比由Game视图的纵横比和Viewport Rect中的W和H属性共同决定(实际上。Unity允许我们在脚本里通过Camera.aspect进行修改，但这里不做讨论)。假设，当前摄像机的纵横比为Aspect，我们定义：<br>
+$$<br>
+nearClipPlaneWidth = Aspect \cdot nearClipPlaneHeight<br>
+$$<br>
+$$<br>
+farClipPlaneWidth = nearClipPlaneWidth<br>
+$$</p>
+<p>现在，我们可以根据已知的Near、Far、Size和Aspect的值来确定正交投影的裁剪矩阵。如下：</p>
+<p>$$<br>
+M_{ortho} =<br>
+\begin{bmatrix}<br>
+\cfrac{1}{Aspect \cdot Size}&amp;0&amp;0&amp;0\<br>
+0&amp;\cfrac{1}{Size}&amp;0&amp;0\<br>
+0&amp;0&amp;-\cfrac{2}{Far - Near}&amp;-\cfrac{Far + Near}{Far - Near}\<br>
+0&amp;0&amp;0&amp;1\<br>
+\end{bmatrix}<br>
+$$</p>
+<p>需要注意的是,这里的投影矩阵是建立在Unity对坐标系的假定上面的，也就是说，我们针对的是观察空间为右手坐标系，使用列矩阵在矩阵右侧进行相乘，且变换后z分量范围将在 [-w, w]之间的情况。而在类似DirectX这样的图形接口中，它们希望变换后z分量范围将在 [0, w]之间，因此就需要对上面的透视矩阵进行一些更改。</p>
+<p><strong>推导过程如下</strong></p>
+<p>正交摄像机的视锥体空间定义为：L(left)、R(right)、T(top)、B(bottom)、N(near)、F(far)</p>
+<p>转换到裁剪空间的顶点应该满足： $L \leq x \leq R$、$B \leq y \leq T$、$N \leq z \leq F$</p>
+<p>先单独研究x分量，x分量最后是要映射到-1～1之间的，所以：</p>
+<p>$L \leq x \leq R$</p>
+<p>$0 \leq (x - L) \leq (R - L)$</p>
+<p>$0 \leq \cfrac{x - L}{R - L} \leq 1$</p>
+<p>$0 \leq 2 \times \cfrac{x - L}{R - L} \leq 2$</p>
+<p>$-1 \leq \cfrac{2 \times (x - L)}{R - L} - 1\leq 1$</p>
+<p>最后化简后得到，转换后的x‘分量与原本的x分量之间的表达式是</p>
+<p>$x’ = \cfrac{2 \times x - L - R}{R - L} = \cfrac{2}{R - L} \times x - \cfrac{R + L}{R - L}$</p>
+<p>由于x、y、z都是转换到取值范围为 [-1, 1]的，所以我们可以同理得到其他两个变量：</p>
+<p>$y’ = \cfrac{2 \times y - B - T}{T - B} = \cfrac{2}{T - B} \times y - \cfrac{T + B}{T - B}$</p>
+<p>$z’ = \cfrac{2 \times z - N - F}{F - N} = \cfrac{2}{F - N} \times z - \cfrac{F + N}{F - N}$</p>
+<p>结合正交相机提供的参数，我们可以得到：</p>
+<p>L = -Width / 2、 R = Width / 2、 B = -Height / 2、 T = Height / 2</p>
+<p>而且正交摄像机的参数提供的有： Aspect = Width / Height、 Height = 2 $\times$ Size</p>
+<p>代入后可以得到：</p>
+<p>x’ = (2 / Width) $\times$ x = x / (Aspect $\times$ Size)</p>
+<p>y’ = (2 / Height) $\times$ y = y / Size</p>
+<p>由x’、y‘、z’即可得到正交矩阵的P矩阵：</p>
+<p>$$<br>
+\begin{bmatrix}<br>
+\cfrac{1}{Aspect \cdot Size}&amp;0&amp;0&amp;0\<br>
+0&amp;\cfrac{1}{Size}&amp;0&amp;0\<br>
+0&amp;0&amp;\cfrac{2}{Far - Near}&amp;-\cfrac{Far + Near}{Far - Near}\<br>
+0&amp;0&amp;0&amp;1\<br>
+\end{bmatrix}<br>
+$$</p>
+<p>由于P矩阵是把顶点从观察空间(右手坐标系)转换到裁剪空间(左手坐标系)，因此要反转处理一下z轴：</p>
+<p>$$<br>
+\begin{bmatrix}<br>
+\cfrac{1}{Aspect \cdot Size}&amp;0&amp;0&amp;0\<br>
+0&amp;\cfrac{1}{Size}&amp;0&amp;0\<br>
+0&amp;0&amp;-\cfrac{2}{Far - Near}&amp;-\cfrac{Far + Near}{Far - Near}\<br>
+0&amp;0&amp;0&amp;1\<br>
+\end{bmatrix}<br>
+$$</p>
+<h4 id="2-透视投影">2. 透视投影</h4>
+<p>我们还是看一下透视投影中的6个裁剪平面是如何定义的。和正交投影类似，在Unity中，它们也是由Camera组件中的参数和Game视图的纵横比共同决定。如下图所示。</p>
+<p><img src="/posts_image/Clip_Space/Clip_Space_2_1.png" srcset="/img/loading.gif" lazyload alt="透视摄像机的参数对透视投影视锥体的影响" title="透视摄像机的参数对透视投影视锥体的影响"></p>
+<p>我们可以通过Camera组件的Field of View(简称FOV)属性来改变视锥体竖直方向的张开角度，而Clipping Planes中的Near和Far参数可以控制视锥体的近裁剪平面和远裁剪平面距离摄像机的远近。这样我们可以求出视锥体近裁剪平面和远裁剪平面的高度，也就是：<br>
+$$<br>
+nearClipPlaneHeight = 2 \cdot Near \cdot \tan\cfrac{FOV}{2}<br>
+$$<br>
+$$<br>
+farClipPlaneHeight = 2 \cdot Far \cdot \tan\cfrac{FOV}{2}<br>
+$$</p>
+<p>现在我们还缺乏横向的信息。这可以通过摄像机的纵横比得到。假设，当前摄像机的纵横比为Aspect，那么：<br>
+$$<br>
+Aspect = \cfrac{nearClipPlaneWidth}{nearClipPlaneHeight}<br>
+$$<br>
+$$<br>
+Aspect = \cfrac{farClipPlaneWidth}{farClipPlaneHeight}<br>
+$$<br>
+现在我们可以根据已知的Near、Far、FOV和Aspect的值来确定透视投影的投影矩阵。<br>
+$$<br>
+M_{frustum} =<br>
+\begin{bmatrix}<br>
+\cfrac{\cot\cfrac{FOV}{2}}{Aspect}&amp;0&amp;0&amp;0\<br>
+0&amp;\cot\cfrac{FOV}{2}&amp;0&amp;0\<br>
+0&amp;0&amp;-\cfrac{Far + Near}{Far - Near}&amp;-\cfrac{2 \cdot Near \cdot Far}{Far - Near}\<br>
+0&amp;0&amp;-1&amp;0\<br>
+\end{bmatrix}<br>
+$$<br>
+同样，这里的投影矩阵是建立在Unity对坐标系的假定上面的。</p>
+<p><strong>推导过程如下</strong></p>
+<p>正交矩阵的P矩阵已经推导出来，那么如果摄像机是透视模式的话，视锥体是一个金字塔形状的锥体而不是立方体，显而易见的问题是：随着z轴的变化，xy轴分量的取值范围会变大：</p>
+<p><img src="/posts_image/Clip_Space/Clip_Space_2_2.jpeg" srcset="/img/loading.gif" lazyload alt="随着z变大，xy取值范围变大" title="随着z变大，xy取值范围变大"></p>
+<p>因此我们首先要解决的问题是求出xy分量随着z分量的变化而变化的公式，即它们之间的关系：</p>
+<p><img src="/posts_image/Clip_Space/Clip_Space_2_3.png" srcset="/img/loading.gif" lazyload alt="xy分量随着z分量的变化而变化" title="xy分量随着z分量的变化而变化"></p>
+<p>如图，在视锥体中，存在一个顶点P（x, y, z），我们先把视锥体的原点O（0，0，0）向视锥体中心发出一道射线穿过近裁剪平面和后面的远裁剪平面（图中未画出），把点P向射线做一条辅助线 BP、连接 OP 相交近截面于点D，点 D 向射线做一条垂直线 AD 得到上图。可以看出图中存在两个相似三角形 OAD 和 OBP，则可以推论：</p>
+<p>$BP = \sqrt{x^2 + y^2}$</p>
+<p>$AD = \sqrt{dx^2 + dy^2}$</p>
+<p>$OA = n$</p>
+<p>$OB = z$</p>
+<p>由于相似三角形的特性，存在：</p>
+<p>$\cfrac{BP}{AD} = \cfrac{OB}{OA} = \cfrac{z}{n}$</p>
+<p>即：$AD = \cfrac{n \cdot BP}{z} = \cfrac{n}{z} \cdot \sqrt{x^2 + y^2}$</p>
+<p>简化之后可以得到：</p>
+<p>$\sqrt{dx^2 + dy^2} = \sqrt{(\cfrac{nx}{z})^2 + (\cfrac{ny}{z})^2}$</p>
+<p>则：</p>
+<p>$dx = \cfrac{nx}{z}$</p>
+<p>$dy = \cfrac{ny}{z}$</p>
+<p>因此可以得出：对于锥体里的任何一个点 (x, y, z) ，其中的 x，y 分量都可以通过上述的公式映射到近裁剪平面上，原本透视摄像机的视锥体是近裁剪平面小，远裁剪平面大的，现在通过上述公式就可以把所有顶点都映射到同一个近裁剪平面的取值范围了，即：left ≤ x ≤ right 、 bottom ≤ y ≤ top ，那么我们可以先把远平面压缩，把视锥体压缩成一个长方体，然后再通过利用正交投影矩阵得到透视投影矩阵。</p>
+<p>在把视锥体压缩成长方体的过程中，我们规定三个原则</p>
+<p>1.近平面的所有点坐标不变</p>
+<p>2.远平面的所有点坐标 z 值不变，都是 f</p>
+<p>3.远平面的中心点的坐标值不变，为 (0, 0, f)</p>
+<p>对于 (x, y, z, 1)，它在视锥体被压缩以后坐标应该为 (nx/z, ny/z, unknown, 1)。我们需要找到一个矩阵 $ M_{persp -&gt; ortho} $，让 (x, y, z, 1) 在用矩阵变换后成为 (nx/z, ny/z, unknown, 1)。</p>
+<h1>$$<br>
+M_{persp -&gt; ortho}<br>
+\begin{bmatrix}<br>
+x\<br>
+y\<br>
+z\<br>
+1\<br>
+\end{bmatrix}</h1>
+<p>\begin{bmatrix}<br>
+nx\<br>
+ny\<br>
+unknown\<br>
+z\<br>
+\end{bmatrix}<br>
+$$</p>
+<p>$$<br>
+m_{11}x + m_{12}y + m_{13}z + m_{14} = nx<br>
+$$</p>
+<p>求出 $ m_{11} = n, m_{12} = m_{13} = m_{14} = 0 $</p>
+<p>$$<br>
+m_{21}x + m_{22}y + m_{23}z + m_{24} = ny<br>
+$$</p>
+<p>求出 $ m_{22} = n, m_{21} = m_{23} = m_{24} = 0 $</p>
+<p>$$<br>
+m_{41}x + m_{42}y + m_{43}z + m_{44} = z<br>
+$$</p>
+<p>求出 $ m_{43} = 1, m_{41} = m_{42} = m_{44} = 0 $</p>
+<p>$$<br>
+M_{persp -&gt; ortho} =<br>
+\begin{bmatrix}<br>
+n&amp;0&amp;0&amp;0\<br>
+0&amp;n&amp;0&amp;0\<br>
+?&amp;?&amp;?&amp;?\<br>
+0&amp;0&amp;1&amp;0\<br>
+\end{bmatrix}<br>
+$$</p>
+<p>我们求出了矩阵其中三行，只剩下第三行未知。然而因为我们规定近平面所有点坐标不变，也就是说 (x, y, z, 1) 经过 $ M_{persp -&gt; ortho} $变换后还是等于 (x, y, z, 1)。</p>
+<h1>$$<br>
+\begin{bmatrix}<br>
+n&amp;0&amp;0&amp;0\<br>
+0&amp;n&amp;0&amp;0\<br>
+?&amp;?&amp;?&amp;?\<br>
+0&amp;0&amp;1&amp;0\<br>
+\end{bmatrix}<br>
+\begin{bmatrix}<br>
+x\<br>
+y\<br>
+n\<br>
+1\<br>
+\end{bmatrix}</h1>
+<h1>\begin{bmatrix}<br>
+x\<br>
+y\<br>
+n\<br>
+1\<br>
+\end{bmatrix}</h1>
+<p>\begin{bmatrix}<br>
+nx\<br>
+ny\<br>
+n^2\<br>
+n\<br>
+\end{bmatrix}<br>
+$$</p>
+<p>对于第一二四行，等式成立，第三行为</p>
+<p>$$<br>
+m_{31}x + m_{32}y + m_{33}n + m_{34} = n^2<br>
+$$</p>
+<p>明显 $ m_{31} = 0, m_{32} = 0, m_{33}n + m_{34} = n^2 $</p>
+<p>又因为远平面中心点的坐标值不变，为 (0, 0, f)</p>
+<h1>$$<br>
+\begin{bmatrix}<br>
+n&amp;0&amp;0&amp;0\<br>
+0&amp;n&amp;0&amp;0\<br>
+0&amp;0&amp;?&amp;?\<br>
+0&amp;0&amp;1&amp;0\<br>
+\end{bmatrix}<br>
+\begin{bmatrix}<br>
+0\<br>
+0\<br>
+f\<br>
+1\<br>
+\end{bmatrix}</h1>
+<h1>\begin{bmatrix}<br>
+0\<br>
+0\<br>
+f\<br>
+1\<br>
+\end{bmatrix}</h1>
+<p>\begin{bmatrix}<br>
+0\<br>
+0\<br>
+f^2\<br>
+f\<br>
+\end{bmatrix}<br>
+$$</p>
+<p>$ m_{33}f + m_{34} = f^2 $</p>
+<p>联立 $ m_{33}n + m_{34} = n^2 $ 和 $ m_{33}f + m_{34} = f^2 $，得 $ m_{33} = n + f, m_{34} = -nf $</p>
+<p>终于我们求得</p>
+<p>$$<br>
+M_{persp -&gt; ortho} =<br>
+\begin{bmatrix}<br>
+Near&amp;0&amp;0&amp;0\<br>
+0&amp;Near&amp;0&amp;0\<br>
+0&amp;0&amp;Near+Far&amp;-Near \cdot Far\<br>
+0&amp;0&amp;1&amp;0\<br>
+\end{bmatrix}<br>
+$$</p>
+<p>通过此矩阵，我们可以把原来的透视投影的视锥体压缩为正交投影的长方体。</p>
+<p>$$<br>
+M_{persp} = M_{ortho}M_{persp -&gt; ortho} =<br>
+\begin{bmatrix}<br>
+\cfrac{2Near}{Width}&amp;0&amp;0&amp;0\<br>
+0&amp;\cfrac{2Near}{Height}&amp;0&amp;0\<br>
+0&amp;0&amp;-\cfrac{Far+Near}{Far-Near}&amp;\cfrac{-2Near \cdot Far}{Far-Near}\<br>
+0&amp;0&amp;-1&amp;0\<br>
+\end{bmatrix}<br>
+$$</p>
+<p>我们可以通过FOV和三角函数来求出Near的另一种表达方式</p>
+<p><img src="/posts_image/Clip_Space/Clip_Space_2_4.jpeg" srcset="/img/loading.gif" lazyload alt="透视摄像机" title="透视摄像机"></p>
+<p>上图中，角a是FOV的一半，即 $\cfrac{FOV}{2}$ ，则：</p>
+<p>$\cot{a} = \cot{\cfrac{FOV}{2}} = \cfrac{Near}{Height / 2} = \cfrac{2 \cdot Near}{Height}$</p>
+<p>因此 $Near = \cfrac{Height + \cot{\cfrac{FOV}{2}}}{2}$，再结合 $Aspect = \cfrac{Width}{Height}$ 可以得到</p>
+<p>$$<br>
+\begin{bmatrix}<br>
+\cfrac{\cot\cfrac{FOV}{2}}{Aspect}&amp;0&amp;0&amp;0\<br>
+0&amp;\cot\cfrac{FOV}{2}&amp;0&amp;0\<br>
+0&amp;0&amp;-\cfrac{Far + Near}{Far - Near}&amp;-\cfrac{2 \cdot Near \cdot Far}{Far - Near}\<br>
+0&amp;0&amp;-1&amp;0\<br>
+\end{bmatrix}<br>
+$$</p>
+<p>平截头体压缩为长方体后，内部的点的z值是更偏向于远平面的。对于点 (x, y, z, 1)，我们通过 $ M_{persp -&gt; ortho} $ 计算第三行，可以得到 $ z’ = (n + f) \cdot z - nf $ ，计算第四行，可以得到 $ w’ = z $ ，所以 $ f(z) = z’/w’ = n + f - nf/z $ ，使用 z = n 和 z = f 的情况进行验算都符合近平面和远平面上的点 z 值不发生变化。</p>
+<p>我们设 n、f 都是绝对值，视锥体内部的点满足 0 &lt; n &lt; z &lt; f，问题变成了，当 0 &lt; n &lt; z &lt; f 时，n + f - nf/z 与 z 的大小关系。</p>
+<p><img src="/posts_image/Clip_Space/Clip_Space_2_5.png" srcset="/img/loading.gif" lazyload alt="函数图像" title="函数图像"></p>
+<p>可以看出 z 从 n 到 f 的变化过程中，f(z) 的变化率时逐渐变小的，在 n 到 f 这段区域中，f(z) 永远大于 g(z)，即，当 0 &lt; n &lt; z &lt; f 时，n + f -nf/z &gt; z。也就是说，视锥体内的点被挤压得更偏向远平面。</p>
+<h2 id="屏幕映射阶段">屏幕映射阶段</h2>
+<p>顶点转换到裁剪空间上，经裁剪步骤去掉多余的顶点后，接着就到屏幕映射阶段了，这一阶段要进行投影操作：把顶点映射到屏幕上的像素坐标上去，这个过程分成两步：先齐次除法后进行坐标缩放映射。</p>
+<p>正交摄像机里一个顶点和上述正交投影矩阵相乘后的结果：</p>
+<h1>$$<br>
+\begin{bmatrix}<br>
+\cfrac{1}{Aspect \cdot Size}&amp;0&amp;0&amp;0\<br>
+0&amp;\cfrac{1}{Size}&amp;0&amp;0\<br>
+0&amp;0&amp;-\cfrac{2}{Far - Near}&amp;-\cfrac{Far + Near}{Far - Near}\<br>
+0&amp;0&amp;0&amp;1\<br>
+\end{bmatrix}<br>
+\begin{bmatrix}<br>
+x\<br>
+y\<br>
+z\<br>
+1\<br>
+\end{bmatrix}</h1>
+<p>\begin{bmatrix}<br>
+\cfrac{x}{Aspect \cdot Size}\<br>
+\cfrac{y}{Size}\<br>
+-\cfrac{2z}{Far - Near} - \cfrac{Far + Near}{Far - Near}\<br>
+1\<br>
+\end{bmatrix}<br>
+$$<br>
+下图显示了经过上述投影矩阵后，正交投影的视锥体的变化：</p>
+<p><img src="/posts_image/Clip_Space/Clip_Space_3_1.png" srcset="/img/loading.gif" lazyload alt="正交投影的视锥体的变化" title="正交投影的视锥体的变化"></p>
+<p>我们刚才说，透视摄像机里求的P矩阵是观察空间的点 (x, y, z, w) 转 (x’z, y’z, z’z, w’z) 的转换矩阵，对最后的结果并没有影响，这是因为投影矩阵只是为屏幕映射阶段中的投影操作做准备而已，依据上述的透视模式下的投影矩阵，假设存在一个观察空间中的顶点（x, y, z, 1），那么它与投影矩阵参与运算后，w 值将会变为-z：</p>
+<h1>$$<br>
+\begin{bmatrix}<br>
+\cfrac{\cot\cfrac{FOV}{2}}{Aspect}&amp;0&amp;0&amp;0\<br>
+0&amp;\cot\cfrac{FOV}{2}&amp;0&amp;0\<br>
+0&amp;0&amp;-\cfrac{Far + Near}{Far - Near}&amp;-\cfrac{2 \cdot Near \cdot Far}{Far - Near}\<br>
+0&amp;0&amp;-1&amp;0\<br>
+\end{bmatrix}<br>
+\begin{bmatrix}<br>
+x\<br>
+y\<br>
+z\<br>
+1\<br>
+\end{bmatrix}</h1>
+<p>\begin{bmatrix}<br>
+x \cfrac{\cot{\cfrac{FOV}{2}}}{Aspect}\<br>
+y \cot{\cfrac{FOV}{2}}\<br>
+-z \cfrac{Far + Near}{Far - Near} - \cfrac{2 \cdot Near \cdot Far}{Far - Near}\<br>
+-z\<br>
+\end{bmatrix}<br>
+$$</p>
+<p>可以看见转换后 w 分量的结果通常不会是 1，我们前面说过，只有 w = 1 的时候，齐次坐标才能和三维坐标等价，因此要把 x, y, z, w 分量都除以 w 分量，这样的话 w 分量就会变成 1，即：</p>
+<p>$(x, y, z, w) \Rightarrow (\cfrac{x}{w}, \cfrac{y}{w}, \cfrac{z}{w}, 1)$</p>
+<p>这个齐次除法操作对于(x’z, y’z, z’z, w’z)来说，结果是一样的</p>
+<p>$(x’z, y’z, z’z, w’z) \Rightarrow (\cfrac{x’}{w’}, \cfrac{y’}{w’}, \cfrac{z’}{w’}, 1)$</p>
+<p>所以说我们上面的投影矩阵对屏幕映射的过程是没有影响的，这个投影矩阵是正确的可用的。</p>
+<p>对于正交摄像机来说，他的视锥体本身就是立方体，裁剪空间顶点的 w 分量也都是 1，所以这个步骤对它来说没什么变化。</p>
+<p>以上就是齐次除法步骤，接下来，我们已经得到顶点的 x、y、z 在 NDC 空间中的值了，z 值将会在之后参与到深度测试中并有可能写入到深度缓冲里。xy 值则需要和屏幕的横纵像素进行映射计算得出顶点在屏幕上的像素坐标：</p>
+<p>假设屏幕的横向像素数量pixelWidth = 400，纵向像素数量pixelHeight = 500</p>
+<p>那么对于x坐标来说，它要从[-1, 1]映射到[0, 400],整个过程是：<br>
+$$<br>
+-1 \leq x \leq 1<br>
+$$<br>
+$$<br>
+-400 \leq 400x \leq 400<br>
+$$<br>
+$$<br>
+0 \leq 400x + 400 \leq 800<br>
+$$<br>
+$$<br>
+0 \leq (400 / 2)x + (400 / 2) \leq 400<br>
+$$<br>
+因此可以得出公式，x映射到屏幕上：<br>
+$$<br>
+X = \cfrac{x \times pixelWidth}{2} + \cfrac{pixelWidth}{2}<br>
+$$<br>
+注意这里的x是经过齐次除法的！像素坐标Y同理</p>
+<p>上面的 pixelWidth 和 pixelHeight 可能不是整个屏幕的大小，而可能是游戏窗口的大小，比较有的游戏要窗口化运行，那么 pixelWidth 和 pixelHeight 指的就是游戏窗口的大小，当然窗口可以随意拖动，顶点也一直会跟随窗口映射到不同的屏幕像素上，不过这些都是Unity帮我们自动处理的了。</p>
+<h2 id="参考">参考</h2>
+<p>《Unity Shader入门精要》</p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/440717663">齐次坐标系与Unity投影矩阵的推导</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Unity-Shader/" class="category-chain-item">Unity Shader</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Math/" class="print-no-link">#Math</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Clip Space</div>
+      <div>http://example.com/posts/Clip-Space/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>祭零小白</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年1月17日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/%E6%A0%87%E5%87%86%E5%85%89%E7%85%A7%E6%A8%A1%E5%9E%8B/" title="标准光照模型">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">标准光照模型</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/Spatial-Transform/" title="Spatial Transform">
+                        <span class="hidden-mobile">Spatial Transform</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/css/gitalk.css')
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"7bbb87323a0faa8998e9","clientSecret":"adaeef1cc5e02a3327b5a18a608b197148c2d48e","repo":"JiLingXiaoBai.github.io","owner":"JiLingXiaoBai","admin":"JiLingXiaoBai","language":"zh-CN","labels":["Gitalk"],"perPage":10,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":false,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},
+          {
+            id: '25a4ea58d2e22a56025f8abad7a57f04'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

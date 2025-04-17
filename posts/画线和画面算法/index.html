@@ -1,0 +1,902 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/tabIcon.png">
+  <link rel="icon" href="/img/tabIcon.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="祭零小白">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="画线算法 DDA画线 直线方程表示为 $y &#x3D; kx + b$ 当 $\lVert k \rVert &lt;&#x3D; 1$时，$x$ 每递增$1$，$y$ 递增$k$。  当 $\lVert k \rVert \geq 1$时，$x$ 每递增$1&#x2F;k$，$y$ 递增$1$。  因为光栅化不能绘制半个像素点，所以求出的值需要进行四舍五入即加 0.5 后再进行取整。  DDA 算法是一个增量算法，它直观且">
+<meta property="og:type" content="article">
+<meta property="og:title" content="画线和画三角形方法">
+<meta property="og:url" content="http://example.com/posts/%E7%94%BB%E7%BA%BF%E5%92%8C%E7%94%BB%E9%9D%A2%E7%AE%97%E6%B3%95/index.html">
+<meta property="og:site_name" content="小白的笔记本">
+<meta property="og:description" content="画线算法 DDA画线 直线方程表示为 $y &#x3D; kx + b$ 当 $\lVert k \rVert &lt;&#x3D; 1$时，$x$ 每递增$1$，$y$ 递增$k$。  当 $\lVert k \rVert \geq 1$时，$x$ 每递增$1&#x2F;k$，$y$ 递增$1$。  因为光栅化不能绘制半个像素点，所以求出的值需要进行四舍五入即加 0.5 后再进行取整。  DDA 算法是一个增量算法，它直观且">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/posts_image/DrawLineAndFace/DrawLineAndFace_1.png">
+<meta property="og:image" content="http://example.com/posts_image/DrawLineAndFace/DrawLineAndFace_2.png">
+<meta property="og:image" content="http://example.com/posts_image/DrawLineAndFace/DrawLineAndFace_3.png">
+<meta property="og:image" content="http://example.com/posts_image/DrawLineAndFace/DrawLineAndFace_4.png">
+<meta property="og:image" content="http://example.com/posts_image/DrawLineAndFace/DrawLineAndFace_5.png">
+<meta property="og:image" content="http://example.com/posts_image/DrawLineAndFace/DrawLineAndFace_6.png">
+<meta property="og:image" content="http://example.com/posts_image/DrawLineAndFace/DrawLineAndFace_7.png">
+<meta property="og:image" content="http://example.com/posts_image/DrawLineAndFace/DrawLineAndFace_8.png">
+<meta property="og:image" content="http://example.com/posts_image/DrawLineAndFace/DrawLineAndFace_9.png">
+<meta property="og:image" content="http://example.com/posts_image/DrawLineAndFace/DrawLineAndFace_10.png">
+<meta property="og:image" content="http://example.com/posts_image/DrawLineAndFace/DrawLineAndFace_11.png">
+<meta property="og:image" content="http://example.com/posts_image/DrawLineAndFace/DrawLineAndFace_12.png">
+<meta property="og:image" content="http://example.com/posts_image/DrawLineAndFace/DrawLineAndFace_13.png">
+<meta property="og:image" content="http://example.com/posts_image/DrawLineAndFace/DrawLineAndFace_14.png">
+<meta property="og:image" content="http://example.com/posts_image/DrawLineAndFace/DrawLineAndFace_15.png">
+<meta property="article:published_time" content="2022-09-04T03:13:32.000Z">
+<meta property="article:modified_time" content="2025-04-17T12:55:15.935Z">
+<meta property="article:author" content="祭零小白">
+<meta property="article:tag" content="Math">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/posts_image/DrawLineAndFace/DrawLineAndFace_1.png">
+  
+  
+  
+  <title>画线和画三角形方法 - 小白的笔记本</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null},"gtag":null,"woyaola":null,"cnzz":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="小白的笔记本" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>祭零小白</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/page_background.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="画线和画三角形方法"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-09-04 11:13" pubdate>
+          2022年9月4日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          2.5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          22 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">画线和画三角形方法</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    <!-- compatible with older versions-->
+                    本文最后更新于：2025年4月17日 晚上
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="画线算法">画线算法</h2>
+<h3 id="DDA画线">DDA画线</h3>
+<p>直线方程表示为 $y = kx + b$</p>
+<p>当 $\lVert k \rVert &lt;= 1$时，$x$ 每递增$1$，$y$ 递增$k$。</p>
+<p><img src="/posts_image/DrawLineAndFace/DrawLineAndFace_1.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p>当 $\lVert k \rVert \geq 1$时，$x$ 每递增$1/k$，$y$ 递增$1$。</p>
+<p><img src="/posts_image/DrawLineAndFace/DrawLineAndFace_2.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p>因为光栅化不能绘制半个像素点，所以求出的值需要进行四舍五入即加 0.5 后再进行取整。</p>
+<p><img src="/posts_image/DrawLineAndFace/DrawLineAndFace_3.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p>DDA 算法是一个增量算法，它直观且容易实现，然而 $x$ 和 $y$ 都必须用浮点值表示，而且每一步都需要对 $y$ 进行舍入取整，不利于硬件实现。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">DrawLine_DDA</span>(<span class="hljs-params"><span class="hljs-built_in">int</span> x1,<span class="hljs-built_in">int</span> y1,<span class="hljs-built_in">int</span> x2,<span class="hljs-built_in">int</span> y2</span>)</span>&#123;<br>    <span class="hljs-built_in">int</span> dx = x2 - x1;<br>    <span class="hljs-built_in">int</span> dy = y2 - y1;<br><br>    <span class="hljs-built_in">int</span> step = <span class="hljs-number">0</span>;<br>    <span class="hljs-keyword">if</span>(Math.Abs(dy) &gt; Math.Abs(dx))&#123;<br>        step = Math.Abs(dy);<br>    &#125;<br>    <span class="hljs-keyword">else</span>&#123;<br>        step = Math.Abs(dx);<br>    &#125;<br><br>    <span class="hljs-built_in">float</span> stepX = <span class="hljs-number">1.0f</span> * dx / step;<br>    <span class="hljs-built_in">float</span> stepY = <span class="hljs-number">1.0f</span> * dy / step;<br><br>    <span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>;<br>    <span class="hljs-built_in">float</span> x = x1;<br>    <span class="hljs-built_in">float</span> y = y1;<br>    DrawPoint((<span class="hljs-built_in">int</span>)x, (<span class="hljs-built_in">int</span>)y);<br>    <span class="hljs-keyword">while</span> ((i++)&lt;step)&#123;<br>        x += stepX;<br>        y += stepY;<br>        DrawPoint((<span class="hljs-built_in">int</span>)x, (<span class="hljs-built_in">int</span>)(y+<span class="hljs-number">0.5f</span>));<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="Bresenham画线">Bresenham画线</h3>
+<p>Bresenham 算法只用 int 类型的加减和比较来绘制直线，大大降低了需要的计算资源。</p>
+<p>它的思路是：水平直线、竖直直线单独处理，剩余的部分等分为 8 个区域，然后从最简单的斜率大于 0 小于 1 的部分开始，剩下的 7 个部分稍作修改即可。</p>
+<p><img src="/posts_image/DrawLineAndFace/DrawLineAndFace_4.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p>当斜率大于 0 小于 1 时，起始点为 ($x_0$, $y_0$)，终点为 ($x_1$, $y_1$)，我们遍历横坐标，找出每个横坐标对应的纵坐标。$x_{0+i}$ 对应的纵坐标应该为 $y_0 + i \times slope$，四舍五入获得的像素坐标为：int($y_0 + i \times slope + 0.5$)</p>
+<p><img src="/posts_image/DrawLineAndFace/DrawLineAndFace_5.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p>由于斜率大于 0 小于 1，相邻横坐标对应的纵坐标最多加 1。比如 $x_{0+1}$ 处的纵坐标要么还是 $y_0$，要么是 $y_{0+1}$。绝不可能是 $y_{0+2}$</p>
+<p>然而 Bresenham 算法是想避免 float 类型的运算和比较。以 $x_{0+1}$ 为例：</p>
+<p>$1 \times slope &lt; 0.5$ 则四舍，$1 \times slope \geq 0.5$ 则五入。然而实际判断 $1 \times slope &lt; 0.5$ 等价于 $2 \times slope &lt; 1$，等价于 $2 \times \Delta y &lt; \Delta x$，等价于 $2 \times \Delta y - \Delta x &lt; 0$，这时则完全没有 float 类型计算和比较了。($\Delta y = y_1 - y_0, \Delta x = x_1 - x_0$)。</p>
+<p>若 $2 \times \Delta y - \Delta x &lt; 0$，则 $y(x_{0+1}) = y_0$，</p>
+<p><img src="/posts_image/DrawLineAndFace/DrawLineAndFace_6.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p>否则 $y(x_{0+1}) = y_{0+1}$</p>
+<p><img src="/posts_image/DrawLineAndFace/DrawLineAndFace_7.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p>接着再考虑 $x_{0+2}$ 处，</p>
+<p><img src="/posts_image/DrawLineAndFace/DrawLineAndFace_8.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p>若前一个像素自右上方衍生出，需要比较 $2 \times slope &lt; 1.5$，等价于 $4 \times \Delta y - 3 \times \Delta x &lt; 0$，注意 $4 \times \Delta y - 3 \times \Delta x = 2 \times \Delta y - \Delta x + (2 \times \Delta y - 2 \times \Delta x)$</p>
+<p>若前一个像素自右方衍生出，需要比较 $2 \times slope &lt; 0.5$，等价于 $4 \times \Delta y - \Delta x &lt; 0$，注意 $4 \times \Delta y - \Delta x = 2 \times \Delta y - \Delta x + (2 \times \Delta y)$</p>
+<p>同样的思路可以一直推下去直到线段的末尾。</p>
+<p><img src="/posts_image/DrawLineAndFace/DrawLineAndFace_9.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">DrawLine_Bresenham</span>(<span class="hljs-params"><span class="hljs-built_in">int</span> x0, <span class="hljs-built_in">int</span> x1, <span class="hljs-built_in">int</span> y0, <span class="hljs-built_in">int</span> y1</span>)</span><br>&#123;<br>    <span class="hljs-built_in">bool</span> steep = <span class="hljs-literal">false</span>;<br>    <span class="hljs-keyword">if</span>(Math.Abs(x0 - x1) &lt; Math.Abs(y0 - y1))<br>    &#123;<br>        TempSwap(<span class="hljs-keyword">ref</span> x0, <span class="hljs-keyword">ref</span> y0);<br>        TempSwap(<span class="hljs-keyword">ref</span> x1, <span class="hljs-keyword">ref</span> y1);<br>        steep = <span class="hljs-literal">true</span>;<br>    &#125;<br><br>    <span class="hljs-keyword">if</span>(x0 &gt; x1)<br>    &#123;<br>        TempSwap(<span class="hljs-keyword">ref</span> x0, <span class="hljs-keyword">ref</span> x1);<br>        TempSwap(<span class="hljs-keyword">ref</span> y0, <span class="hljs-keyword">ref</span> y1);<br>    &#125;<br><br>    <span class="hljs-built_in">int</span> dx = x1 - x0;<br>    <span class="hljs-built_in">int</span> dy = y1 - y0;<br><br>    <span class="hljs-built_in">int</span> derror = Math.Abs(dy) * <span class="hljs-number">2</span>;<br>    <span class="hljs-built_in">int</span> error = <span class="hljs-number">0</span>;<br>    <span class="hljs-built_in">int</span> y = y0;<br><br>    <span class="hljs-keyword">for</span>(<span class="hljs-built_in">int</span> x = x0; x &lt;= x1; x++)<br>    &#123;<br>        <span class="hljs-keyword">if</span> (steep)<br>        &#123;<br>            DrawPoint(y, x);<br>        &#125;<br>        <span class="hljs-keyword">else</span><br>        &#123;<br>            DrawPoint(x, y);<br>        &#125;<br><br>        error += derror;<br>        <br>        <span class="hljs-keyword">if</span> (error &gt; dx)<br>        &#123;<br>            y += (y1 &gt; y0 ? <span class="hljs-number">1</span> : <span class="hljs-number">-1</span>);<br>            error -= dx * <span class="hljs-number">2</span>;<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="中点画线">中点画线</h3>
+<p>如下图</p>
+<p><img src="/posts_image/DrawLineAndFace/DrawLineAndFace_10.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p>其中，<br>
+$$<br>
+\begin{aligned}<br>
+P &amp;= p_0 + (P_1 - P_0)t\<br>
+&amp;= P_0 - tP_0 + tP_1\<br>
+&amp;= (1 - t)P_0 + tP_1<br>
+\end{aligned}<br>
+$$</p>
+<p>那么<br>
+$$<br>
+f(x) = (1 - t) \times f(x_0) + t \times f(x_1)<br>
+$$</p>
+<p>直线隐函数方程为：<br>
+$$<br>
+F(x, y) = y - kx - b = 0<br>
+$$</p>
+<p><img src="/posts_image/DrawLineAndFace/DrawLineAndFace_11.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p>假设已经确定了要显示的点 ($x_i$, $y_i$)，那么需要确定下一个点绘制的位置，这里需要用到中点误差项。</p>
+<p>$$<br>
+d_i = F(x_i + 1, y_i + 0.5) = y_i + 0.5 - k(x_i + 1) - b<br>
+$$</p>
+<p><img src="/posts_image/DrawLineAndFace/DrawLineAndFace_12.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p>$$<br>
+y_{i+1} = \begin{cases}<br>
+y_i + 1, (d_i &lt; 0)\<br>
+y_i,\quad(d_i \geq 0)<br>
+\end{cases}<br>
+$$</p>
+<p>当 $d_i &lt; 0$ 时，<br>
+$$<br>
+\begin{aligned}<br>
+d_{i+1} &amp;= F(x_i + 2, y_i + 1.5)\<br>
+&amp;= y_i + 1.5 - k(x_i + 2) - b\<br>
+&amp;= y_i + 0.5 - k(x_i + 1) - b + 1 - k\<br>
+&amp;= d_i + 1 - k<br>
+\end{aligned}<br>
+$$</p>
+<p><img src="/posts_image/DrawLineAndFace/DrawLineAndFace_13.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p>当 $d_i \geq 0$ 时，<br>
+$$<br>
+\begin{aligned}<br>
+d_{i+1} &amp;= F(x_i + 2, y_i + 0.5)\<br>
+&amp;= y_i + 0.5 - k(x_i + 2) - b\<br>
+&amp;= y_i + 0.5 - k(x_i + 1) - b - k\<br>
+&amp;= d_i - k<br>
+\end{aligned}<br>
+$$</p>
+<p><img src="/posts_image/DrawLineAndFace/DrawLineAndFace_14.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p>当 $d_i &lt; 0$ 时，$d_{i+1} = d_i + 1 - k$，当 $d_i \geq 0$ 时，$d_{i+1} = d_i - k$</p>
+<p>中点误差项初始值为：<br>
+$$<br>
+\begin{aligned}<br>
+d_0 &amp;= F(x_0 + 1, y_0 + 0.5)\<br>
+&amp;= y_0 + 0.5 - k(x_0 + 1) - b\<br>
+&amp;= y_0 - kx - b - k + 0.5\<br>
+&amp;= 0.5 - k<br>
+\end{aligned}<br>
+$$</p>
+<p>接下来，我们需要进行整数化处理：</p>
+<p>令 $d$ 乘以 $2\Delta x$ 得到 $e$，误差项正负值不变，不会影响 $y$ 的增量<br>
+$$<br>
+e = 2d\Delta x<br>
+$$<br>
+此时误差项初始值为：<br>
+$$<br>
+e_0 = 2d_0\Delta x = 2(0.5 - k)\Delta x = \Delta x - 2\Delta y<br>
+$$</p>
+<p>此时误差项的递推公式为：<br>
+$$<br>
+\begin{aligned}<br>
+e &lt; 0, e &amp;= 2(d + 1 - k)\Delta x = 2d\Delta x + 2\Delta x - 2k\Delta x = e + 2\Delta x - 2\Delta y\<br>
+e \geq 0, e &amp;= 2(d - k)\Delta x = 2d\Delta x - 2k\Delta x = e - 2\Delta y<br>
+\end{aligned}<br>
+$$</p>
+<p>$$<br>
+e_{i+1} = \begin{cases}<br>
+e_i + 2\Delta x - 2\Delta y, (e &lt; 0)\<br>
+e_i - 2\Delta y,\quad(e \geq 0)<br>
+\end{cases}<br>
+$$</p>
+<p>那么此时进行画线操作，从 $P_0$ 开始到 $P_1$ 点沿 $x$ 轴方向，判断 $e$ 的符号来绘制点 ($x$, $y$)，若 $e &lt; 0$，将点更新为 ($x+1$, $y+1$)，$e = e + 2\Delta x - 2\Delta y$；否则将点更新为 ($x+1$, $y$)，$e = e - 2\Delta y$</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">DrawLine_MidPoint</span>(<span class="hljs-params"><span class="hljs-built_in">int</span> x0,<span class="hljs-built_in">int</span> y0,<span class="hljs-built_in">int</span> x1,<span class="hljs-built_in">int</span> y1</span>)</span><br>&#123;<br>    <span class="hljs-built_in">bool</span> bInterchange = <span class="hljs-literal">false</span>;<br><br>	<span class="hljs-built_in">int</span> dx = abs(x1 - x0);<br>    <span class="hljs-built_in">int</span> dy = abs(y1 - y0);<br>    <span class="hljs-built_in">int</span> signx = x0 &lt; x1 ? <span class="hljs-number">1</span>: <span class="hljs-number">-1</span>;<br>    <span class="hljs-built_in">int</span> signy = y0 &lt; y1 ? <span class="hljs-number">1</span>: <span class="hljs-number">-1</span>;<br><br>    <span class="hljs-keyword">if</span>(dy &gt; dx)&#123;<br>        <span class="hljs-built_in">int</span> temp = dy;<br>        dy = dx;<br>        dx = temp;<br>        bInterchange = <span class="hljs-literal">true</span>;<br>    &#125;<br>	<br>    <span class="hljs-built_in">int</span> e = dx - <span class="hljs-number">2</span> * dy;<br>    <span class="hljs-built_in">int</span> x = x0;<br>    <span class="hljs-built_in">int</span> y = y0;<br>    <span class="hljs-keyword">for</span>(<span class="hljs-built_in">int</span> i = <span class="hljs-number">1</span>; i &lt;= dx; i++)&#123;<br>        DrawPoint(x, y);<br>        <span class="hljs-keyword">if</span>(bInterchange)&#123;<br>            y += signy;<br>        &#125;<span class="hljs-keyword">else</span>&#123;<br>            x += signx;<br>        &#125;<br><br>        <span class="hljs-keyword">if</span>(e &lt; <span class="hljs-number">0</span>)&#123;<br>            <span class="hljs-keyword">if</span>(bInterchange)&#123;<br>                x += signx;<br>            &#125;<span class="hljs-keyword">else</span>&#123;<br>                y += signy;<br>            &#125;<br>            e += <span class="hljs-number">2</span> * dx - <span class="hljs-number">2</span> * dy;<br>        &#125;<span class="hljs-keyword">else</span>&#123;<br>            e -= <span class="hljs-number">2</span> * dy;<br>        &#125;<br>    &#125;<br>	 <br>&#125;<br><br></code></pre></td></tr></table></figure>
+<h2 id="画三角形方法">画三角形方法</h2>
+<h3 id="利用线性插值画三角形">利用线性插值画三角形</h3>
+<p>让我们假设三角形的三个点 t0，t1, t2，通过 y 坐标的大小排序成升序。 那么，边界 A 在是 t0 和 t2 之间的线段，边界 B 是 t0 和 t1 之间线段，最后的在 t1 和 t2 之间的线段。以高度差作为循环控制变量，从左到右对相同高度的像素进行着色。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">DrawTriangle1</span>(<span class="hljs-params">Point t0, Point t1, Point t2</span>)</span><br>&#123;<br>    <span class="hljs-comment">//三角形的三个点y值相同，面积为0</span><br>    <span class="hljs-keyword">if</span> (t0.y == t1.y &amp;&amp; t1.y == t2.y) <span class="hljs-keyword">return</span>;<br>    <span class="hljs-comment">//根据y值大小对坐标进行排序</span><br>    <span class="hljs-keyword">if</span> (t0.y &gt; t1.y)<br>    &#123;<br>        TempSwap(<span class="hljs-keyword">ref</span> t0, <span class="hljs-keyword">ref</span> t1);<br>    &#125;<br>    <span class="hljs-keyword">if</span> (t0.y &gt; t2.y)<br>    &#123;<br>        TempSwap(<span class="hljs-keyword">ref</span> t0, <span class="hljs-keyword">ref</span> t2);<br>    &#125;<br>    <span class="hljs-keyword">if</span> (t1.y &gt; t2.y)<br>    &#123;<br>        TempSwap(<span class="hljs-keyword">ref</span> t1, <span class="hljs-keyword">ref</span> t2);<br>    &#125;<br><br>    <span class="hljs-built_in">int</span> total_height = t2.y - t0.y;<br>    <span class="hljs-comment">//以高度差作为循环控制变量，此时不需要考虑斜率，因为着色完后每行都会被填充</span><br>    <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; total_height; i++)<br>    &#123;<br>        <span class="hljs-built_in">bool</span> second_half = i &gt; t1.y - t0.y || t1.y == t0.y;<br><br>        <span class="hljs-built_in">int</span> segment_height = second_half ? t2.y - t1.y : t1.y - t0.y;<br>        <span class="hljs-built_in">float</span> alpha = (<span class="hljs-built_in">float</span>)i / total_height;<br>        <span class="hljs-built_in">float</span> beta = (<span class="hljs-built_in">float</span>)(i - (second_half ? t1.y - t0.y : <span class="hljs-number">0</span>)) / segment_height;<br>        <span class="hljs-comment">//计算A，B两点的坐标</span><br>        Point A = t0 + (t2 - t0) * alpha;<br>        Point B = second_half ? t1 + (t2 - t1) * beta : t0 + (t1 - t0) * <span class="hljs-function">beta</span><br><span class="hljs-function"></span><br><span class="hljs-function">        <span class="hljs-title">if</span> (<span class="hljs-params">A.x &gt; B.x</span>)</span><br>        &#123;<br>            TempSwap(<span class="hljs-keyword">ref</span> A, <span class="hljs-keyword">ref</span> B);<br>        &#125;<br><br>        <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> j = A.x; j &lt;= B.x; j++)<br>        &#123;<br>            <span class="hljs-built_in">float</span> phi = B.x == A.x ? <span class="hljs-number">1f</span> : (<span class="hljs-built_in">float</span>)(j - A.x) / (<span class="hljs-built_in">float</span>)(B.x - A.x);<br>            Point P = A + (B - A) * phi;<br>            DrawPoint(P.x, P.y);<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="利用叉乘画三角形">利用叉乘画三角形</h3>
+<p>对于三角形 $\triangle ABC$ 来说，把三条边看作 $\overset{\longrightarrow}{AB}$、$\overset{\longrightarrow}{BC}$、$\overset{\longrightarrow}{CA}$ 三条首尾相连的向量，平面内有一个点 $P$，我们通过向量叉乘来判断相对位置。</p>
+<p>对二维向量叉乘做一个定义：</p>
+<p>假设有两个二维向量 $\vec{a}$ 和 $\vec{b}$，我们把它们视为三维向量，$z$ 轴补 0，那么这个时候的 $\vec{a}$ 和 $\vec{b}$ 叉乘的结果为 $\vec{c}$，$\vec{c}$ 的 $x$ 值为 0， $y$ 值为 0， $z$ 值为 $a.x \times b.y - b.x \times a.y$，这个时候可以吧二维向量的叉乘定义为得到一个值，即为 $\vec{c}$ 的 $z$ 值。</p>
+<ul>
+<li>如果 $z$ 值大于 0，表示 $\vec{b}$ 在 $\vec{a}$ 的左侧</li>
+<li>如果 $z$ 值小于 0，表示 $\vec{b}$ 在 $\vec{a}$ 的右侧</li>
+<li>如果 $z$ 值等于 0，表示 $\vec{b}$ 与 $\vec{a}$ 共线</li>
+</ul>
+<p><img src="/posts_image/DrawLineAndFace/DrawLineAndFace_15.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li>$\overset{\longrightarrow}{AB} \times \overset{\longrightarrow}{AP}$，值为正，则 $P$ 在 $AB$ 左侧</li>
+<li>$\overset{\longrightarrow}{BC} \times \overset{\longrightarrow}{BP}$，值为正，则 $P$ 在 $BC$ 左侧</li>
+<li>$\overset{\longrightarrow}{CA} \times \overset{\longrightarrow}{CP}$，值为正，则 $P$ 在 $AC$ 左侧</li>
+</ul>
+<p>综合以上三个条件，我们可以判断 $P$ 在 $\triangle ABC$ 内。如果三个计算中有值为负的情况，说明 $P$ 在 $\triangle ABC$ 外。如果有值为 0 的情况，说明 $P$ 在 $\triangle ABC$ 的边或顶点上。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><br><span class="hljs-function">Vector3 <span class="hljs-title">crossProduct</span>(<span class="hljs-params">Point[] points, Point P</span>)</span><br>&#123;<br>    Vector2 AB = <span class="hljs-keyword">new</span> Vector2(points[<span class="hljs-number">1</span>].x - points[<span class="hljs-number">0</span>].x, points[<span class="hljs-number">1</span>].y - points[<span class="hljs-number">0</span>].y);<br>    Vector2 BC = <span class="hljs-keyword">new</span> Vector2(points[<span class="hljs-number">2</span>].x - points[<span class="hljs-number">1</span>].x, points[<span class="hljs-number">2</span>].y - points[<span class="hljs-number">1</span>].y);<br>    Vector2 CA = <span class="hljs-keyword">new</span> Vector2(points[<span class="hljs-number">0</span>].x - points[<span class="hljs-number">2</span>].x, points[<span class="hljs-number">0</span>].y - points[<span class="hljs-number">2</span>].y);<br><br>    Vector2 AP = <span class="hljs-keyword">new</span> Vector2(P.x - points[<span class="hljs-number">0</span>].x, P.y - points[<span class="hljs-number">0</span>].y);<br>    Vector2 BP = <span class="hljs-keyword">new</span> Vector2(P.x - points[<span class="hljs-number">1</span>].x, P.y - points[<span class="hljs-number">0</span>].y);<br>    Vector2 CP = <span class="hljs-keyword">new</span> Vector2(P.x - points[<span class="hljs-number">2</span>].x, P.y - points[<span class="hljs-number">0</span>].y);<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Vector3(AB.x * AP.y - AP.x * AB.y, BC.x * BP.y - BP.x * BC.y, CA.x * CP.y - CP.x * CA.y);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">DrawTriangle2</span>(<span class="hljs-params">Point[] points</span>)</span><br>&#123;<br>    Vector2 bboxmin = <span class="hljs-keyword">new</span> Vector2(<span class="hljs-built_in">float</span>.MaxValue,<span class="hljs-built_in">float</span>.MaxValue);<br>    Vector2 bboxmax = <span class="hljs-keyword">new</span> Vector2(<span class="hljs-built_in">float</span>.MinValue,<span class="hljs-built_in">float</span>.MinValue);<br>    Vector2 clamp = <span class="hljs-keyword">new</span> Vector2(canvas.Width - <span class="hljs-number">1</span>, canvas.Height - <span class="hljs-number">1</span>);<br><br>    <span class="hljs-keyword">for</span>(<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">3</span>; i++)<br>    &#123;<br>        bboxmin.x = Math.Max(<span class="hljs-number">0f</span>, Math.Min(bboxmin.x, points[i].x));<br>        bboxmin.y = Math.Max(<span class="hljs-number">0f</span>, Math.Min(bboxmin.y, points[i].y));<br>        bboxmax.x = Math.Min(clamp.x, Math.Max(bboxmax.x, points[i].x));<br>        bboxmax.y = Math.Min(clamp.y, Math.Max(bboxmax.y, points[i].y));<br>    &#125;<br><br>    Point p;<br>    <span class="hljs-keyword">for</span>(p.x = (<span class="hljs-built_in">int</span>)Math.Ceiling(bboxmin.x); p.x &lt;= (<span class="hljs-built_in">int</span>)Math.Floor(bboxmax.x); p.x++)&#123;<br>        <span class="hljs-keyword">for</span>(p.y = (<span class="hljs-built_in">int</span>)Math.Ceiling(bboxmin.y); p.y &lt;= (<span class="hljs-built_in">int</span>)Math.Floor(bboxmax.y); p.y++)&#123;<br>            Vector3 cross = crossProduct(points, p);<br>            <span class="hljs-keyword">if</span>(cross.x &lt; <span class="hljs-number">0</span> || cross.y &lt; <span class="hljs-number">0</span> || cross.z &lt; <span class="hljs-number">0</span>)<br>                <span class="hljs-keyword">continue</span>;<br>            DrawPoint(p.x, p.y);<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="利用三角形重心画三角形">利用三角形重心画三角形</h3>
+<p>有关于三角形重心的介绍可以参考上一篇博文，下面给出代码</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-function"><span class="hljs-keyword">public</span> Vector3 <span class="hljs-title">CrossProduct</span>(<span class="hljs-params">Vector3 v1, Vector3 v2</span>)</span><br>&#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Vector3(<br>        v1.y * v2.z - v1.z * v2.y,<br>        v1.z * v2.x - v1.x * v2.z,<br>        v1.x * v2.y - v1.y * v2.x);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">public</span> Vector3 <span class="hljs-title">Barycentric</span>(<span class="hljs-params">Point A, Point B, Point C, Point P</span>)</span><br>&#123;<br>    Vector3 x = <span class="hljs-keyword">new</span> Vector3(B.x - A.x, C.x - A.x, A.x - P.x);<br>    Vector3 y = <span class="hljs-keyword">new</span> Vector3(B.y - A.y, C.y - A.y, A.y - P.y);<br>    Vector3 u = CrossProduct(x, y);<br><br>    <span class="hljs-keyword">if</span> (Math.Abs(u.z) &gt; <span class="hljs-built_in">float</span>.Epsilon)<br>    &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Vector3(<span class="hljs-number">1f</span> - (u.x + u.y) / u.z, u.y / u.z, u.x / u.z);<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Vector3(<span class="hljs-number">-1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>);<br><br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">DrawTriangle3</span>(<span class="hljs-params">Point[] points</span>)</span><br>&#123;<br>    Vector2 bboxmin = <span class="hljs-keyword">new</span> Vector2(<span class="hljs-built_in">float</span>.MaxValue,<span class="hljs-built_in">float</span>.MaxValue);<br>    Vector2 bboxmax = <span class="hljs-keyword">new</span> Vector2(<span class="hljs-built_in">float</span>.MinValue,<span class="hljs-built_in">float</span>.MinValue);<br>    Vector2 clamp = <span class="hljs-keyword">new</span> Vector2(canvas.Width - <span class="hljs-number">1</span>, canvas.Height - <span class="hljs-number">1</span>);<br><br>    <span class="hljs-keyword">for</span>(<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">3</span>; i++)<br>    &#123;<br>        bboxmin.x = Math.Max(<span class="hljs-number">0f</span>, Math.Min(bboxmin.x, points[i].x));<br>        bboxmin.y = Math.Max(<span class="hljs-number">0f</span>, Math.Min(bboxmin.y, points[i].y));<br>        bboxmax.x = Math.Min(clamp.x, Math.Max(bboxmax.x, points[i].x));<br>        bboxmax.y = Math.Min(clamp.y, Math.Max(bboxmax.y, points[i].y));<br>    &#125;<br><br>    Point p;<br>    <span class="hljs-keyword">for</span>(p.x = (<span class="hljs-built_in">int</span>)Math.Ceiling(bboxmin.x); p.x &lt;= (<span class="hljs-built_in">int</span>)Math.Floor(bboxmax.x); p.x++)<br>    &#123;<br>        <span class="hljs-keyword">for</span>(p.y = (<span class="hljs-built_in">int</span>)Math.Ceiling(bboxmin.y); p.y &lt;= (<span class="hljs-built_in">int</span>)Math.Floor(bboxmax.y); p.y++)<br>        &#123;<br>            Vector3 bc_screen = Barycentric(points[<span class="hljs-number">0</span>], points[<span class="hljs-number">1</span>], points[<span class="hljs-number">2</span>], p);<br>            <span class="hljs-keyword">if</span> (bc_screen.x &lt; <span class="hljs-number">0f</span> || bc_screen.y &lt; <span class="hljs-number">0f</span> || bc_screen.z &lt; <span class="hljs-number">0f</span>) <span class="hljs-keyword">continue</span>;<br>            DrawPoint(p.x, p.y);<br>        &#125;<br>    &#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Computer-Graphics/" class="category-chain-item">Computer Graphics</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Math/" class="print-no-link">#Math</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>画线和画三角形方法</div>
+      <div>http://example.com/posts/画线和画面算法/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>祭零小白</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年9月4日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/LearnVim/" title="LearnVim">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">LearnVim</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/%E4%B8%89%E8%A7%92%E5%BD%A2%E9%87%8D%E5%BF%83%E5%9D%90%E6%A0%87/" title="三角形重心坐标">
+                        <span class="hidden-mobile">三角形重心坐标</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/css/gitalk.css')
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"7bbb87323a0faa8998e9","clientSecret":"adaeef1cc5e02a3327b5a18a608b197148c2d48e","repo":"JiLingXiaoBai.github.io","owner":"JiLingXiaoBai","admin":"JiLingXiaoBai","language":"zh-CN","labels":["Gitalk"],"perPage":10,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":false,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},
+          {
+            id: '5f64a27308e0f382dc102d128daaa9a8'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
