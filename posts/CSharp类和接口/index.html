@@ -7,8 +7,11 @@
 
 <head>
   <meta charset="UTF-8">
+
   <link rel="apple-touch-icon" sizes="76x76" href="/img/tabIcon.png">
   <link rel="icon" href="/img/tabIcon.png">
+  
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
@@ -16,12 +19,12 @@
   <meta name="author" content="祭零小白">
   <meta name="keywords" content="">
   
-    <meta name="description" content="类(Class) 什么是类  一种数据结构 一种数据类型 代表现实世界中的种类  构造函数和析构函数 构造函数 public ClassName(){} 在被new实例化时自动调用此构造器 private ClassName(){} 用于防止类被new ClassName()实例化 static ClassName(){} 只用于构造静态成员，不能用于构造实例成员 析构函数">
+    <meta name="description" content="类(Class) 什么是类   一种数据结构   一种数据类型   代表现实世界中的种类   构造函数和析构函数 构造函数 public ClassName(){} 在被new实例化时自动调用此构造器 private ClassName(){} 用于防止类被new ClassName()实例化 static ClassName(){} 只用于构造静态成员，不能用于构造实例成员 析构函数 ~Clas">
 <meta property="og:type" content="article">
 <meta property="og:title" content="C# 类和接口">
 <meta property="og:url" content="http://example.com/posts/CSharp%E7%B1%BB%E5%92%8C%E6%8E%A5%E5%8F%A3/index.html">
 <meta property="og:site_name" content="小白的笔记本">
-<meta property="og:description" content="类(Class) 什么是类  一种数据结构 一种数据类型 代表现实世界中的种类  构造函数和析构函数 构造函数 public ClassName(){} 在被new实例化时自动调用此构造器 private ClassName(){} 用于防止类被new ClassName()实例化 static ClassName(){} 只用于构造静态成员，不能用于构造实例成员 析构函数">
+<meta property="og:description" content="类(Class) 什么是类   一种数据结构   一种数据类型   代表现实世界中的种类   构造函数和析构函数 构造函数 public ClassName(){} 在被new实例化时自动调用此构造器 private ClassName(){} 用于防止类被new ClassName()实例化 static ClassName(){} 只用于构造静态成员，不能用于构造实例成员 析构函数 ~Clas">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-04-24T07:30:32.000Z">
 <meta property="article:modified_time" content="2025-04-17T08:30:56.684Z">
@@ -48,7 +51,7 @@
 <!-- 主题依赖的图标库，不要自行修改 -->
 <!-- Do not modify the link that theme dependent icons -->
 
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
 
 
 
@@ -69,7 +72,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null},"gtag":null,"woyaola":null,"cnzz":null},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -82,7 +85,7 @@
 
 
   
-<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="小白的笔记本" type="application/atom+xml">
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="小白的笔记本" type="application/atom+xml">
 </head>
 
 
@@ -114,7 +117,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/">
+              <a class="nav-link" href="/" target="_self">
                 <i class="iconfont icon-home-fill"></i>
                 <span>首页</span>
               </a>
@@ -126,7 +129,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/archives/">
+              <a class="nav-link" href="/archives/" target="_self">
                 <i class="iconfont icon-archive-fill"></i>
                 <span>归档</span>
               </a>
@@ -138,7 +141,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/categories/">
+              <a class="nav-link" href="/categories/" target="_self">
                 <i class="iconfont icon-category-fill"></i>
                 <span>分类</span>
               </a>
@@ -150,7 +153,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/tags/">
+              <a class="nav-link" href="/tags/" target="_self">
                 <i class="iconfont icon-tags-fill"></i>
                 <span>标签</span>
               </a>
@@ -162,7 +165,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/about/">
+              <a class="nav-link" href="/about/" target="_self">
                 <i class="iconfont icon-user-fill"></i>
                 <span>关于</span>
               </a>
@@ -174,7 +177,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/links/">
+              <a class="nav-link" href="/links/" target="_self">
                 <i class="iconfont icon-link-fill"></i>
                 <span>友链</span>
               </a>
@@ -234,7 +237,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          3.2k 字
+          1.5k 字
         
       </span>
     
@@ -246,7 +249,7 @@
         
         
           <!-- compatible with older versions-->
-          27 分钟
+          13 分钟
         
       </span>
     
@@ -283,10 +286,9 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <!-- SEO header -->
-            <h1 style="display: none">C# 类和接口</h1>
+            <h1 id="seo-header">C# 类和接口</h1>
             
-              <p class="note note-info">
+              <p id="updated-time" class="note note-info" style="">
                 
                   
                     <!-- compatible with older versions-->
@@ -298,50 +300,93 @@
             
               <div class="markdown-body">
                 
-                <h1 id="类class">类(Class)</h1>
+                <h1>类(Class)</h1>
 <h2 id="什么是类">什么是类</h2>
 <ul>
-<li><p>一种数据结构</p></li>
-<li><p>一种数据类型</p></li>
-<li><p>代表现实世界中的种类</p></li>
+<li>
+<p>一种数据结构</p>
+</li>
+<li>
+<p>一种数据类型</p>
+</li>
+<li>
+<p>代表现实世界中的种类</p>
+</li>
 </ul>
 <h2 id="构造函数和析构函数">构造函数和析构函数</h2>
 <h3 id="构造函数">构造函数</h3>
-<p>public ClassName(){} 在被new实例化时自动调用此构造器</p>
-<p>private ClassName(){} 用于防止类被new ClassName()实例化</p>
-<p>static ClassName(){} 只用于构造静态成员，不能用于构造实例成员</p>
+<p>public ClassName(){}<br>
+在被new实例化时自动调用此构造器</p>
+<p>private ClassName(){}<br>
+用于防止类被new ClassName()实例化</p>
+<p>static ClassName(){}<br>
+只用于构造静态成员，不能用于构造实例成员</p>
 <h3 id="析构函数">析构函数</h3>
-<p>~ClassName(){} 在被GC回收托管资源时调用此析构器</p>
+<p>~ClassName(){}<br>
+在被GC回收托管资源时调用此析构器</p>
 <h2 id="抽象类">抽象类</h2>
 <ul>
-<li><p>不能被实例化，但是有构造函数</p></li>
-<li><p>抽象成员必须包含在抽象类中</p></li>
-<li><p>抽象类除了抽象成员外，还可以包含别的成员(不用关键字
-abstract)</p></li>
-<li><p>子类继承抽象父类后，必须把父类中所有抽象成员都重写(非抽象成员不必重写)。除非子类也是个抽象类</p></li>
-<li><p>抽象成员的访问修饰符不能是private</p></li>
-<li><p>abstract关键字不能用于字段成员，但是可以用于属性</p></li>
-<li><p>abstract关键字用于方法时，方法不能定义主体</p></li>
-<li><p>抽象类也可实现接口，但要将接口的成员用abstract修饰</p></li>
+<li>
+<p>不能被实例化，但是有构造函数</p>
+</li>
+<li>
+<p>抽象成员必须包含在抽象类中</p>
+</li>
+<li>
+<p>抽象类除了抽象成员外，还可以包含别的成员(不用关键字 abstract)</p>
+</li>
+<li>
+<p>子类继承抽象父类后，必须把父类中所有抽象成员都重写(非抽象成员不必重写)。除非子类也是个抽象类</p>
+</li>
+<li>
+<p>抽象成员的访问修饰符不能是private</p>
+</li>
+<li>
+<p>abstract关键字不能用于字段成员，但是可以用于属性</p>
+</li>
+<li>
+<p>abstract关键字用于方法时，方法不能定义主体</p>
+</li>
+<li>
+<p>抽象类也可实现接口，但要将接口的成员用abstract修饰</p>
+</li>
 </ul>
 <h2 id="修饰符">修饰符</h2>
 <h3 id="访问限制">访问限制</h3>
 <ul>
-<li><p>private：访问级别为类的成员，不能直接修饰类，仅当该类是其他类的成员的时候可以修饰。</p></li>
-<li><p>public：访问没有限制，所有的本程序集以及其他的程序集都能够访问。</p></li>
-<li><p>internal：本程序集内的成员可以访问，是默认的访问级别。</p></li>
+<li>
+<p>private：访问级别为类的成员，不能直接修饰类，仅当该类是其他类的成员的时候可以修饰。</p>
+</li>
+<li>
+<p>public：访问没有限制，所有的本程序集以及其他的程序集都能够访问。</p>
+</li>
+<li>
+<p>internal：本程序集内的成员可以访问，是默认的访问级别。</p>
+</li>
 </ul>
 <h3 id="继承相关">继承相关</h3>
 <ul>
-<li><p>sealed：封闭类，修饰类时表示该类不能够被继承。</p></li>
-<li><p>protected：类的访问级别被限制在类成员之间，例如当父类成员被protect修饰，子类成员可以访问，其他类不能访问。可以跨程序集。</p></li>
-<li><p>abstract：修饰类的时候表示该类为抽象类，不能创建该类的实例。修饰方法的时候表示该方法需要由子类来实现，如果子类没有实现该方法那么子类同样是抽象类；且含有抽象方法的类一定是抽象类。</p></li>
-<li><p>new：只能用于嵌套的类，表示对继承父类同名类型的隐藏。</p></li>
+<li>
+<p>sealed：封闭类，修饰类时表示该类不能够被继承。</p>
+</li>
+<li>
+<p>protected：类的访问级别被限制在类成员之间，例如当父类成员被protect修饰，子类成员可以访问，其他类不能访问。可以跨程序集。</p>
+</li>
+<li>
+<p>abstract：修饰类的时候表示该类为抽象类，不能创建该类的实例。修饰方法的时候表示该方法需要由子类来实现，如果子类没有实现该方法那么子类同样是抽象类；且含有抽象方法的类一定是抽象类。</p>
+</li>
+<li>
+<p>new：只能用于嵌套的类，表示对继承父类同名类型的隐藏。</p>
+</li>
 </ul>
 <h3 id="其他">其他</h3>
 <ul>
-<li><p>static：修饰类时表示该类为静态类，不能实例化该类的对象，这个类也不能含有对象成员，即该类的所有成员为静态。</p></li>
-<li><p>partial：部分类，可以将一个类分成几部分写在不同的文件中，最终编译时将合并成一个文件，且各个部分不能分散在不同程序集中。</p></li>
+<li>
+<p>static：修饰类时表示该类为静态类，不能实例化该类的对象，这个类也不能含有对象成员，即该类的所有成员为静态。</p>
+</li>
+<li>
+<p>partial：部分类，可以将一个类分成几部分写在不同的文件中，最终编译时将合并成一个文件，且各个部分不能分散在不同程序集中。</p>
+</li>
 </ul>
 <h2 id="其他补充">其他补充</h2>
 <ul>
@@ -349,37 +394,64 @@ abstract)</p></li>
 </ul>
 <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">class</span> <span class="hljs-title">Vehicle</span> &#123;<br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">Vehicle</span>(<span class="hljs-params"><span class="hljs-built_in">string</span> owner</span>)</span>&#123;<br>        <span class="hljs-keyword">this</span>.Owner = owner;<br>    &#125;<br>    <span class="hljs-keyword">public</span> <span class="hljs-built_in">string</span> Owner &#123;<span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>;&#125;<br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title">Car</span> : <span class="hljs-title">Vehicle</span> &#123;<br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">Car</span>(<span class="hljs-params"><span class="hljs-built_in">string</span> owner</span>) : <span class="hljs-title">base</span>(<span class="hljs-params">owner</span>)</span>&#123;&#125;<br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">ShowOwner</span>()</span>&#123;<br>        Console.WriteLine(Owner);<br>    &#125;<br>&#125;<br>\\<span class="hljs-keyword">new</span> 一个新 Car 对象时先执行 Vehicle 的构造函数，再执行 Car 的构造函数<br></code></pre></td></tr></table></figure>
 <ul>
-<li><p>子类的访问级别不能超越父类的访问级别</p></li>
-<li><p>父类中的虚函数(virtual)可以有方法体，被子类继承后可以重写(override)。而抽象(abstract)方法无函数体，含有抽象方法的类一定是抽象类，继承抽象类的子类必须把抽象父类中的所有抽象方法都重写，除非子类也是个抽象类。</p></li>
-<li><p>不通过构造器创建实例的方法： <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs csharp">Type t = <span class="hljs-keyword">typeof</span>(ClassName);<br><span class="hljs-built_in">object</span> o = Activator.CreateInstance(t);<br>ClassName className = o <span class="hljs-keyword">as</span> ClassName;<br></code></pre></td></tr></table></figure></p></li>
+<li>
+<p>子类的访问级别不能超越父类的访问级别</p>
+</li>
+<li>
+<p>父类中的虚函数(virtual)可以有方法体，被子类继承后可以重写(override)。而抽象(abstract)方法无函数体，含有抽象方法的类一定是抽象类，继承抽象类的子类必须把抽象父类中的所有抽象方法都重写，除非子类也是个抽象类。</p>
+</li>
+<li>
+<p>不通过构造器创建实例的方法：</p>
+</li>
 </ul>
-<h1 id="接口interface">接口(Interface)</h1>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs csharp">Type t = <span class="hljs-keyword">typeof</span>(ClassName);<br><span class="hljs-built_in">object</span> o = Activator.CreateInstance(t);<br>ClassName className = o <span class="hljs-keyword">as</span> ClassName;<br></code></pre></td></tr></table></figure>
+<h1>接口(Interface)</h1>
 <ul>
-<li><p>接口中只能包含方法(方法、属性、索引器、事件)，且接口中的方法不能有任何实现。</p></li>
-<li><p>接口中的成员不能有任何访问修饰符，默认为public的</p></li>
-<li><p>接口不能被实例化</p></li>
-<li><p>实现接口的类，必须实现接口的所有成员，而且没有 override
-关键字。</p></li>
-<li><p>一个接口可以继承多个接口</p></li>
-<li><p>一个类可以实现多个接口，但是只能继承一个类</p></li>
-<li><p>如果一个类同时继承了父类并实现接口的时候，要把父类写在最前面</p></li>
-<li><p>当父类实现了接口，子类继承父类后，则可以使用接口引用子类</p></li>
-<li><p>接口方法的显示实现：如果多个接口里有相同的方法名，那么第一个方法名默认的引用的是排在最前面的接口，如果要使用后面接口的方法，就要显示实现：接口名.方法名。访问修饰符是private</p></li>
+<li>
+<p>接口中只能包含方法(方法、属性、索引器、事件)，且接口中的方法不能有任何实现。</p>
+</li>
+<li>
+<p>接口中的成员不能有任何访问修饰符，默认为public的</p>
+</li>
+<li>
+<p>接口不能被实例化</p>
+</li>
+<li>
+<p>实现接口的类，必须实现接口的所有成员，而且没有 override 关键字。</p>
+</li>
+<li>
+<p>一个接口可以继承多个接口</p>
+</li>
+<li>
+<p>一个类可以实现多个接口，但是只能继承一个类</p>
+</li>
+<li>
+<p>如果一个类同时继承了父类并实现接口的时候，要把父类写在最前面</p>
+</li>
+<li>
+<p>当父类实现了接口，子类继承父类后，则可以使用接口引用子类</p>
+</li>
+<li>
+<p>接口方法的显示实现：如果多个接口里有相同的方法名，那么第一个方法名默认的引用的是排在最前面的接口，如果要使用后面接口的方法，就要显示实现：接口名.方法名。访问修饰符是private</p>
+</li>
 </ul>
-<h1 id="其他-1">其他</h1>
+<h1>其他</h1>
 <ul>
-<li><p>结构体可以实现接口，但是不能继承其他类或者其他结构体；结构体不能有显式的无参构造器，但是可以有显式的有参构造器。</p></li>
-<li><p>枚举成员默认类型是 int
-类型，通过继承可以声明枚举成员为其他类型，枚举类型一定是继承自
-byte、sbyte、short、ushort、int、uint、long 和 ulong
-中的一种，不能是其它类型。比如：</p></li>
+<li>
+<p>结构体可以实现接口，但是不能继承其他类或者其他结构体；结构体不能有显式的无参构造器，但是可以有显式的有参构造器。</p>
+</li>
+<li>
+<p>枚举成员默认类型是 int 类型，通过继承可以声明枚举成员为其他类型，枚举类型一定是继承自 byte、sbyte、short、ushort、int、uint、long 和 ulong 中的一种，不能是其它类型。比如：</p>
+</li>
 </ul>
 <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">public</span> <span class="hljs-built_in">enum</span> Days : <span class="hljs-built_in">byte</span><br>&#123;<br>    Monday = <span class="hljs-number">1</span>,<br>    Tuesday = <span class="hljs-number">2</span>,<br>    Wednesday = <span class="hljs-number">3</span>,<br>    Thursday = <span class="hljs-number">4</span>,<br>    Friday = <span class="hljs-number">5</span>,<br>    Saturday = <span class="hljs-number">6</span>,<br>    Sunday = <span class="hljs-number">7</span><br>&#125;<br></code></pre></td></tr></table></figure>
 <ul>
-<li><p>枚举成员如果没有手动指定成员的值的话，就是一个从 0 开始，步长为 1
-的等差数列，即 1，2，3，4，5...</p></li>
-<li><p>枚举成员如果被手动赋值的话，那么被赋值的成员的值即为所指定的值，但是其递增步长不会变，总是为
-1：</p></li>
+<li>
+<p>枚举成员如果没有手动指定成员的值的话，就是一个从 0 开始，步长为 1 的等差数列，即 1，2，3，4，5…</p>
+</li>
+<li>
+<p>枚举成员如果被手动赋值的话，那么被赋值的成员的值即为所指定的值，但是其递增步长不会变，总是为 1：</p>
+</li>
 </ul>
 <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">public</span> <span class="hljs-built_in">enum</span> DriveType : <span class="hljs-built_in">sbyte</span> <br>&#123;     <br>    CDRom,                                  <span class="hljs-comment">//值为0</span><br>    Fixed = <span class="hljs-number">-2</span>,                             <span class="hljs-comment">//值为-2</span><br>    Network,                                <span class="hljs-comment">//值为-1</span><br>    NoRootDirectory = <span class="hljs-number">-1</span>,                   <span class="hljs-comment">//值为-1</span><br>    Ram,                                    <span class="hljs-comment">//值为0</span><br>    Removable = Network * NoRootDirectory,  <span class="hljs-comment">//值为1</span><br>    Unknown                                 <span class="hljs-comment">//值为2</span><br>&#125;  <br></code></pre></td></tr></table></figure>
 <ul>
@@ -420,7 +492,7 @@ byte、sbyte、short、ushort、int、uint、long 和 ulong
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/CSharp/">#CSharp</a>
+        <a href="/tags/CSharp/" class="print-no-link">#CSharp</a>
       
     </div>
   
@@ -456,9 +528,9 @@ byte、sbyte、short、ushort、int、uint、long 和 ulong
             
               
               
-                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
                   <span class="hint--top hint--rounded" aria-label="BY - 署名">
-                    <i class="iconfont icon-by"></i>
+                    <i class="iconfont icon-cc-by"></i>
                   </span>
                 </a>
               
@@ -620,7 +692,6 @@ byte、sbyte、short、ushort、int、uint、long 和 ulong
     <div class="footer-content">
        <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
     </div>
-  
   
   
   

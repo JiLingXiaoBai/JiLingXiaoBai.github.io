@@ -7,8 +7,11 @@
 
 <head>
   <meta charset="UTF-8">
+
   <link rel="apple-touch-icon" sizes="76x76" href="/img/tabIcon.png">
   <link rel="icon" href="/img/tabIcon.png">
+  
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
@@ -37,7 +40,7 @@
 <!-- 主题依赖的图标库，不要自行修改 -->
 <!-- Do not modify the link that theme dependent icons -->
 
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
 
 
 
@@ -58,7 +61,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null},"gtag":null,"woyaola":null,"cnzz":null},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -71,7 +74,7 @@
 
 
   
-<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="小白的笔记本" type="application/atom+xml">
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="小白的笔记本" type="application/atom+xml">
 </head>
 
 
@@ -103,7 +106,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/">
+              <a class="nav-link" href="/" target="_self">
                 <i class="iconfont icon-home-fill"></i>
                 <span>首页</span>
               </a>
@@ -115,7 +118,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/archives/">
+              <a class="nav-link" href="/archives/" target="_self">
                 <i class="iconfont icon-archive-fill"></i>
                 <span>归档</span>
               </a>
@@ -127,7 +130,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/categories/">
+              <a class="nav-link" href="/categories/" target="_self">
                 <i class="iconfont icon-category-fill"></i>
                 <span>分类</span>
               </a>
@@ -139,7 +142,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/tags/">
+              <a class="nav-link" href="/tags/" target="_self">
                 <i class="iconfont icon-tags-fill"></i>
                 <span>标签</span>
               </a>
@@ -151,7 +154,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/about/">
+              <a class="nav-link" href="/about/" target="_self">
                 <i class="iconfont icon-user-fill"></i>
                 <span>关于</span>
               </a>
@@ -163,7 +166,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/links/">
+              <a class="nav-link" href="/links/" target="_self">
                 <i class="iconfont icon-link-fill"></i>
                 <span>友链</span>
               </a>
@@ -235,17 +238,78 @@
     
     
     <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
+      <h2 class="index-header">
+        
+        <a href="/posts/Delaunay-Triangulation/" target="_self">
+          Delaunay-Triangulation
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/posts/Delaunay-Triangulation/" target="_self">
+        <div>
+          Delaunay 三角形化 Delaunay三角形化，也叫Delaunay三角剖分，是一种三角剖分算法，它的作用是把一个平面上的点集，按照一定的规则，分成若干个三角形。这些三角形有以下特点：  这些三角形互不重叠 这些三角形可以覆盖整个平面 每个点均不位于不包含该点的三角形的外接圆内（即：在某个三角形的外接圆内，只包含在外接圆上的三个点，不包含其他点）  Delaunay 三角形化的优点：  最小
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-04-18 10:41" pubdate>
+              2025-04-18
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Math/" class="category-chain-item">Math</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Math/">#Math</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
         
         <a href="/posts/CSharpList/" target="_self">
           C# List&lt;T&gt;
         </a>
-      </h1>
+      </h2>
 
       
       <a class="index-excerpt index-excerpt__noimg" href="/posts/CSharpList/" target="_self">
         <div>
-          List&lt;T&gt; 泛型 List 在底层实现中是由数组来承载数据，所以又被称为“动态数组”。数组的大小即为容量(capacity)，可以手动或自动地调整。当容量不足时，会自动创建一个更长的数组，将原数组中的内容复制到新的数组中实现扩容。默认新创建的不含任何元素的 List 容量为 0，加入一个元素后容量为 4，容量不足时进行二倍扩容，即容量变为 8、16、32... 当 List
+          List&lt;T&gt; 泛型 List 在底层实现中是由数组来承载数据，所以又被称为“动态数组”。数组的大小即为容量(capacity)，可以手动或自动地调整。当容量不足时，会自动创建一个更长的数组，将原数组中的内容复制到新的数组中实现扩容。默认新创建的不含任何元素的 List 容量为 0，加入一个元素后容量为 4，容量不足时进行二倍扩容，即容量变为 8、16、32… 当 List 调用 Cl
         </div>
       </a>
 
@@ -296,17 +360,17 @@
     
     
     <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
+      <h2 class="index-header">
         
         <a href="/posts/CSharp%E6%A8%A1%E5%BC%8F%E5%8C%B9%E9%85%8D-%E6%9E%90%E6%9E%84%E5%85%83%E7%BB%84-%E5%BC%83%E5%85%83/" target="_self">
           C# 模式匹配、析构元组和弃元
         </a>
-      </h1>
+      </h2>
 
       
       <a class="index-excerpt index-excerpt__noimg" href="/posts/CSharp%E6%A8%A1%E5%BC%8F%E5%8C%B9%E9%85%8D-%E6%9E%90%E6%9E%84%E5%85%83%E7%BB%84-%E5%BC%83%E5%85%83/" target="_self">
         <div>
-          模式匹配 “模式匹配”是一种测试表达式是否具有特定特征的方法。 C# 模式匹配提供更简洁的语法，用于测试表达式并在表达式匹配时采取措施。 “is 表达式”目前支持通过模式匹配测试表达式并有条件地声明该表达式结果。 “switch 表达式”允许你根据表达式的首次匹配模式执行操作。 这两个表达式支持丰富的模式词汇。 Null 检查 模式匹配最常见的方案之一是确保值不是 null。 使用以
+          模式匹配 “模式匹配”是一种测试表达式是否具有特定特征的方法。 C# 模式匹配提供更简洁的语法，用于测试表达式并在表达式匹配时采取措施。 “is 表达式”目前支持通过模式匹配测试表达式并有条件地声明该表达式结果。 “switch 表达式”允许你根据表达式的首次匹配模式执行操作。 这两个表达式支持丰富的模式词汇。 Null 检查 模式匹配最常见的方案之一是确保值不是 null。 使用以下示例进行 n
         </div>
       </a>
 
@@ -357,17 +421,17 @@
     
     
     <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
+      <h2 class="index-header">
         
         <a href="/posts/CSharp%E7%B1%BB%E5%92%8C%E6%8E%A5%E5%8F%A3/" target="_self">
           C# 类和接口
         </a>
-      </h1>
+      </h2>
 
       
       <a class="index-excerpt index-excerpt__noimg" href="/posts/CSharp%E7%B1%BB%E5%92%8C%E6%8E%A5%E5%8F%A3/" target="_self">
         <div>
-          类(Class) 什么是类  一种数据结构 一种数据类型 代表现实世界中的种类  构造函数和析构函数 构造函数 public ClassName(){} 在被new实例化时自动调用此构造器 private ClassName(){} 用于防止类被new ClassName()实例化 static ClassName(){} 只用于构造静态成员，不能用于构造实例成员 析构函数
+          类(Class) 什么是类   一种数据结构   一种数据类型   代表现实世界中的种类   构造函数和析构函数 构造函数 public ClassName(){} 在被new实例化时自动调用此构造器 private ClassName(){} 用于防止类被new ClassName()实例化 static ClassName(){} 只用于构造静态成员，不能用于构造实例成员 析构函数 ~Clas
         </div>
       </a>
 
@@ -418,17 +482,17 @@
     
     
     <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
+      <h2 class="index-header">
         
         <a href="/posts/LearnVim/" target="_self">
           LearnVim
         </a>
-      </h1>
+      </h2>
 
       
       <a class="index-excerpt index-excerpt__noimg" href="/posts/LearnVim/" target="_self">
         <div>
-          onoremap Is :&lt;c-u&gt;normal! F]vi]&lt;cr&gt; 用 onoremap 映射一个 motion，上面代码的意思为将 Is 按键映射为找到本行光标前的 ']' 符号，并选择在 '[]' 内的内容。按 dIs 就可以删除本行内光标位置之前的 '[]' 中的内容。 :&lt;c-r&gt;&lt;c-w&gt; 在命令模式下使用 ctrl + r
+          onoremap Is :&lt;c-u&gt;normal! F]vi]&lt;cr&gt; 用 onoremap 映射一个 motion，上面代码的意思为将 Is 按键映射为找到本行光标前的 ‘]’ 符号，并选择在 ‘[]’ 内的内容。按 dIs 就可以删除本行内光标位置之前的 ‘[]’ 中的内容。 :&lt;c-r&gt;&lt;c-w&gt; 在命令模式下使用 ctrl + r 加 ctr
         </div>
       </a>
 
@@ -479,17 +543,17 @@
     
     
     <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
+      <h2 class="index-header">
         
         <a href="/posts/%E7%94%BB%E7%BA%BF%E5%92%8C%E7%94%BB%E9%9D%A2%E7%AE%97%E6%B3%95/" target="_self">
           画线和画三角形方法
         </a>
-      </h1>
+      </h2>
 
       
       <a class="index-excerpt index-excerpt__noimg" href="/posts/%E7%94%BB%E7%BA%BF%E5%92%8C%E7%94%BB%E9%9D%A2%E7%AE%97%E6%B3%95/" target="_self">
         <div>
-          画线算法 DDA画线 直线方程表示为 \(y = kx + b\) 当 \(\lVert k \rVert &lt;= 1\)时，\(x\) 每递增\(1\)，\(y\) 递增\(k\)。  当 \(\lVert k \rVert \geq 1\)时，\(x\) 每递增\(1/k\)，\(y\) 递增\(1\)。  因为光栅化不能绘制半个像素点，所以求出的值需要进行四舍五入即加
+          画线算法 DDA画线 直线方程表示为 $y = kx + b$ 当 $\lVert k \rVert &lt;= 1$时，$x$ 每递增$1$，$y$ 递增$k$。  当 $\lVert k \rVert \geq 1$时，$x$ 每递增$1/k$，$y$ 递增$1$。  因为光栅化不能绘制半个像素点，所以求出的值需要进行四舍五入即加 0.5 后再进行取整。  DDA 算法是一个增量算法，它直观且
         </div>
       </a>
 
@@ -540,17 +604,17 @@
     
     
     <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
+      <h2 class="index-header">
         
         <a href="/posts/%E4%B8%89%E8%A7%92%E5%BD%A2%E9%87%8D%E5%BF%83%E5%9D%90%E6%A0%87/" target="_self">
           三角形重心坐标
         </a>
-      </h1>
+      </h2>
 
       
       <a class="index-excerpt index-excerpt__noimg" href="/posts/%E4%B8%89%E8%A7%92%E5%BD%A2%E9%87%8D%E5%BF%83%E5%9D%90%E6%A0%87/" target="_self">
         <div>
-          三角形 想要定义一个三角形只需列出其 3 个顶点即可，但是列出这三个顶点的顺序非常重要。在左手坐标系并且从三角形正面看时，通常按照顺时针顺序枚举顶点。我们将这 3 个顶点分别称为 \(\bf v_1\)， \(\bf v_2\)， \(\bf v_3\)。  其中的边长和长度可以表示为： \[ \begin{aligned} {\bf e_1} &amp;= {\bf v_3} -
+          三角形 想要定义一个三角形只需列出其 3 个顶点即可，但是列出这三个顶点的顺序非常重要。在左手坐标系并且从三角形正面看时，通常按照顺时针顺序枚举顶点。我们将这 3 个顶点分别称为 $\bf v_1$， $\bf v_2$， $\bf v_3$。  其中的边长和长度可以表示为： $$ \begin{aligned} {\bf e_1} &amp;= {\bf v_3} - {\bf v_2} &am
         </div>
       </a>
 
@@ -601,17 +665,17 @@
     
     
     <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
+      <h2 class="index-header">
         
         <a href="/posts/%E5%9B%9B%E5%85%83%E6%95%B0%E5%92%8C%E4%B8%89%E7%BB%B4%E6%97%8B%E8%BD%AC(%E4%B8%89)/" target="_self">
           四元数和三维旋转(三)
         </a>
-      </h1>
+      </h2>
 
       
       <a class="index-excerpt index-excerpt__noimg" href="/posts/%E5%9B%9B%E5%85%83%E6%95%B0%E5%92%8C%E4%B8%89%E7%BB%B4%E6%97%8B%E8%BD%AC(%E4%B8%89)/" target="_self">
         <div>
-          四元数插值 假设有两个旋转变换 \(q_0 = [\cos(\theta_{0}), \sin(\theta_{0})\pmb{u_0}]\) 和 \(q_1 = [\cos(\theta_{1}), \sin(\theta_{1})\pmb{u_1}]\)，我们希望找出一些中间变换 \(q_{t}\)，让初始变换 \(q_{0}\) 能够平滑地过渡到最终变换 \(q_{1}\)，\(t\)
+          四元数插值 假设有两个旋转变换 $q_0 = [\cos(\theta_{0}), \sin(\theta_{0})\pmb{u_0}]$ 和 $q_1 = [\cos(\theta_{1}), \sin(\theta_{1})\pmb{u_1}]$，我们希望找出一些中间变换 $q_{t}$，让初始变换 $q_{0}$ 能够平滑地过渡到最终变换 $q_{1}$，$t$ 的取值可以是 $t \in
         </div>
       </a>
 
@@ -662,17 +726,17 @@
     
     
     <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
+      <h2 class="index-header">
         
         <a href="/posts/%E5%9B%9B%E5%85%83%E6%95%B0%E5%92%8C%E4%B8%89%E7%BB%B4%E6%97%8B%E8%BD%AC(%E4%BA%8C)/" target="_self">
           四元数和三维旋转(二)
         </a>
-      </h1>
+      </h2>
 
       
       <a class="index-excerpt index-excerpt__noimg" href="/posts/%E5%9B%9B%E5%85%83%E6%95%B0%E5%92%8C%E4%B8%89%E7%BB%B4%E6%97%8B%E8%BD%AC(%E4%BA%8C)/" target="_self">
         <div>
-          四元数 所有的四元数 \(q \in \mathbb{H}\) 都可以写成下面这种形式： \[ q = a + bi + cj + dk,(a,b,c,d \in \mathbb{R}) \] 其中 \[ i^2 = j^2 = k^2 = ijk = -1 \] 如果把上式称为四元数的代数形式，那么和复数类似，它也有对应的向量形式一： \[ q = \begin{bmatri
+          四元数 所有的四元数 $q \in \mathbb{H}$ 都可以写成下面这种形式： $$ q = a + bi + cj + dk,(a,b,c,d \in \mathbb{R}) $$ 其中 $$ i^2 = j^2 = k^2 = ijk = -1 $$ 如果把上式称为四元数的代数形式，那么和复数类似，它也有对应的向量形式一： $$ q = \begin{bmatrix} a\ b\ c\
         </div>
       </a>
 
@@ -723,17 +787,17 @@
     
     
     <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
+      <h2 class="index-header">
         
         <a href="/posts/%E5%9B%9B%E5%85%83%E6%95%B0%E5%92%8C%E4%B8%89%E7%BB%B4%E6%97%8B%E8%BD%AC(%E4%B8%80)/" target="_self">
           四元数和三维旋转(一)
         </a>
-      </h1>
+      </h2>
 
       
       <a class="index-excerpt index-excerpt__noimg" href="/posts/%E5%9B%9B%E5%85%83%E6%95%B0%E5%92%8C%E4%B8%89%E7%BB%B4%E6%97%8B%E8%BD%AC(%E4%B8%80)/" target="_self">
         <div>
-          由于使用欧拉角进行旋转时会存在万向锁的问题，同时，用欧拉角进行插值也不尽方便，而基于四元数的旋转既解决了万向锁的问题，又能非常方便地进行插值。本文将对在学习过程中遇到的四元数的定义、推导、性质、插值等问题进行总结归纳。 复数 我们先来简要讨论一下复数的一些性质以及它与 2D 旋转之间的关系，四元数的很多性质都与复数非常类似，所以理解复数的一些性质对理解四元数非常有帮助。 定义 任意一个复
+          由于使用欧拉角进行旋转时会存在万向锁的问题，同时，用欧拉角进行插值也不尽方便，而基于四元数的旋转既解决了万向锁的问题，又能非常方便地进行插值。本文将对在学习过程中遇到的四元数的定义、推导、性质、插值等问题进行总结归纳。 复数 我们先来简要讨论一下复数的一些性质以及它与 2D 旋转之间的关系，四元数的很多性质都与复数非常类似，所以理解复数的一些性质对理解四元数非常有帮助。 定义 任意一个复数 $z
         </div>
       </a>
 
@@ -773,67 +837,6 @@
             <i class="iconfont icon-tags"></i>
             
               <a href="/tags/Math/">#Math</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/posts/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%9F%BA%E7%A1%80-%E4%BB%8B%E7%BB%8D/" target="_self">
-          计算机图形学基础-介绍
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/posts/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%9F%BA%E7%A1%80-%E4%BB%8B%E7%BB%8D/" target="_self">
-        <div>
-          图形领域（Graphics Areas）  建模（Modeling） 渲染（Rendering） 动画（Animation） 用户交互（User interaction） 虚拟现实（Virtual reality） 可视化（Visualization） 图像处理（Image processing） 三维扫描（Three-dimensional scanning） 计算摄影（Co
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2022-07-05 21:06" pubdate>
-              2022-07-05
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/Computer-Graphics/" class="category-chain-item">Computer Graphics</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Fundamental-of-Computer-Graphics/">#Fundamental of Computer Graphics</a>
             
           </div>
         
@@ -897,7 +900,6 @@
     <div class="footer-content">
        <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
     </div>
-  
   
   
   
