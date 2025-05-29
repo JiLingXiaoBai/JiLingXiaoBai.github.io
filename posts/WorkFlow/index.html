@@ -1,0 +1,734 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/tabIcon.png">
+  <link rel="icon" href="/img/tabIcon.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="祭零小白">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Upgrade PowerShell Execute the following command in PowerShell 1winget search Microsoft.PowerShell get the output like this 1234Name               Id                           Version Source----------">
+<meta property="og:type" content="article">
+<meta property="og:title" content="WorkFlow">
+<meta property="og:url" content="http://example.com/posts/WorkFlow/index.html">
+<meta property="og:site_name" content="小白的笔记本">
+<meta property="og:description" content="Upgrade PowerShell Execute the following command in PowerShell 1winget search Microsoft.PowerShell get the output like this 1234Name               Id                           Version Source----------">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-05-29T17:12:52.000Z">
+<meta property="article:modified_time" content="2025-05-29T17:16:47.532Z">
+<meta property="article:author" content="祭零小白">
+<meta property="article:tag" content="Workflow">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>WorkFlow - 小白的笔记本</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null},"gtag":null,"woyaola":null,"cnzz":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="小白的笔记本" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>祭零小白</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/page_background.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="WorkFlow"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-05-30 01:12" pubdate>
+          2025年5月30日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          311 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          3 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">WorkFlow</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    <!-- compatible with older versions-->
+                    本文最后更新于：2025年5月30日 凌晨
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="Upgrade-PowerShell">Upgrade PowerShell</h2>
+<p>Execute the following command in PowerShell</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">winget search Microsoft.PowerShell<br></code></pre></td></tr></table></figure>
+<p>get the output like this</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sh">Name               Id                           Version Source<br>---------------------------------------------------------------<br>PowerShell         Microsoft.PowerShell         7.5.1.0 winget<br>PowerShell Preview Microsoft.PowerShell.Preview 7.6.0.4 winget<br></code></pre></td></tr></table></figure>
+<p>then execute the following command</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">winget install --<span class="hljs-built_in">id</span> Microsoft.PowerShell --<span class="hljs-built_in">source</span> winget<br></code></pre></td></tr></table></figure>
+<p>or just goto <a target="_blank" rel="noopener" href="https://learn.microsoft.com/zh-cn/powershell/scripting/install/installing-powershell-on-windows">official website</a> to get the latest version</p>
+<h2 id="Scoop">Scoop</h2>
+<p>Execute the following commands in PowerShell as Administrator</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sh">Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser<br><br>Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression<br></code></pre></td></tr></table></figure>
+<p>then install git with scoop</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">scoop install git<br></code></pre></td></tr></table></figure>
+<p>setup git <a target="_blank" rel="noopener" href="http://user.name">user.name</a> and user.email</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sh">git config --global user.name <span class="hljs-string">&quot;your name&quot;</span><br>git config --global user.email <span class="hljs-built_in">test</span>@youremail.com<br></code></pre></td></tr></table></figure>
+<h2 id="Yazi">Yazi</h2>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">scoop install ffmpeg 7zip jq poppler fd ripgrep fzf zoxide resvg imagemagick ghostscript yazi<br></code></pre></td></tr></table></figure>
+<p>goto <code>C:\Users\&lt;Username&gt;\Documents\PowerShell\Microsoft.PowerShell_profile.ps1</code>, if  it doesn’t exist, create it</p>
+<p>append the following lines to the file</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-keyword">function</span> y &#123;<br>    <span class="hljs-variable">$tmp</span> = [System.IO.Path]::GetTempFileName()<br>    yazi <span class="hljs-variable">$args</span> --cwd-file=<span class="hljs-string">&quot;<span class="hljs-variable">$tmp</span>&quot;</span><br>    <span class="hljs-variable">$cwd</span> = Get-Content -Path <span class="hljs-variable">$tmp</span> -Encoding UTF8<br>    <span class="hljs-keyword">if</span> (-not [String]::IsNullOrEmpty(<span class="hljs-variable">$cwd</span>) -and <span class="hljs-variable">$cwd</span> -ne <span class="hljs-variable">$PWD</span>.Path) &#123;<br>        Set-Location -LiteralPath ([System.IO.Path]::GetFullPath(<span class="hljs-variable">$cwd</span>))<br>    &#125;<br>    Remove-Item -Path <span class="hljs-variable">$tmp</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<p>Yazi relies on <code>file(1)</code> to detect the mime-type of the file, and the easiest and most reliable way to get it on Windows<br>
+is to install Git for Windows and use the <code>file.exe</code> that comes with it.</p>
+<ol>
+<li>Install Git for Windows by running <a target="_blank" rel="noopener" href="https://git-scm.com/downloads/win">the official installer</a>, or through your package manager of choice.</li>
+<li>To allow Yazi to use <code>file(1)</code>, add &lt;Git_Installed_Directory&gt;\usr\bin\file.exe to your <code>YAZI_FILE_ONE</code> environment variable,<br>
+which differs depending on how you installed Git:</li>
+</ol>
+<ul>
+<li>If you installed Git with the installer, it would be <code>C:\Program Files\Git\usr\bin\file.exe</code>.</li>
+<li>If you installed Git with Scoop, it would be <code>C:\Users\&lt;Username&gt;\scoop\apps\git\current\usr\bin\file.exe</code>.</li>
+</ul>
+<ol start="3">
+<li>Restart your terminal.</li>
+</ol>
+<h2 id="Neovim">Neovim</h2>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sh">scoop bucket add nerd-fonts<br>scoop install Hack-NF-Mono<br>scoop install make unzip gcc <br></code></pre></td></tr></table></figure>
+<p>Goto <code>C:\Users\&lt;Username&gt;\AppData\Local</code>, clone the repo here</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">git <span class="hljs-built_in">clone</span> https://github.com/JiLingXiaoBai/nvim.git<br></code></pre></td></tr></table></figure>
+<h2 id="Windows-Terminal">Windows Terminal</h2>
+<p>Modify <code>settings.json</code></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-attr">&quot;defaults&quot;</span><span class="hljs-punctuation">:</span><br><span class="hljs-punctuation">&#123;</span><br><span class="hljs-attr">&quot;colorScheme&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;arcoiris&quot;</span><span class="hljs-punctuation">,</span><br><span class="hljs-attr">&quot;cursorShape&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;filledBox&quot;</span><span class="hljs-punctuation">,</span><br><span class="hljs-attr">&quot;font&quot;</span><span class="hljs-punctuation">:</span><br><span class="hljs-punctuation">&#123;</span><br><span class="hljs-attr">&quot;face&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Hack Nerd Font Mono&quot;</span><br><span class="hljs-punctuation">&#125;</span><br><span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-attr">&quot;schemes&quot;</span><span class="hljs-punctuation">:</span><br><span class="hljs-punctuation">[</span><br><span class="hljs-punctuation">&#123;</span><br><span class="hljs-attr">&quot;background&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;#201F1E&quot;</span><span class="hljs-punctuation">,</span><br><span class="hljs-attr">&quot;black&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;#333333&quot;</span><span class="hljs-punctuation">,</span><br><span class="hljs-attr">&quot;blue&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;#518BFC&quot;</span><span class="hljs-punctuation">,</span><br><span class="hljs-attr">&quot;brightBlack&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;#777777&quot;</span><span class="hljs-punctuation">,</span><br><span class="hljs-attr">&quot;brightBlue&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;#B3E8F3&quot;</span><span class="hljs-punctuation">,</span><br><span class="hljs-attr">&quot;brightCyan&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;#BCFFC7&quot;</span><span class="hljs-punctuation">,</span><br><span class="hljs-attr">&quot;brightGreen&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;#E3F6AA&quot;</span><span class="hljs-punctuation">,</span><br><span class="hljs-attr">&quot;brightPurple&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;#CBBAF9&quot;</span><span class="hljs-punctuation">,</span><br><span class="hljs-attr">&quot;brightRed&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;#FFB9B9&quot;</span><span class="hljs-punctuation">,</span><br><span class="hljs-attr">&quot;brightWhite&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;#EFEFEF&quot;</span><span class="hljs-punctuation">,</span><br><span class="hljs-attr">&quot;brightYellow&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;#FFDDAA&quot;</span><span class="hljs-punctuation">,</span><br><span class="hljs-attr">&quot;cursorColor&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;#4FBD04&quot;</span><span class="hljs-punctuation">,</span><br><span class="hljs-attr">&quot;cyan&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;#63FAD5&quot;</span><span class="hljs-punctuation">,</span><br><span class="hljs-attr">&quot;foreground&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;#EEE4D9&quot;</span><span class="hljs-punctuation">,</span><br><span class="hljs-attr">&quot;green&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;#12C258&quot;</span><span class="hljs-punctuation">,</span><br><span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;arcoiris&quot;</span><span class="hljs-punctuation">,</span><br><span class="hljs-attr">&quot;purple&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;#E37BD9&quot;</span><span class="hljs-punctuation">,</span><br><span class="hljs-attr">&quot;red&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;#DA2700&quot;</span><span class="hljs-punctuation">,</span><br><span class="hljs-attr">&quot;selectionBackground&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;#25524A&quot;</span><span class="hljs-punctuation">,</span><br><span class="hljs-attr">&quot;white&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;#BAB2B2&quot;</span><span class="hljs-punctuation">,</span><br><span class="hljs-attr">&quot;yellow&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;#FFC656&quot;</span><br><span class="hljs-punctuation">&#125;</span><br><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br><br></code></pre></td></tr></table></figure>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Workflow/" class="category-chain-item">Workflow</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Workflow/" class="print-no-link">#Workflow</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>WorkFlow</div>
+      <div>http://example.com/posts/WorkFlow/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>祭零小白</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年5月30日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/CSharpList/" title="C# List&lt;T&gt;">
+                        <span class="hidden-mobile">C# List&lt;T&gt;</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/css/gitalk.css')
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"7bbb87323a0faa8998e9","clientSecret":"adaeef1cc5e02a3327b5a18a608b197148c2d48e","repo":"JiLingXiaoBai.github.io","owner":"JiLingXiaoBai","admin":"JiLingXiaoBai","language":"zh-CN","labels":["Gitalk"],"perPage":10,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":false,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},
+          {
+            id: '36211f77ab53ec6a15edb886ea2c482e'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
