@@ -54,6 +54,8 @@
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
 
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0/dist/katex.min.css" />
+
 
 
 <!-- 主题依赖的图标库，不要自行修改 -->
@@ -347,7 +349,7 @@
 <p>最常见的纹理动画之一就是序列帧动画。序列帧动画的原理非常简单，它像放电影一样，依次播放一系列关键帧图像，当播放速度达到一定数值时，看起来就是一个连续的动画。它的优点在于灵活性很强，我们不需要进行任何物理计算就可以得到非常细腻的动画效果。而它的缺点也很明显，由于序列帧中每张关键帧图像都不一样，因此要制作一张出色的序列帧纹理所需要的美术工程量也比较大。</p>
 <p>要想实现序列帧动画，我们要先提供一张包含了关键帧图像的图像。</p>
 <p><img src="/posts_image/Animation_Effects/Animation_Effects_1.png" srcset="/img/loading.gif" lazyload alt="序列帧图像" title="序列帧图像"></p>
-<p>上述图像包含了 8 $\times$ 8 张关键帧图像，它们的大小相同，而且播放顺序为从左到右、从上到下。下图给出了不同时刻播放的不同动画效果。</p>
+<p>上述图像包含了 8 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>×</mo></mrow><annotation encoding="application/x-tex">\times</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord">×</span></span></span></span> 8 张关键帧图像，它们的大小相同，而且播放顺序为从左到右、从上到下。下图给出了不同时刻播放的不同动画效果。</p>
 <p><img src="/posts_image/Animation_Effects/Animation_Effects_2.png" srcset="/img/loading.gif" lazyload alt="使用序列帧动画来实现爆炸效果" title="使用序列帧动画来实现爆炸效果"></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><code class="hljs shaderlab">Shader &quot;Custom/Chapter11/Chapter11-ImageSequenceAnimation&quot;<br>&#123;<br>    Properties<br>    &#123;<br>        _Color (&quot;Color Tint&quot;, Color) = (1, 1, 1, 1)<br>        _MainTex (&quot;Image Sequence&quot;, 2D) = &quot;white&quot; &#123;&#125;<br>        _HorizontalAmount (&quot;Horizontal Amount&quot;, Float) = 8<br>        _VerticalAmount (&quot;Vertical Amount&quot;, Float) = 8<br>        _Speed (&quot;Speed&quot;, Range(1, 100)) = 30<br>    &#125;<br>    SubShader<br>    &#123;<br>        Tags &#123;&quot;Queue&quot;=&quot;Transparent&quot; &quot;IgnoreProjector&quot;=&quot;True&quot; &quot;RenderType&quot;=&quot;Transparent&quot;&#125;<br><br>        Pass &#123;<br>            Tags &#123;&quot;LightMode&quot;=&quot;ForwardBase&quot;&#125;<br>            ZWrite Off<br>            Blend SrcAlpha OneMinusSrcAlpha<br><br>            CGPROGRAM<br><br>            #pragma vertex vert<br>            #pragma fragment frag<br><br>            #include &quot;UnityCG.cginc&quot;<br><br>            fixed4 _Color;<br>            sampler2D _MainTex;<br>            float4 _MainTex_ST;<br>            float _HorizontalAmount;<br>            float _VerticalAmount;<br>            float _Speed;<br><br>            struct a2v &#123;<br>                float4 vertex : POSITION;<br>                float2 texcoord : TEXCOORD0;<br>            &#125;;<br><br>            struct v2f &#123;<br>                float4 pos : SV_POSITION;<br>                float2 uv : TEXCOORD0;<br>            &#125;;<br>            <br>            v2f vert(a2v v)&#123;<br>                v2f o;<br>                o.pos = UnityObjectToClipPos(v.vertex);<br>                o.uv = TRANSFORM_TEX(v.texcoord, _MainTex);<br>                return o;<br>            &#125;<br><br>            fixed4 frag(v2f i) : SV_TARGET<br>            &#123;<br>                float time = floor(_Time.y * _Speed);<br>                float row = floor(time / _HorizontalAmount);<br>                float column = time - row * _HorizontalAmount;<br><br>                //half2 uv = float2(i.uv.x / _HorizontalAmount, i.uv.y / _VerticalAmount);<br>                //uv.x += column / _HorizontalAmount;<br>                //uv.y -= row / _VerticalAmount;<br>                half2 uv = i.uv + half2(column, -row);<br>                uv.x /= _HorizontalAmount;<br>                uv.y /= _VerticalAmount;<br><br>                fixed4 c = tex2D(_MainTex, uv);<br>                c.rgb *= _Color;<br><br>                return c;<br>            &#125;<br><br>            ENDCG<br>        &#125;<br>    &#125;<br>    FallBack &quot;Transparent/VertexLit&quot;<br>&#125;<br><br></code></pre></td></tr></table></figure>
 <p>_MainTex 就是包含了所有关键帧图像的纹理。_HorizontalAmount 和 _VerticalAmount 分别代表了该图像在水平方向和竖直方向包含的关键帧图像的个数。而 _Speed 属性用于控制序列帧动画的播放速度。由于序列帧图像通常包含了透明通道，因此可以被当成是一个半透明对象。在这里我们使用半透明的“标配”来设置它的 SubShader 标签，即把 Queue 和 RenderType 设置成 Transparent，把 IgnoreProjector 设置为 True。在 Pass 中，我们使用 Blend 命令来开启并设置混合模式，同时关闭了深度写入。</p>
@@ -369,15 +371,13 @@
 <h3 id="广告牌">广告牌</h3>
 <p>另一种常见的顶点动画就是<strong>广告牌技术（Billboarding）</strong>。广告牌技术会根据视角方向来旋转一个被纹理着色的多边形（通常就是简单的四边形，这个多边形就是广告牌），使得多边形看起来好像总是面对着摄像机。广告牌技术被用于很多应用，比如渲染烟雾、云朵、闪光效果等。</p>
 <p>广告牌技术的本质就是构建旋转矩阵，而我们知道一个变换矩阵需要三个基向量。广告牌技术使用的基向量通常就是<strong>表面法线（normal）、指向上的方向（up）<strong>以及</strong>指向右的方向（right）</strong>。除此之外，我们还需要指定一个<strong>锚点（anchor location）</strong>，这个锚点在旋转过程中是固定不变的，以此来确定多边形在空间中的位置。</p>
-<p>广告牌技术的难点在于，如何根据需求来构建 3 个互相正交的基向量。计算过程通常是，我们首先会通过初始计算得到目标的表面法线（例如就是视角方向）和指向上的方向，而两者往往是不垂直的。但是，两者其中之一是固定的，例如当模拟草丛时，我们希望广告牌的指向上的方向永远是(0, 1, 0)，而法线方向应该随视角发生变化；而当模拟粒子效果时，我们希望广告牌的法线方向是固定的，即总是指向视角方向，指向上的方向则可以发生变化。我们假设法线方向是固定的，首先，我们根据初始的表面法线和指向上的方向来计算出目标方向的指向右的方向（通过叉积操作）：<br>
-$$<br>
-right = up \times normal<br>
-$$<br>
-对其归一化后，再由法线方向和指向右的方向计算出正交的指向上的方向即可：<br>
-$$<br>
-up’ = normal \times right<br>
-$$<br>
-至此，我们就可以得到用于旋转的三个正交基了。下图给出了上述计算过程的图示。如果指向上的方向是固定的，计算过程也是类似的。</p>
+<p>广告牌技术的难点在于，如何根据需求来构建 3 个互相正交的基向量。计算过程通常是，我们首先会通过初始计算得到目标的表面法线（例如就是视角方向）和指向上的方向，而两者往往是不垂直的。但是，两者其中之一是固定的，例如当模拟草丛时，我们希望广告牌的指向上的方向永远是(0, 1, 0)，而法线方向应该随视角发生变化；而当模拟粒子效果时，我们希望广告牌的法线方向是固定的，即总是指向视角方向，指向上的方向则可以发生变化。我们假设法线方向是固定的，首先，我们根据初始的表面法线和指向上的方向来计算出目标方向的指向右的方向（通过叉积操作）：</p>
+<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>r</mi><mi>i</mi><mi>g</mi><mi>h</mi><mi>t</mi><mo>=</mo><mi>u</mi><mi>p</mi><mo>×</mo><mi>n</mi><mi>o</mi><mi>r</mi><mi>m</mi><mi>a</mi><mi>l</mi></mrow><annotation encoding="application/x-tex">right = up \times normal
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mord mathnormal">i</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mord mathnormal">h</span><span class="mord mathnormal">t</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7778em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">u</span><span class="mord mathnormal">p</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">n</span><span class="mord mathnormal" style="margin-right:0.02778em;">or</span><span class="mord mathnormal">ma</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span></span></span></span></span></p>
+<p>对其归一化后，再由法线方向和指向右的方向计算出正交的指向上的方向即可：</p>
+<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>u</mi><msup><mi>p</mi><mo mathvariant="normal" lspace="0em" rspace="0em">′</mo></msup><mo>=</mo><mi>n</mi><mi>o</mi><mi>r</mi><mi>m</mi><mi>a</mi><mi>l</mi><mo>×</mo><mi>r</mi><mi>i</mi><mi>g</mi><mi>h</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">up&#x27; = normal \times right
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9963em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">u</span><span class="mord"><span class="mord mathnormal">p</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8019em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7778em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">n</span><span class="mord mathnormal" style="margin-right:0.02778em;">or</span><span class="mord mathnormal">ma</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mord mathnormal">i</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mord mathnormal">h</span><span class="mord mathnormal">t</span></span></span></span></span></p>
+<p>至此，我们就可以得到用于旋转的三个正交基了。下图给出了上述计算过程的图示。如果指向上的方向是固定的，计算过程也是类似的。</p>
 <p><img src="/posts_image/Animation_Effects/Animation_Effects_5.png" srcset="/img/loading.gif" lazyload alt="计算正交基的过程" title="计算正交基的过程"></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><code class="hljs shaderlab">Shader &quot;Custom/Chapter11/Chapter11-Billboard&quot;<br>&#123;<br>    Properties<br>    &#123;<br>        _MainTex (&quot;Main Tex&quot;, 2D) = &quot;white&quot; &#123;&#125;<br>        _Color (&quot;Color Tint&quot;, Color) = (1, 1, 1, 1)<br>        _VerticalBillboarding (&quot;Vertical Restraints&quot;, Range(0, 1)) = 1<br>    &#125;<br>    SubShader<br>    &#123;<br>        // Need to disable batching because of the vertex animation<br>        Tags &#123;&quot;Queue&quot;=&quot;Transparent&quot; &quot;IgnoreProjector&quot;=&quot;True&quot; &quot;RenderType&quot;=&quot;Transparent&quot; &quot;DisableBatching&quot;=&quot;True&quot;&#125;<br><br>        Pass &#123;<br>            Tags &#123;&quot;LightMode&quot; = &quot;ForwardBase&quot;&#125;<br>            ZWrite Off<br>            Blend SrcAlpha OneMinusSrcAlpha<br>            Cull Off<br><br>            CGPROGRAM<br><br>            #pragma vertex vert<br>            #pragma fragment frag<br>            <br>            #include &quot;Lighting.cginc&quot;<br><br>            sampler2D _MainTex;<br>            float4 _MainTex_ST;<br>            fixed4 _Color;<br>            fixed _VerticalBillboarding;<br><br>            struct a2v &#123;<br>				float4 vertex : POSITION;<br>				float4 texcoord : TEXCOORD0;<br>			&#125;;<br>			<br>			struct v2f &#123;<br>				float4 pos : SV_POSITION;<br>				float2 uv : TEXCOORD0;<br>			&#125;;<br><br>            v2f vert (a2v v) &#123;<br>				v2f o;<br>				<br>				// Suppose the center in object space is fixed<br>				float3 center = float3(0, 0, 0);<br>				float3 viewer = mul(unity_WorldToObject,float4(_WorldSpaceCameraPos, 1));<br>				float3 normalDir = viewer - center;<br>				// If _VerticalBillboarding equals 1, we use the desired view dir as the normal dir<br>				// Which means the normal dir is fixed<br>				// Or if _VerticalBillboarding equals 0, the y of normal is 0<br>				// Which means the up dir is fixed<br>				normalDir.y =normalDir.y * _VerticalBillboarding;<br>				normalDir = normalize(normalDir);<br>				// Get the approximate up dir<br>				// If normal dir is already towards up, then the up dir is towards front<br>				float3 upDir = abs(normalDir.y) &gt; 0.999 ? float3(0, 0, 1) : float3(0, 1, 0);<br>				float3 rightDir = normalize(cross(upDir, normalDir));<br>				upDir = normalize(cross(normalDir, rightDir));<br>				<br>				// Use the three vectors to rotate the quad<br>				float3 centerOffs = v.vertex.xyz - center;<br>				float3 localPos = center + rightDir * centerOffs.x + upDir * centerOffs.y + normalDir * centerOffs.z;<br>              <br>				o.pos = UnityObjectToClipPos(float4(localPos, 1));<br>				o.uv = TRANSFORM_TEX(v.texcoord, _MainTex);<br><br>				return o;<br>			&#125;<br>			<br>			fixed4 frag (v2f i) : SV_Target &#123;<br>				fixed4 c = tex2D (_MainTex, i.uv);<br>				c.rgb *= _Color.rgb;<br>				<br>				return c;<br>			&#125;<br>			<br>			ENDCG<br>        &#125;<br><br>    &#125;<br>    FallBack &quot;Transparent/VertexLit&quot;<br>&#125;<br><br></code></pre></td></tr></table></figure>
 <p>其中，_MainTex 是广告牌显示的透明纹理，_Color 用于控制显示整体颜色，_VerticalBillboarding 则用于调整是固定法线还是固定指向上的方向，即约束垂直方向的程度。在广告牌技术中，我们需要使用物体的模型空间下的位置来作为锚点进行计算，为了让模型各自的模型空间不丢失，我们需要取消对该 Shader 的批处理操作。我们关闭了深度写入，开启并设置了混合模式，并关闭了剔除功能，这是为了让广告牌的每个面都能显示。</p>
@@ -589,7 +589,6 @@ $$<br>
 
 
 
-
     
 
     
@@ -775,49 +774,6 @@ $$<br>
 
 
   <script>Fluid.plugins.imageCaption();</script>
-
-  
-      <script>
-        if (!window.MathJax) {
-          window.MathJax = {
-            tex    : {
-              inlineMath: { '[+]': [['$', '$']] }
-            },
-            loader : {
-              load: ['ui/lazy']
-            },
-            options: {
-              renderActions: {
-                insertedScript: [200, () => {
-                  document.querySelectorAll('mjx-container').forEach(node => {
-                    let target = node.parentNode;
-                    if (target.nodeName.toLowerCase() === 'li') {
-                      target.parentNode.classList.add('has-jax');
-                    }
-                  });
-                }, '', false]
-              }
-            }
-          };
-        } else {
-          MathJax.startup.document.state(0);
-          MathJax.texReset();
-          MathJax.typeset();
-          MathJax.typesetPromise();
-        }
-
-        Fluid.events.registerRefreshCallback(function() {
-          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
-            MathJax.startup.document.state(0);
-            MathJax.texReset();
-            MathJax.typeset();
-            MathJax.typesetPromise();
-          }
-        });
-      </script>
-    
-
-  <script  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" ></script>
 
   <script  src="/js/local-search.js" ></script>
 

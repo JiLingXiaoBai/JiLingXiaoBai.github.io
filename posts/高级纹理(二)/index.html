@@ -54,6 +54,8 @@
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
 
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0/dist/katex.min.css" />
+
 
 
 <!-- 主题依赖的图标库，不要自行修改 -->
@@ -318,7 +320,7 @@
 <p><img src="/posts_image/Advanced_Texture/Advanced_Texture_12.png" srcset="/img/loading.gif" lazyload alt="摄像机 Target Texture 设置" title="摄像机 Target Texture 设置"></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><code class="hljs shaderlab">Shader &quot;Custom/Chapter10/Chapter10-Mirror&quot;<br>&#123;<br>    Properties &#123;<br>		_MainTex (&quot;Main Tex&quot;, 2D) = &quot;white&quot; &#123;&#125;<br>	&#125;<br>	SubShader &#123;<br>		Tags &#123; &quot;RenderType&quot;=&quot;Opaque&quot; &quot;Queue&quot;=&quot;Geometry&quot;&#125;<br>		<br>		Pass &#123;<br>			CGPROGRAM<br>			<br>			#pragma vertex vert<br>			#pragma fragment frag<br>			<br>			sampler2D _MainTex;<br>			<br>			struct a2v &#123;<br>				float4 vertex : POSITION;<br>				float3 texcoord : TEXCOORD0;<br>			&#125;;<br>			<br>			struct v2f &#123;<br>				float4 pos : SV_POSITION;<br>				float2 uv : TEXCOORD0;<br>			&#125;;<br>			<br>			v2f vert(a2v v) &#123;<br>				v2f o;<br>				o.pos = UnityObjectToClipPos(v.vertex);<br>				<br>				o.uv = v.texcoord;<br>				// Mirror needs to filp x<br>				o.uv.x = 1 - o.uv.x;<br>				<br>				return o;<br>			&#125;<br>			<br>			fixed4 frag(v2f i) : SV_Target &#123;<br>				return tex2D(_MainTex, i.uv);<br>			&#125;<br>			<br>			ENDCG<br>		&#125;<br>	&#125; <br> 	FallBack Off<br>&#125;<br><br></code></pre></td></tr></table></figure>
 <p>镜子实现的原理很简单，它使用一个渲染纹理作为输入属性，并把该渲染纹理在水平方向上翻转后直接显示到物体上即可。在上面的代码中，我们翻转了 x 分量的纹理坐标。这是因为镜子里显示的图像都是左右相反的。</p>
-<p>在上面的实现中，我们把渲染纹理的分辨率大小设置为 256 $\times$ 256。有时，这样的分辨率会使图像模糊不清，此时我们可以使用更高的分辨率或更多的抗锯齿采样等。但需要注意的是，更高的分辨率会影响带宽和性能，我们应当尽量使用较小的分辨率。</p>
+<p>在上面的实现中，我们把渲染纹理的分辨率大小设置为 256 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>×</mo></mrow><annotation encoding="application/x-tex">\times</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord">×</span></span></span></span> 256。有时，这样的分辨率会使图像模糊不清，此时我们可以使用更高的分辨率或更多的抗锯齿采样等。但需要注意的是，更高的分辨率会影响带宽和性能，我们应当尽量使用较小的分辨率。</p>
 <p><img src="/posts_image/Advanced_Texture/Advanced_Texture_13.png" srcset="/img/loading.gif" lazyload alt="镜子效果" title="镜子效果"></p>
 <h3 id="玻璃效果">玻璃效果</h3>
 <p>在 Unity 中，我们还可以在 Unity Shader 中使用一种特殊的 Pass 来完成获取屏幕图像的目的，这就是 GrabPass。当我们在 Shader 中定义了一个 GrabPass 后，Unity 会把当前屏幕的图像绘制在一张纹理中，以便我们在后续的 Pass 中访问它。我们通常会使用 GrabPass 来实现诸如玻璃等透明材质的模拟，与使用简单的透明混合不同，使用 GrabPass 可以让我们对该物体后面的图像进行更复杂的处理，例如使用法线来模拟折射效果，而不再是简单的和原屏幕颜色进行混合。</p>
@@ -332,7 +334,7 @@
 <li>直接使用 GrabPass {}，然后在后续的 Pass 中直接使用 _GrabTexture 来访问屏幕图像。但是，当场景中有多个物体都使用了这样的形式来抓取屏幕时，这种方法的性能消耗比较大，因为对于每一个使用它的物体，Unity 都会为它单独进行一次昂贵的屏幕抓取操作。但这种方法可以让每个物体得到不同的屏幕图像，这取决于它们的渲染队列及渲染它们时当前的屏幕缓冲中的颜色。</li>
 <li>使用 GrabPass {“TextureName”}，我们可以在后续的 Pass 中使用 TextureName 来访问屏幕图像。使用这种方法同样可以抓取屏幕，但 Unity 只会在每一帧时为第一个使用名为 TextureName 的纹理的物体执行一次抓取屏幕的操作，而这个纹理同样可以在其他 Pass 中被访问。这种方法更高效，因为不管场景中有多少物体使用了该命令，每一帧中 Unity 都只会执行一次抓取工作，但这也意味着所有物体都会使用同一张屏幕图像。不过，这在大多数情况下已经足够了。</li>
 </ul>
-<p>我们还定义了 _RefractionTex 和 _RefractionTex_TexelSize 变量，这对应了在使用 GrabPass 时指定的纹理名称。_RefractionTex_TexelSize 可以让我们得到该纹理的纹素大小，例如一个大小为 256 $\times$ 512 的纹理，它的纹素大小为(1/256, 1/512)。我们需要在对屏幕图像的采样坐标进行偏移时使用该变量。</p>
+<p>我们还定义了 _RefractionTex 和 _RefractionTex_TexelSize 变量，这对应了在使用 GrabPass 时指定的纹理名称。_RefractionTex_TexelSize 可以让我们得到该纹理的纹素大小，例如一个大小为 256 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>×</mo></mrow><annotation encoding="application/x-tex">\times</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord">×</span></span></span></span> 512 的纹理，它的纹素大小为(1/256, 1/512)。我们需要在对屏幕图像的采样坐标进行偏移时使用该变量。</p>
 <p>在进行了必要的顶点坐标变换后，我们通过调用内置的 ComputeGrabScreenPos 函数来得到对应被抓取的屏幕图像的采样坐标。我们可以在 UnityCG.cginc 文件中找到它的声明，它的主要代码和 ComputeScreenPos 基本类似，最大的不同是针对平台差异造成的采样坐标问题进行了处理。接着，我们计算了 _MainTex 和 _BumpMap 的采样坐标，并把它们分别存储在一个 float4 类型变量的 xy 和 zw 分量中。由于我们需要在片元着色器中把法线方向从切线方向（由法线纹理采样得到）变换到世界空间下，以便对 Cubemap 进行采样，因此，我们需要在这里计算该顶点对应的从切线空间到世界空间的变换矩阵，并把该矩阵的每一行分别存储在 TtoW0、TtoW1、和 TtoW2 的 xyz 分量中。这里面使用的数学方法就是，得到切线空间下的 3 个坐标轴（xyz 轴分别对应了副切线、切线和法线的方向）在世界空间下的表示，再把它们依次按<strong>列</strong>组成一个变换矩阵即可。TtoW0 等值的 w 轴同样被利用起来，用于存储世界空间下的顶点坐标。</p>
 <p>我们通过 TtoW0 等变量的 w 分量得到世界坐标，并用该值得到该片元对应的视角方向。随后，我们对法线纹理进行采样，得到切线空间下的法线方向。我们使用该值和 _Distortion 属性以及 _RefractionTex_TexelSize 来对屏幕图像的采样坐标进行偏移，模拟折射效果。_Distortion 值越大，偏移量越大，玻璃背后的物体看起来变形程度越大。在这里，我们选择使用切线空间下单法线方向来进行偏移，是因为该空间下的法线可以反应顶点局部空间下的法线方向。随后，我们对 scrPos 透视除法得到真正的屏幕坐标，再使用该坐标对抓取的屏幕图像 _RefractionTex 进行采样，得到模拟的折射颜色。</p>
 <p>之后，我们把法线方向从切线空间变换到了世界空间下（使用变换矩阵的每一行，即 TtoW0、TtoW1 和 TtoW2，分别和法线方向点乘，构成新的法线方向），并据此得到视角方向相对于法线方向的反射方向。随后，使用反射方向对 Cubemap 进行采样，并把结果和主纹理颜色相乘后得到反射颜色。最后我们使用 _RefractAmount 属性对反射和折射颜色进行混合，作为最终的输出颜色。</p>
@@ -550,7 +552,6 @@
 
 
 
-
     
 
     
@@ -736,49 +737,6 @@
 
 
   <script>Fluid.plugins.imageCaption();</script>
-
-  
-      <script>
-        if (!window.MathJax) {
-          window.MathJax = {
-            tex    : {
-              inlineMath: { '[+]': [['$', '$']] }
-            },
-            loader : {
-              load: ['ui/lazy']
-            },
-            options: {
-              renderActions: {
-                insertedScript: [200, () => {
-                  document.querySelectorAll('mjx-container').forEach(node => {
-                    let target = node.parentNode;
-                    if (target.nodeName.toLowerCase() === 'li') {
-                      target.parentNode.classList.add('has-jax');
-                    }
-                  });
-                }, '', false]
-              }
-            }
-          };
-        } else {
-          MathJax.startup.document.state(0);
-          MathJax.texReset();
-          MathJax.typeset();
-          MathJax.typesetPromise();
-        }
-
-        Fluid.events.registerRefreshCallback(function() {
-          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
-            MathJax.startup.document.state(0);
-            MathJax.texReset();
-            MathJax.typeset();
-            MathJax.typesetPromise();
-          }
-        });
-      </script>
-    
-
-  <script  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" ></script>
 
   <script  src="/js/local-search.js" ></script>
 

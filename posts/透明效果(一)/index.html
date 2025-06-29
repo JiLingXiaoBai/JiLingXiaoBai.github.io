@@ -56,6 +56,8 @@
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
 
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0/dist/katex.min.css" />
+
 
 
 <!-- 主题依赖的图标库，不要自行修改 -->
@@ -453,11 +455,10 @@
 </tr>
 </tbody>
 </table>
-<p>我们下面会使用 Blend SrcFactor DstFactor 来进行混合，这个命令在设置混合因子的同时也开启了混合模式。这是因为开启了混合之后，设置片元的透明通道才有意义，而 Unity 在我们使用 Blend 命令的时候就自动帮我们打开了。我们会把源颜色的混合因子 SrcFactor 设为 SrcAlpha，而目标颜色的混合因子 DstFactor 设为 OneMinusSrcAlpha。这意味着，经过混合后新的颜色是：<br>
-$$<br>
-DstColor_{new} = SrcAlpha \times SrcColor + (1 - SrcAlpha) \times DstColor_{old}<br>
-$$<br>
-我们仍然使用透明度测试用的纹理图。</p>
+<p>我们下面会使用 Blend SrcFactor DstFactor 来进行混合，这个命令在设置混合因子的同时也开启了混合模式。这是因为开启了混合之后，设置片元的透明通道才有意义，而 Unity 在我们使用 Blend 命令的时候就自动帮我们打开了。我们会把源颜色的混合因子 SrcFactor 设为 SrcAlpha，而目标颜色的混合因子 DstFactor 设为 OneMinusSrcAlpha。这意味着，经过混合后新的颜色是：</p>
+<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>D</mi><mi>s</mi><mi>t</mi><mi>C</mi><mi>o</mi><mi>l</mi><mi>o</mi><msub><mi>r</mi><mrow><mi>n</mi><mi>e</mi><mi>w</mi></mrow></msub><mo>=</mo><mi>S</mi><mi>r</mi><mi>c</mi><mi>A</mi><mi>l</mi><mi>p</mi><mi>h</mi><mi>a</mi><mo>×</mo><mi>S</mi><mi>r</mi><mi>c</mi><mi>C</mi><mi>o</mi><mi>l</mi><mi>o</mi><mi>r</mi><mo>+</mo><mo stretchy="false">(</mo><mn>1</mn><mo>−</mo><mi>S</mi><mi>r</mi><mi>c</mi><mi>A</mi><mi>l</mi><mi>p</mi><mi>h</mi><mi>a</mi><mo stretchy="false">)</mo><mo>×</mo><mi>D</mi><mi>s</mi><mi>t</mi><mi>C</mi><mi>o</mi><mi>l</mi><mi>o</mi><msub><mi>r</mi><mrow><mi>o</mi><mi>l</mi><mi>d</mi></mrow></msub></mrow><annotation encoding="application/x-tex">DstColor_{new} = SrcAlpha \times SrcColor + (1 - SrcAlpha) \times DstColor_{old}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8444em;vertical-align:-0.15em;"></span><span class="mord mathnormal">Ds</span><span class="mord mathnormal" style="margin-right:0.07153em;">tC</span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">o</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span><span class="mord mathnormal mtight">e</span><span class="mord mathnormal mtight" style="margin-right:0.02691em;">w</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="mord mathnormal">rc</span><span class="mord mathnormal">A</span><span class="mord mathnormal">lp</span><span class="mord mathnormal">ha</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7778em;vertical-align:-0.0833em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="mord mathnormal">rc</span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal" style="margin-right:0.02778em;">or</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="mord mathnormal">rc</span><span class="mord mathnormal">A</span><span class="mord mathnormal">lp</span><span class="mord mathnormal">ha</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8444em;vertical-align:-0.15em;"></span><span class="mord mathnormal">Ds</span><span class="mord mathnormal" style="margin-right:0.07153em;">tC</span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">o</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">o</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mathnormal mtight">d</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></span></p>
+<p>我们仍然使用透明度测试用的纹理图。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><code class="hljs shaderlab">Shader &quot;Custom/Chapter8/Chapter8-AlphaBlend&quot;<br>&#123;<br>    Properties<br>    &#123;<br>        _Color (&quot;Main Tint&quot;, Color) = (1,1,1,1)<br>        _MainTex (&quot;Main Tex&quot;, 2D) = &quot;white&quot; &#123;&#125;<br>        _AlphaScale (&quot;Alpha Scale&quot;, Range(0, 1)) = 1<br>    &#125;<br>    SubShader<br>    &#123;<br>        Tags &#123; &quot;Queue&quot;=&quot;Transparent&quot; &quot;IgnoreProhector&quot;=&quot;True&quot; &quot;RenderType&quot;=&quot;Transparent&quot; &#125;<br>        <br>        Pass &#123;<br>            Tags &#123; &quot;LightMode&quot; = &quot;ForwardBase&quot; &#125;<br>            ZWrite Off<br>            Blend SrcAlpha OneMinusSrcAlpha<br><br>            CGPROGRAM<br><br>            #pragma vertex vert<br>            #pragma fragment frag<br><br>            #include &quot;Lighting.cginc&quot;<br><br>            fixed4 _Color;<br>            sampler2D _MainTex;<br>            float4 _MainTex_ST;<br>            fixed _AlphaScale;<br><br>            struct a2v &#123;<br>                float4 vertex : POSITION;<br>                float3 normal : NORMAL;<br>                float4 texcoord : TEXCOORD0;<br>            &#125;;<br><br>            struct v2f &#123;<br>                float4 pos : SV_POSITION;<br>                float3 worldNormal : TEXCOORD0;<br>                float3 worldPos : TEXCOORD1;<br>                float2 uv : TEXCOORD2;<br>            &#125;;<br><br>            v2f vert(a2v v)&#123;<br>                v2f o;<br>                o.pos = UnityObjectToClipPos(v.vertex);<br>                o.worldNormal = UnityObjectToWorldNormal(v.normal);<br>                o.worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;<br>                o.uv = TRANSFORM_TEX(v.texcoord, _MainTex);<br>                return o;<br>            &#125;<br><br>            fixed4 frag(v2f i) : SV_Target&#123;<br>                fixed3 worldNormal = normalize(i.worldNormal);<br>                fixed3 worldLightDir = normalize(UnityWorldSpaceLightDir(i.worldPos));<br>                fixed4 texColor = tex2D(_MainTex, i.uv);<br>                fixed3 albedo = texColor.rgb * _Color.rgb;<br>                fixed3 ambient = UNITY_LIGHTMODEL_AMBIENT.xyz * albedo;<br>                fixed3 diffuse = _LightColor0.rgb * albedo * max(0, dot(worldNormal, worldLightDir));<br>                return fixed4(ambient + diffuse, texColor.a * _AlphaScale);<br>            &#125;<br><br>            ENDCG<br>        &#125;<br>    &#125;<br>    FallBack &quot;Transparent/VertexLit&quot;<br>&#125;<br></code></pre></td></tr></table></figure>
 <p>效果如下图所示，我们可以调节材质面板上的 Alpha Scale 参数，以控制整体透明度。</p>
 <p><img src="/posts_image/Transparent/Transparent_8.png" srcset="/img/loading.gif" lazyload alt="透明度混合效果图1" title="透明度混合效果图1"></p>
@@ -663,7 +664,6 @@ $$<br>
 
 
 
-
     
 
     
@@ -849,49 +849,6 @@ $$<br>
 
 
   <script>Fluid.plugins.imageCaption();</script>
-
-  
-      <script>
-        if (!window.MathJax) {
-          window.MathJax = {
-            tex    : {
-              inlineMath: { '[+]': [['$', '$']] }
-            },
-            loader : {
-              load: ['ui/lazy']
-            },
-            options: {
-              renderActions: {
-                insertedScript: [200, () => {
-                  document.querySelectorAll('mjx-container').forEach(node => {
-                    let target = node.parentNode;
-                    if (target.nodeName.toLowerCase() === 'li') {
-                      target.parentNode.classList.add('has-jax');
-                    }
-                  });
-                }, '', false]
-              }
-            }
-          };
-        } else {
-          MathJax.startup.document.state(0);
-          MathJax.texReset();
-          MathJax.typeset();
-          MathJax.typesetPromise();
-        }
-
-        Fluid.events.registerRefreshCallback(function() {
-          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
-            MathJax.startup.document.state(0);
-            MathJax.texReset();
-            MathJax.typeset();
-            MathJax.typesetPromise();
-          }
-        });
-      </script>
-    
-
-  <script  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" ></script>
 
   <script  src="/js/local-search.js" ></script>
 
